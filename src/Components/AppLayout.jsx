@@ -5,11 +5,9 @@ import MainNav from './MainNav'
 
 export default function AppLayout(){
   return (
-    <>
-      <h2 className=''>This is root layout</h2>
-      <MainNav/>
-      <Link to="/dashboard">Dashboard</Link>
-      <Outlet/>
-    </>
+      <div className="flex"> {/* This is the wrapper Div */}
+        <MainNav/>
+        <Outlet/>
+      </div>
   )
 }
