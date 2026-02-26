@@ -1,23 +1,25 @@
-const googleLogo = "https://img.logo.dev/name/google?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const microsoftLogo = "https://img.logo.dev/name/microsoft?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const amazonLogo = "https://img.logo.dev/name/amazon?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const ibmLogo = "https://img.logo.dev/name/ibm?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const adobeLogo = "https://img.logo.dev/name/adobe?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const oracleLogo = "https://img.logo.dev/name/oracle?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const sapLogo = "https://img.logo.dev/name/sap?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const salesforceLogo = "https://img.logo.dev/name/salesforce?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const intelLogo = "https://img.logo.dev/name/intel?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const ciscoLogo = "https://img.logo.dev/name/cisco?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const dellLogo = "https://img.logo.dev/name/dell?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const accentureLogo = "https://img.logo.dev/name/accenture?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const tcsLogo = "https://img.logo.dev/name/Tata%20Consultancy%20Services?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=30&retina=true"
-const capgeminiLogo = "https://img.logo.dev/name/capgemini?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const infosysLogo = "https://img.logo.dev/name/infosys?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const wiproLogo = "https://img.logo.dev/name/wipro?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const hpeLogo = "https://img.logo.dev/name/Hewlett%20Packard%20Enterprise?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const siemensLogo = "https://img.logo.dev/name/siemens?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const paypalLogo = "https://img.logo.dev/name/paypal?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
-const uberLogo = "https://img.logo.dev/uber.com?token=pk_GAJVb_SMSqi7kcC4fhfdhQ&size=60&retina=true"
+const googleLogo = `https://img.logo.dev/name/google?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const microsoftLogo = `https://img.logo.dev/name/microsoft?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const amazonLogo = `https://img.logo.dev/name/amazon?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const ibmLogo = `https://img.logo.dev/name/ibm?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const adobeLogo = `https://img.logo.dev/name/adobe?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const oracleLogo = `https://img.logo.dev/name/oracle?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const sapLogo = `https://img.logo.dev/name/sap?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const salesforceLogo = `https://img.logo.dev/name/salesforce?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const intelLogo = `https://img.logo.dev/name/intel?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const ciscoLogo = `https://img.logo.dev/name/cisco?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const dellLogo = `https://img.logo.dev/name/dell?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const accentureLogo = `https://img.logo.dev/name/accenture?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const tcsLogo = `https://img.logo.dev/name/Tata%20Consultancy%20Services?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=30&retina=true`
+const capgeminiLogo = `https://img.logo.dev/name/capgemini?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const infosysLogo = `https://img.logo.dev/name/infosys?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const wiproLogo = `https://img.logo.dev/name/wipro?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const hpeLogo = `https://img.logo.dev/name/Hewlett%20Packard%20Enterprise?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const siemensLogo = `https://img.logo.dev/name/siemens?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const paypalLogo = `https://img.logo.dev/name/paypal?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+
+console.log(import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY)
 
 //<img src={interview.company.logo} className='w-5'/>
 
