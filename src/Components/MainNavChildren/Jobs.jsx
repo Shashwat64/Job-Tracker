@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+//Icons
 import { Bell } from 'lucide-react';
-
 import appleLogo from '../../assets/appleLogo.png'
+
+//Data
+import interviewList from '../../data/interviewList'
+
+console.log(interviewList[0].salaryRange.min)
 
 export default function Jobs(){
 
@@ -75,36 +80,36 @@ export default function Jobs(){
             {checkBox}
 
             {/* Company Name */}
-            <div className='flex  bg-amber-200'>
+            <div className='flex '>
               <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-                <img src={appleLogo} className='w-5'/>
+                <img src={interviewList[0].company.logo} className='w-5'/>
               </div>
 
               <div className='ml-2'>
-                <p className='text-xs'>Apple</p>
-                <p className='text-xs text-gray-400'>Location</p>
+                <p className='text-xs'>{interviewList[0].company.name}</p>
+                <p className='text-xs text-gray-400'>{interviewList[0].company.location}</p>
               </div>
             </div>
 
             {/* Job Title */}   
-            <div className='bg-red-300'>
-              Central Paradigm Engineer
+            <div className=''>
+              {interviewList[0].jobTitle}
             </div>
             {/* Salary */}
-            <div className='bg-yellow-300'>
-              $3000-$4000
+            <div className=''>
+              {`${interviewList[0].salaryRange.min} - ${interviewList[0].salaryRange.max}`}
             </div>
             {/* Interview Data */}
-            <div className='bg-yellow-300'>
-              10 Mar 2025
+            <div className=''>
+              {interviewList[0].date}
             </div>
             {/* Interview Type */}
-            <div className='bg-yellow-300'>
-              Virtual
+            <div className=''>
+              {interviewList[0].interviewType}
             </div>
             {/* Stage */}
-            <div className='bg-yellow-300'>
-              Pending
+            <div className=''>
+              {interviewList[0].stage}
             </div>
           </div>
 
