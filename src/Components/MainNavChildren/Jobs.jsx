@@ -2,24 +2,87 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 //Icons
-import { Bell } from 'lucide-react';
+import { Bell, ChevronsRightLeft } from 'lucide-react';
 import appleLogo from '../../assets/appleLogo.png'
 
 //Data
 import interviewList from '../../data/interviewList'
 
-console.log(interviewList[0].salaryRange.min)
 
 export default function Jobs(){
 
   const [activeBtn, setActiveBtn] = useState('all')
+  const [activePage, setActivePage] = useState(1)
 
   function handleClick(e){
+    setActivePage(1)
     setActiveBtn(e.currentTarget.value)
   }
 
   const checkBox = <input className='appearance-none size-5 border border-gray-300 rounded mr-3 checked:bg-gray-400 checked:border-transparent' type="checkbox" name="delete-all-checkbox" />
   
+
+  const filteredList = interviewList
+    .filter((interview)=>{
+      if(activeBtn==='all')
+        return true
+      else
+        return interview.stage.toLowerCase() === activeBtn.toLowerCase()
+    })
+    
+    
+    
+    const filteredListLen = filteredList.length
+    
+    const itemsPerPage = 10;
+    const startIndex = (activePage - 1) * itemsPerPage;
+    const lastIndex = activePage * itemsPerPage;
+    
+    //Debugging
+    console.log("filteredListLen", filteredListLen)
+    console.log("startIndex", startIndex)
+    console.log("lastIndex", lastIndex)
+    console.log("activePage", activePage)
+
+  const interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
+    <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]' key={i}>
+
+            {checkBox}
+
+            {/* Company Name */}
+            <div className='flex' >
+              <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
+                <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
+              </div>
+
+              <div className='ml-2'>
+                <p className='text-xs'>{interview.company.name}</p>
+                <p className='text-xs text-gray-400'>{interview.company.location}</p>
+              </div>
+            </div>
+
+            {/* Job Title */}   
+            <div className=''>
+              {interview.jobTitle}
+            </div>
+            {/* Salary */}
+            <div className=''>
+              {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
+            </div>
+            {/* Interview Data */}
+            <div className=''>
+              {interview.date}
+            </div>
+            {/* Interview Type */}
+            <div className=''>
+              {interview.interviewType}
+            </div>
+            {/* Stage */}
+            <div className=''>
+              {interview.stage}
+            </div>
+          </div>
+  ))
 
 
   return (
@@ -35,7 +98,7 @@ export default function Jobs(){
 
         <section className='flex m-6 bg-white p-4 rounded-lg justify-between shadow-sm'>
           <p className='ml-2'>Jobs You have Applied</p>
-          <p className='mr-2'>0 Jobs applied</p>
+          <p className='mr-2'>{filteredListLen} Jobs</p>
         </section>
 
         <section >
@@ -52,10 +115,10 @@ export default function Jobs(){
                     : null
                 }`} value="pending" onClick={handleClick}>Pending</button>
               <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
-                  activeBtn === 'shortlist' 
+                  activeBtn === 'shortlisted' 
                     ? 'bg-white shadow-sm' 
                     : null
-                }`} value="shortlist" onClick={handleClick}>Shortlist</button>
+                }`} value="shortlisted" onClick={handleClick}>Shortlist</button>
               <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
                   activeBtn === 'rejected' 
                     ? 'bg-white shadow-sm' 
@@ -63,7 +126,7 @@ export default function Jobs(){
                 }`} value="rejected" onClick={handleClick}>Rejected</button>
             </div>
           </div>
-          <div className='grid grid-cols-[auto_2fr_3fr_1fr_1fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
+          <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
             {checkBox}
             
             <p className='text-sm text-gray-500'>Company Name</p>
@@ -75,43 +138,23 @@ export default function Jobs(){
           </div>
             
             {/* This below is main div */}
-          <div className='grid grid-cols-[auto_2fr_3fr_1fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
-
-            {checkBox}
-
-            {/* Company Name */}
-            <div className='flex '>
-              <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-                <img src={interviewList[0].company.logo} className='w-5'/>
-              </div>
-
-              <div className='ml-2'>
-                <p className='text-xs'>{interviewList[0].company.name}</p>
-                <p className='text-xs text-gray-400'>{interviewList[0].company.location}</p>
-              </div>
+            {interviewHtml}
+            
+            <div className='flex justify-between items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
+              <button className='bg-white border border-gray-200 px-3 py-2 rounded-lg flex gap-x-1 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed'
+                onClick={()=>{if(activePage>1){
+                  setActivePage(prev=>prev-1)
+                }}}
+                disabled={activePage===1 ? true : false} 
+              >&larr; Previous</button>
+              <button className='bg-white border border-gray-200 px-3 py-2 rounded-lg flex gap-x-1 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed' 
+                onClick={()=>{if(activePage < Math.ceil(filteredListLen/10)){
+                  setActivePage(prev=>prev+1)
+                }}}
+                disabled={activePage===Math.ceil(filteredListLen/10) ? true : false} 
+              >Next &rarr;</button>
             </div>
-
-            {/* Job Title */}   
-            <div className=''>
-              {interviewList[0].jobTitle}
-            </div>
-            {/* Salary */}
-            <div className=''>
-              {`${interviewList[0].salaryRange.min} - ${interviewList[0].salaryRange.max}`}
-            </div>
-            {/* Interview Data */}
-            <div className=''>
-              {interviewList[0].date}
-            </div>
-            {/* Interview Type */}
-            <div className=''>
-              {interviewList[0].interviewType}
-            </div>
-            {/* Stage */}
-            <div className=''>
-              {interviewList[0].stage}
-            </div>
-          </div>
+            
 
         </section>
         
