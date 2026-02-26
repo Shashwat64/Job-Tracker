@@ -6,11 +6,13 @@ import { LayoutDashboard, Briefcase, MessagesSquare, Binoculars, FileUser, Calen
 
 export default function MainNav(){
   return (
-    <aside className="flex flex-col p-6 bg-white h-screen w-60 border-r border-gray-200 ">
-      <div className="flex py-4 border-b border-gray-200">
-        <h1 className="text-2xl">Interview</h1>
-        <button>-</button>
-      </div>
+    <aside className="flex flex-col p-4 bg-white h-screen w-60 border-r border-gray-200">
+      <Link to="/">
+        <div className="flex py-2 px-1 border-b border-gray-200 h-12">
+          <h1 className="text-2xl">Interview</h1>
+          <button>-</button>
+        </div>
+      </Link>
 
       <nav className="flex flex-col gap-4 py-4 grow">
         <div>
@@ -81,11 +83,10 @@ export default function MainNav(){
 
       </nav>
       <Link to="profile" draggable="false">
-        <div className="py-2 flex items-center gap-2 border-t border-gray-200 bg-white">
+        <div className="pt-2 flex items-center gap-2 border-t border-gray-200 hover:bg-gray-100 hover:text-black transition-all duration-100 ease-in-out rounded-md">
           <img className="w-10 h-10 rounded-full overflow-hidden object-cover object-[50%_50%]" src="https://i.imgur.com/F9Nf9Fx.jpeg" />
           <div>
             <p>Jayawan</p>
-            <p className="text-gray-400 text-sm">Email</p>
           </div>
         </div>
       </Link>
