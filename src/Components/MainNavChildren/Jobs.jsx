@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom'
 //Icons
 import { Bell, ChevronsRightLeft } from 'lucide-react';
 
-const googleLogo = `https://img.logo.dev/name/google?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 
 //contexts
 import { JobContext } from '../../App'
+
+//component
+import AddJob from './AddJob'
 
 
 export default function Jobs(){
@@ -17,13 +19,13 @@ export default function Jobs(){
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  console.log(interviewJson[4]?.id)
+  const [addJobModal, setAddJobModal] = useState(false)
+
 
   // useEffect(()=>{
   //   setInterviewJson([])
   // },[])
 
-  // console.log("interviewJson = " + interviewJson[0].id)
 
   function handleClick(e){
     setActivePage(1)
@@ -106,6 +108,7 @@ export default function Jobs(){
   return (
     <>
       <main className='bg-gray-100 grow'>
+        {addJobModal && <AddJob setAddJobModal={setAddJobModal}/>}
         <section className="flex items-center h-16 w-full justify-between border border-gray-200 p-4 bg-white shadow-xs">
           <h2>Applied Jobs</h2>
           <div className='flex items-center gap-x-4'>
@@ -120,30 +123,34 @@ export default function Jobs(){
         </section>
 
         <section >
-          <div className='flex flex-col m-6 mb-0 bg-white p-4 rounded-t-lg items-baseline'>
-            <div className='bg-gray-100 p-1 rounded-lg flex gap-x-1'>
-              <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
-                  activeBtn === 'all' 
-                    ? 'bg-white shadow-sm' 
-                    : null
-                }`} value="all" onClick={handleClick}>All</button>
-              <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
-                  activeBtn === 'pending' 
-                    ? 'bg-white shadow-sm' 
-                    : null
-                }`} value="pending" onClick={handleClick}>Pending</button>
-              <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
-                  activeBtn === 'shortlisted' 
-                    ? 'bg-white shadow-sm' 
-                    : null
-                }`} value="shortlisted" onClick={handleClick}>Shortlist</button>
-              <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
-                  activeBtn === 'rejected' 
-                    ? 'bg-white shadow-sm' 
-                    : null
-                }`} value="rejected" onClick={handleClick}>Rejected</button>
+            <div className='flex flex-row m-6 mb-0 bg-white p-4 rounded-t-lg items-baseline justify-between' >
+              <div className='bg-gray-100 p-1 rounded-lg flex gap-x-1'>
+                <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'all' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="all" onClick={handleClick}>All</button>
+                <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'pending' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="pending" onClick={handleClick}>Pending</button>
+                <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'shortlisted' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="shortlisted" onClick={handleClick}>Shortlist</button>
+                <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'rejected' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="rejected" onClick={handleClick}>Rejected</button>
+              </div>
+              <button
+                className='px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition'
+                onClick={()=>{setAddJobModal(true)}}
+              >Add More</button>
             </div>
-          </div>
           <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
             {checkBox}
             
