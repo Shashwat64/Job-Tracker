@@ -10,7 +10,7 @@ const intelLogo = `https://img.logo.dev/name/intel?token=${import.meta.env.VITE_
 const ciscoLogo = `https://img.logo.dev/name/cisco?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const dellLogo = `https://img.logo.dev/name/dell?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const accentureLogo = `https://img.logo.dev/name/accenture?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const tcsLogo = `https://img.logo.dev/name/Tata%20Consultancy%20Services?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=30&retina=true`
+const tcsLogo = `https://img.logo.dev/name/Tata%20Consultancy%20Services?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const capgeminiLogo = `https://img.logo.dev/name/capgemini?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const infosysLogo = `https://img.logo.dev/name/infosys?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const wiproLogo = `https://img.logo.dev/name/wipro?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`

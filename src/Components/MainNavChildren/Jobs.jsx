@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 //Icons
@@ -8,11 +8,18 @@ import appleLogo from '../../assets/appleLogo.png'
 //Data
 import interviewList from '../../data/interviewList'
 
+//contexts
+import { JobContext } from '../../App'
+
 
 export default function Jobs(){
 
   const [activeBtn, setActiveBtn] = useState('all')
   const [activePage, setActivePage] = useState(1)
+
+  const {interviewJson, setInterviewJson} = useContext(JobContext)
+
+  console.log("interviewJson = " + interviewJson[0].id)
 
   function handleClick(e){
     setActivePage(1)
