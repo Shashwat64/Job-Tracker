@@ -1,12 +1,10 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 //Icons
 import { Bell, ChevronsRightLeft } from 'lucide-react';
-import appleLogo from '../../assets/appleLogo.png'
 
-//Data
-import interviewList from '../../data/interviewList'
+const googleLogo = `https://img.logo.dev/name/google?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 
 //contexts
 import { JobContext } from '../../App'
@@ -19,7 +17,13 @@ export default function Jobs(){
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  console.log("interviewJson = " + interviewJson[0].id)
+  console.log(interviewJson[4]?.id)
+
+  // useEffect(()=>{
+  //   setInterviewJson([])
+  // },[])
+
+  // console.log("interviewJson = " + interviewJson[0].id)
 
   function handleClick(e){
     setActivePage(1)
@@ -28,18 +32,21 @@ export default function Jobs(){
 
   const checkBox = <input className='appearance-none size-5 border border-gray-300 rounded mr-3 checked:bg-gray-400 checked:border-transparent' type="checkbox" name="delete-all-checkbox" />
   
-
-  const filteredList = interviewList
+  let filteredList = []
+  
+  if(interviewJson.length>0){
+     filteredList = interviewJson
     .filter((interview)=>{
       if(activeBtn==='all')
         return true
       else
         return interview.stage.toLowerCase() === activeBtn.toLowerCase()
     })
+  }
+  
+  const filteredListLen = filteredList.length
     
     
-    
-    const filteredListLen = filteredList.length
     
     const itemsPerPage = 10;
     const startIndex = (activePage - 1) * itemsPerPage;
@@ -51,45 +58,49 @@ export default function Jobs(){
     console.log("lastIndex", lastIndex)
     console.log("activePage", activePage)
 
-  const interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
-    <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]' key={i}>
-
-            {checkBox}
-
-            {/* Company Name */}
-            <div className='flex' >
-              <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-                <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
+    let interviewHtml = ''
+  
+    if(filteredListLen>0){
+      interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
+        <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]' key={i}>
+    
+                {checkBox}
+    
+                {/* Company Name */}
+                <div className='flex' >
+                  <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
+                    <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
+                  </div>
+    
+                  <div className='ml-2'>
+                    <p className='text-xs'>{interview.company.name}</p>
+                    <p className='text-xs text-gray-400'>{interview.company.location}</p>
+                  </div>
+                </div>
+    
+                {/* Job Title */}   
+                <div className=''>
+                  {interview.jobTitle}
+                </div>
+                {/* Salary */}
+                <div className=''>
+                  {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
+                </div>
+                {/* Interview Data */}
+                <div className=''>
+                  {interview.date}
+                </div>
+                {/* Interview Type */}
+                <div className=''>
+                  {interview.interviewType}
+                </div>
+                {/* Stage */}
+                <div className=''>
+                  {interview.stage}
+                </div>
               </div>
-
-              <div className='ml-2'>
-                <p className='text-xs'>{interview.company.name}</p>
-                <p className='text-xs text-gray-400'>{interview.company.location}</p>
-              </div>
-            </div>
-
-            {/* Job Title */}   
-            <div className=''>
-              {interview.jobTitle}
-            </div>
-            {/* Salary */}
-            <div className=''>
-              {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
-            </div>
-            {/* Interview Data */}
-            <div className=''>
-              {interview.date}
-            </div>
-            {/* Interview Type */}
-            <div className=''>
-              {interview.interviewType}
-            </div>
-            {/* Stage */}
-            <div className=''>
-              {interview.stage}
-            </div>
-          </div>
-  ))
+      ))
+    }
 
 
   return (
@@ -146,21 +157,47 @@ export default function Jobs(){
             
             {/* This below is main div */}
             {interviewHtml}
-            
+            {filteredListLen>10 && 
             <div className='flex justify-between items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
-              <button className='bg-white border border-gray-200 px-3 py-2 rounded-lg flex gap-x-1 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed'
+              <button className='bg-white 
+                border border-gray-200 
+                px-3 py-2 
+                rounded-lg 
+                flex gap-x-1 
+                transition-all duration-150
+
+                hover:bg-gray-100 hover:border-gray-300
+
+                active:scale-95 active:bg-gray-800 active:text-white
+
+                disabled:bg-gray-200 
+                disabled:text-gray-500 
+                disabled:cursor-not-allowed'
                 onClick={()=>{if(activePage>1){
                   setActivePage(prev=>prev-1)
                 }}}
                 disabled={activePage===1 ? true : false} 
               >&larr; Previous</button>
-              <button className='bg-white border border-gray-200 px-3 py-2 rounded-lg flex gap-x-1 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed' 
+              <button className='bg-white 
+                border border-gray-200 
+                px-3 py-2 
+                rounded-lg 
+                flex gap-x-1 
+                transition-all duration-150
+
+                hover:bg-gray-100 hover:border-gray-300
+
+                active:scale-95 active:bg-gray-800 active:text-white
+
+                disabled:bg-gray-200 
+                disabled:text-gray-500 
+                disabled:cursor-not-allowed' 
                 onClick={()=>{if(activePage < Math.ceil(filteredListLen/10)){
                   setActivePage(prev=>prev+1)
                 }}}
                 disabled={activePage===Math.ceil(filteredListLen/10) ? true : false} 
               >Next &rarr;</button>
-            </div>
+            </div>}
             
 
         </section>

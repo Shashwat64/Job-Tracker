@@ -9,6 +9,8 @@ export const JobContext = createContext()
 
 export default function App() {
 
+  console.log(interviewList[0])
+
   const [interviewJson, setInterviewJson] = useState(interviewList)
 
   return (
