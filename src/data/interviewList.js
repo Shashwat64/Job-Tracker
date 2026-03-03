@@ -19,7 +19,6 @@ const siemensLogo = `https://img.logo.dev/name/siemens?token=${import.meta.env.V
 const paypalLogo = `https://img.logo.dev/name/paypal?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
 
-console.log(import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY)
 
 //<img src={interview.company.logo} className='w-5'/>
 

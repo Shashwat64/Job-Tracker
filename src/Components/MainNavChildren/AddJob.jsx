@@ -1,14 +1,21 @@
 import { useState } from 'react'
 
-export default function AddJob({ setAddJobModal, setInterviewJson }){
+export default function AddJob({ setAddJobModal, setInterviewJson, interviewJson }){
+  
+
+  console.log(interviewJson)
+  const nextId = interviewJson[interviewJson.length-1].id + 1
+
 
   const [newJob, setNewJob] = useState({
+    id:nextId,
     company: { logoLink: "", name: "", location: "" },
     jobTitle: "",
     salaryRange: { min: "", max: "" },
     date: "",
     interviewType: "Virtual",
     stage: "Pending",
+    deleted:false
   })
 
   function handleChange(e){
@@ -27,25 +34,27 @@ export default function AddJob({ setAddJobModal, setInterviewJson }){
         salaryRange:{...prev.salaryRange, [key]: Number(value)}
       }))
     }else{
-      setInterviewJson((prev) => ({ ...prev, [name]: value }))
-      setAddJobModal(false)
+      setNewJob((prev) => ({ ...prev, [name]: value }))
     }
-
+    
   }
-
+  
   function handleSubmit(e){
     e.preventDefault()
     const formData = e.currentTarget
-
+    
     if (newJob.salaryRange.max < newJob.salaryRange.min) {
       alert("Max salary must be greater than min salary");
       return;
     }
 
-    setAddJobModal(prev=>({
+    
+    
+    setAddJobModal(false)
+    setInterviewJson(prev=>([
       ...prev,
-      newJob
-    }))
+      {...newJob, }
+    ]))
 
 
 
