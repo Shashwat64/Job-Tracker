@@ -10,7 +10,7 @@ export default function Dropdown({ openModalId, setOpenModalId, id }) {
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenModalId(null) // close dropdown
+        setOpenModalId(null)
       }
     }
 

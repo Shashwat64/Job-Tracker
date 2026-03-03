@@ -11,7 +11,7 @@ import { JobContext } from '../../App'
 //component
 import AddJob from './AddJob'
 import Interview from './Interview'
-import Dropdown from './Dropdown.jsx' // exact same spelling as the file
+import Dropdown from './Dropdown' 
 
 
 export default function Jobs(){
