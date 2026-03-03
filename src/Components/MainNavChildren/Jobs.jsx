@@ -21,7 +21,7 @@ export default function Jobs(){
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  const [addJobModal, setAddJobModal] = useState(false)
+  const [addJobModal, setAddJobModal] = useState(true)
   const [openModalId, setOpenModalId] = useState(null)
 
 
@@ -39,6 +39,8 @@ export default function Jobs(){
   
   let filteredList = []
   
+
+  //Filtering on the basis of stage
   if(interviewJson.length>0){
      filteredList = interviewJson
     .filter((interview)=>{
@@ -58,13 +60,14 @@ export default function Jobs(){
     const lastIndex = activePage * itemsPerPage;
     
     //Debugging
-    console.log("filteredListLen", filteredListLen)
-    console.log("startIndex", startIndex)
-    console.log("lastIndex", lastIndex)
-    console.log("activePage", activePage)
+    // console.log("filteredListLen", filteredListLen)
+    // console.log("startIndex", startIndex)
+    // console.log("lastIndex", lastIndex)
+    // console.log("activePage", activePage)
 
     let interviewHtml = ''
   
+    //Making Html of the interview detail
     if(filteredListLen>0){
       interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
         <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)] ${openModalId === interview.id ? 'z-50' : 'z-10'}`} key={i}>
