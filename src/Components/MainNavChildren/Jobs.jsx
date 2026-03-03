@@ -10,6 +10,8 @@ import { JobContext } from '../../App'
 
 //component
 import AddJob from './AddJob'
+import Interview from './Interview'
+import DropDown from './DropDown.jsx' // exact same spelling as the file
 
 
 export default function Jobs(){
@@ -20,6 +22,7 @@ export default function Jobs(){
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
   const [addJobModal, setAddJobModal] = useState(false)
+  const [openModalId, setOpenModalId] = useState(0)
 
 
   // useEffect(()=>{
@@ -64,43 +67,64 @@ export default function Jobs(){
   
     if(filteredListLen>0){
       interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
-        <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]' key={i}>
+        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)] ${openModalId === interview.id ? 'z-50' : 'z-10'}`} key={i}>
     
-                {checkBox}
-    
-                {/* Company Name */}
-                <div className='flex' >
-                  <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-                    <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
-                  </div>
-    
-                  <div className='ml-2'>
-                    <p className='text-xs'>{interview.company.name}</p>
-                    <p className='text-xs text-gray-400'>{interview.company.location}</p>
-                  </div>
-                </div>
-    
-                {/* Job Title */}   
-                <div className=''>
-                  {interview.jobTitle}
-                </div>
-                {/* Salary */}
-                <div className=''>
-                  {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
-                </div>
-                {/* Interview Data */}
-                <div className=''>
-                  {interview.date}
-                </div>
-                {/* Interview Type */}
-                <div className=''>
-                  {interview.interviewType}
-                </div>
-                {/* Stage */}
-                <div className=''>
-                  {interview.stage}
-                </div>
-              </div>
+          {checkBox}
+
+          {/* Company Name */}
+          <div className='flex ' >
+            <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
+              <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
+            </div>
+
+            <div className='ml-2'>
+              <p className='text-xs'>{interview.company.name}</p>
+              <p className='text-xs text-gray-400'>{interview.company.location}</p>
+            </div>
+          </div>
+
+          {/* Job Title */}   
+          <div className=''>
+            {interview.jobTitle}
+          </div>
+          {/* Salary */}
+          <div className=''>
+            {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
+          </div>
+          {/* Interview Data */}
+          <div className=''>
+            {interview.date}
+          </div>
+          {/* Interview Type */}
+          <div className=''>
+            {interview.interviewType}
+          </div>
+          {/* Stage */}
+          <div className=''>
+            {interview.stage}
+          </div>
+          <button 
+            className="absolute right-10 text-xl px-2 py-1 hover:bg-gray-200 rounded"
+            onClick={()=>{setOpenModalId(interview.id)}}
+          >
+            &#8942;
+          </button>
+
+
+          {/* {openModalId === interview.id && (
+            <div className="absolute right-0 top-10 overflow-visible mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md">
+              <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                Edit
+              </button>
+              <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                Delete
+              </button>
+            </div>
+            )
+          } */}
+
+          <DropDown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} />
+        </div>
       ))
     }
 
