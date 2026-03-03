@@ -1,12 +1,16 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 
-export default function DropDown({ openModalId, setOpenModalId, id }) {
-  const dropdownRef = useRef();
+import { JobContext } from '../../App'
+
+export default function Dropdown({ openModalId, setOpenModalId, id }) {
+  const dropdownRef = useRef()
+
+  const {interviewJson, setInterviewJson} = useContext(JobContext)
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenModalId(null); // close dropdown
+        setOpenModalId(null) // close dropdown
       }
     }
 
@@ -14,18 +18,29 @@ export default function DropDown({ openModalId, setOpenModalId, id }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [id]);
 
+
   if (openModalId !== id) return null
-  
+
 
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50"
+      className="absolute right-0 top-10 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50"
     >
       <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
         Edit
       </button>
-      <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+      <button 
+        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+        onClick={()=>{setInterviewJson(prev=>{
+          let newArr = [...prev]
+          newArr[id].deleted = true
+
+          console.log(newArr[id])
+
+          return newArr
+        })}}
+      >
         Delete
       </button>
     </div>

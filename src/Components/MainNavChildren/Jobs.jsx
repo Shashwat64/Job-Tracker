@@ -11,7 +11,7 @@ import { JobContext } from '../../App'
 //component
 import AddJob from './AddJob'
 import Interview from './Interview'
-import DropDown from './DropDown.jsx' // exact same spelling as the file
+import Dropdown from './Dropdown.jsx' // exact same spelling as the file
 
 
 export default function Jobs(){
@@ -22,7 +22,7 @@ export default function Jobs(){
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
   const [addJobModal, setAddJobModal] = useState(false)
-  const [openModalId, setOpenModalId] = useState(0)
+  const [openModalId, setOpenModalId] = useState(null)
 
 
   // useEffect(()=>{
@@ -42,9 +42,9 @@ export default function Jobs(){
   if(interviewJson.length>0){
      filteredList = interviewJson
     .filter((interview)=>{
-      if(activeBtn==='all')
+      if(activeBtn==='all' && !interview.deleted)
         return true
-      else
+      else if(!interview.deleted)
         return interview.stage.toLowerCase() === activeBtn.toLowerCase()
     })
   }
@@ -104,7 +104,7 @@ export default function Jobs(){
             {interview.stage}
           </div>
           <button 
-            className="absolute right-10 text-xl px-2 py-1 hover:bg-gray-200 rounded"
+            className="absolute right-5 text-xl px-2 py-1 hover:bg-gray-200 rounded"
             onClick={()=>{setOpenModalId(interview.id)}}
           >
             &#8942;
@@ -123,7 +123,7 @@ export default function Jobs(){
             )
           } */}
 
-          <DropDown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} />
+          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} />
         </div>
       ))
     }

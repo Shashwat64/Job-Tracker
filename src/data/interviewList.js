@@ -34,7 +34,8 @@ const interviewList = [
     salaryRange: { min: 1800000, max: 2800000 },
     date: "2026-03-12",
     interviewType: "Virtual",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 1,
@@ -43,7 +44,8 @@ const interviewList = [
     salaryRange: { min: 1500000, max: 2500000 },
     date: "2026-03-18",
     interviewType: "Onsite",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 2,
@@ -52,7 +54,8 @@ const interviewList = [
     salaryRange: { min: 1200000, max: 2000000 },
     date: "2026-03-20",
     interviewType: "Virtual",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 3,
@@ -61,7 +64,8 @@ const interviewList = [
     salaryRange: { min: 1000000, max: 1800000 },
     date: "2026-03-22",
     interviewType: "Virtual",
-    stage: "Rejected"
+    stage: "Rejected",
+    deleted:false
   },
   {
     id: 4,
@@ -70,7 +74,8 @@ const interviewList = [
     salaryRange: { min: 1600000, max: 2600000 },
     date: "2026-03-25",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 5,
@@ -79,7 +84,8 @@ const interviewList = [
     salaryRange: { min: 1400000, max: 2200000 },
     date: "2026-03-28",
     interviewType: "Virtual",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 6,
@@ -88,7 +94,8 @@ const interviewList = [
     salaryRange: { min: 1300000, max: 2100000 },
     date: "2026-04-02",
     interviewType: "Virtual",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 7,
@@ -97,7 +104,8 @@ const interviewList = [
     salaryRange: { min: 1700000, max: 3000000 },
     date: "2026-04-05",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 8,
@@ -106,7 +114,8 @@ const interviewList = [
     salaryRange: { min: 1400000, max: 2300000 },
     date: "2026-04-07",
     interviewType: "Virtual",
-    stage: "Rejected"
+    stage: "Rejected",
+    deleted:false
   },
   {
     id: 9,
@@ -115,7 +124,8 @@ const interviewList = [
     salaryRange: { min: 1300000, max: 2200000 },
     date: "2026-04-09",
     interviewType: "Virtual",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 10,
@@ -124,7 +134,8 @@ const interviewList = [
     salaryRange: { min: 1200000, max: 2100000 },
     date: "2026-04-12",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 11,
@@ -133,7 +144,8 @@ const interviewList = [
     salaryRange: { min: 800000, max: 1500000 },
     date: "2026-04-15",
     interviewType: "Virtual",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 12,
@@ -142,7 +154,8 @@ const interviewList = [
     salaryRange: { min: 600000, max: 1200000 },
     date: "2026-04-18",
     interviewType: "Onsite",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 13,
@@ -151,7 +164,8 @@ const interviewList = [
     salaryRange: { min: 700000, max: 1400000 },
     date: "2026-04-20",
     interviewType: "Virtual",
-    stage: "Rejected"
+    stage: "Rejected",
+    deleted:false
   },
   {
     id: 14,
@@ -160,7 +174,8 @@ const interviewList = [
     salaryRange: { min: 650000, max: 1100000 },
     date: "2026-04-22",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 15,
@@ -169,7 +184,8 @@ const interviewList = [
     salaryRange: { min: 700000, max: 1300000 },
     date: "2026-04-25",
     interviewType: "Virtual",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 16,
@@ -178,7 +194,8 @@ const interviewList = [
     salaryRange: { min: 900000, max: 1600000 },
     date: "2026-04-27",
     interviewType: "Virtual",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 17,
@@ -187,7 +204,8 @@ const interviewList = [
     salaryRange: { min: 1000000, max: 1900000 },
     date: "2026-04-29",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   },
   {
     id: 18,
@@ -196,7 +214,8 @@ const interviewList = [
     salaryRange: { min: 1800000, max: 3200000 },
     date: "2026-05-02",
     interviewType: "Virtual",
-    stage: "Shortlisted"
+    stage: "Shortlisted",
+    deleted:false
   },
   {
     id: 19,
@@ -205,7 +224,8 @@ const interviewList = [
     salaryRange: { min: 2000000, max: 3500000 },
     date: "2026-05-05",
     interviewType: "Onsite",
-    stage: "Pending"
+    stage: "Pending",
+    deleted:false
   }
 ]
 export default interviewList
