@@ -34,7 +34,7 @@ const interviewList = [
     date: "2026-03-12",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:false
+    deleted:true
   },
   {
     id: 1,

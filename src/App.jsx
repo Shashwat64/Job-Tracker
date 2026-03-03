@@ -12,6 +12,8 @@ export default function App() {
 
   const [interviewJson, setInterviewJson] = useState(interviewList)
 
+  console.log(interviewJson)
+
   return (
     <>
       {/* Global Providers Here */}

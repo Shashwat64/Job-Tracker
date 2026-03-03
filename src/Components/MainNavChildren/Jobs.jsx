@@ -21,6 +21,9 @@ export default function Jobs(){
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
+  console.log( "In Jobs.jsx", interviewJson[20])
+  console.log("Jobs re-rendered")
+
   const [addJobModal, setAddJobModal] = useState(true)
   const [openModalId, setOpenModalId] = useState(null)
 

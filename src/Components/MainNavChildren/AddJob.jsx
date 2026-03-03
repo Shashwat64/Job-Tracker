@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useState,useContext } from 'react'
 
-export default function AddJob({ setAddJobModal, setInterviewJson, interviewJson }){
+import { JobContext } from '../../App'
+
+export default function AddJob({ setAddJobModal }){
   
+  const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  console.log(interviewJson)
+  // console.log("Jobs context:", interviewJson)
+
   const nextId = interviewJson[interviewJson.length-1].id + 1
+
 
 
   const [newJob, setNewJob] = useState({
@@ -47,18 +52,18 @@ export default function AddJob({ setAddJobModal, setInterviewJson, interviewJson
       alert("Max salary must be greater than min salary");
       return;
     }
-
     
+    let cleanUrl = newJob.company.logoLink
+    if (cleanUrl.includes("https://")) {
+      cleanUrl = newJob.company.logoLink.split('/')[2]
+    }
     
     setAddJobModal(false)
     setInterviewJson(prev=>([
       ...prev,
-      {...newJob, }
+      {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
     ]))
-
-
-
-    console.log(formData)
+    console.log(interviewJson)
   }
 
   return (
@@ -97,7 +102,7 @@ export default function AddJob({ setAddJobModal, setInterviewJson, interviewJson
           name="company.logoLink"
           value={newJob.company.logoLink}
           onChange={handleChange}
-          placeholder="Company Logo URL"
+          placeholder="Company Website"
           className="w-full border p-2 rounded mb-2"
           type="url"
         />
