@@ -87,111 +87,115 @@ export default function AddJob({ setAddJobModal }){
         <div className=" flex justify-center items-center w-full h-full p-8 gap-4">
           <form 
             className=" gap-8 items-center "
-            onSubmit={(e) => {
-            e.preventDefault()
-            handleSubmit()
-          }}>
-           <input
-          name="company.name"
-          value={newJob.company.name}
-          onChange={handleChange}
-          placeholder="Company Name"
-          className="w-full border p-2 rounded mb-2"
-        />
-        <input
-          name="company.logoLink"
-          value={newJob.company.logoLink}
-          onChange={handleChange}
-          placeholder="Company Website"
-          className="w-full border p-2 rounded mb-2"
-          type="url"
-        />
-        <input
-          name="company.location"
-          value={newJob.company.location}
-          onChange={handleChange}
-          placeholder="Location"
-          className="w-full border p-2 rounded mb-2"
-        />
-
-        {/* Job Title */}
-        <input
-          name="jobTitle"
-          value={newJob.jobTitle}
-          onChange={handleChange}
-          placeholder="Job Title"
-          className="w-full border p-2 rounded mb-2"
-        />
-
-        {/* Salary */}
-        <div className="flex gap-2 mb-2">
+            onSubmit={handleSubmit}>
           <input
-            name="salaryRange.min"
-            value={newJob.salaryRange.min}
+            name="company.name"
+            value={newJob.company.name}
             onChange={handleChange}
-            placeholder="Min Salary"
-            type="number"
-            className="w-1/2 border p-2 rounded"
+            placeholder="Company Name"
+            className="w-full border p-2 rounded mb-2"
+            required
           />
           <input
-            name="salaryRange.max"
-            value={newJob.salaryRange.max}
+            name="company.logoLink"
+            value={newJob.company.logoLink}
             onChange={handleChange}
-            placeholder="Max Salary"
-            type="number"
-            className="w-1/2 border p-2 rounded"
+            placeholder="Company Website"
+            className="w-full border p-2 rounded mb-2"
+            type="text"
+            required
           />
-        </div>
+          <input
+            name="company.location"
+            value={newJob.company.location}
+            onChange={handleChange}
+            placeholder="Location"
+            className="w-full border p-2 rounded mb-2"
+            required
+          />
 
-        {/* Date */}
-        <input
-          name="date"
-          value={newJob.date}
-          onChange={handleChange}
-          type="date"
-          className="w-full border p-2 rounded mb-2"
-        />
+          {/* Job Title */}
+          <input
+            name="jobTitle"
+            value={newJob.jobTitle}
+            onChange={handleChange}
+            placeholder="Job Title"
+            className="w-full border p-2 rounded mb-2"
+            required
+          />
 
-        {/* Interview Type */}
-        <select
-          name="interviewType"
-          value={newJob.interviewType}
-          onChange={handleChange}
-          className="w-full border p-2 rounded mb-2"
-        >
-          <option value="Virtual">Virtual</option>
-          <option value="In-person">In-person</option>
-        </select>
+          {/* Salary */}
+          <div className="flex gap-2 mb-2">
+            <input
+              name="salaryRange.min"
+              value={newJob.salaryRange.min}
+              onChange={handleChange}
+              placeholder="Min Salary"
+              type="number"
+              className="w-1/2 border p-2 rounded"
+              required
+            />
+            <input
+              name="salaryRange.max"
+              value={newJob.salaryRange.max}
+              onChange={handleChange}
+              placeholder="Max Salary"
+              type="number"
+              className="w-1/2 border p-2 rounded"
+              required
+            />
+          </div>
 
-        {/* Stage */}
-        <select
-          name="stage"
-          value={newJob.stage}
-          onChange={handleChange}
-          className="w-full border p-2 rounded mb-4"
-        >
-          <option value="Pending">Pending</option>
-          <option value="Shortlisted">Shortlisted</option>
-          <option value="Rejected">Rejected</option>
-        </select>
+          {/* Date */}
+          <input
+            name="date"
+            value={newJob.date}
+            onChange={handleChange}
+            type="date"
+            className="w-full border p-2 rounded mb-2"
+            required
+          />
 
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Add Job
-        </button>
+          {/* Interview Type */}
+          <select
+            name="interviewType"
+            value={newJob.interviewType}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mb-2"
+          >
+            <option value="Virtual">Virtual</option>
+            <option value="In-person">In-person</option>
+          </select>
 
-        <button
-          onClick={()=>{
-            setNewJob({
-            company: { logoLink: "", name: "", location: "" },
-            jobTitle: "",
-            salaryRange: { min: "", max: "" },
-            date: "",
-            interviewType: "Virtual",
-            stage: "Pending",
-          })
+          {/* Stage */}
+          <select
+            name="stage"
+            value={newJob.stage}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mb-4"
+          >
+            <option value="Pending">Pending</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+
+          <button
+            type='submit'
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Add Job
+          </button>
+
+          <button
+            onClick={()=>{
+              setNewJob({
+              company: { logoLink: "", name: "", location: "" },
+              jobTitle: "",
+              salaryRange: { min: "", max: "" },
+              date: "",
+              interviewType: "Virtual",
+              stage: "Pending",
+            })
           }}
           className="bg-gray-400 text-white px-4 py-2 ml-4 rounded hover:bg-gray-600"
           type='button'

@@ -86,7 +86,7 @@ export default function MainNav(){
         <div className="pt-2 flex items-center gap-2 border-t border-gray-200 hover:bg-gray-100 hover:text-black transition-all duration-100 ease-in-out rounded-md">
           <img className="w-10 h-10 rounded-full overflow-hidden object-cover object-[50%_50%]" src="https://i.imgur.com/F9Nf9Fx.jpeg" />
           <div>
-            <p>Jayawan</p>
+            <p>Shashwat</p>
           </div>
         </div>
       </Link>
