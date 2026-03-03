@@ -135,7 +135,7 @@ export default function Jobs(){
   return (
     <>
       <main className='bg-gray-100 grow'>
-        {addJobModal && <AddJob setAddJobModal={setAddJobModal}/>}
+        {addJobModal && <AddJob setAddJobModal={setAddJobModal} setInterviewJson={setInterviewJson}/>}
         <section className="flex items-center h-16 w-full justify-between border border-gray-200 p-4 bg-white shadow-xs">
           <h2>Applied Jobs</h2>
           <div className='flex items-center gap-x-4'>

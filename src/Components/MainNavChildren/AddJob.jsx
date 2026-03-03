@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function AddJob({ setAddJobModal }){
+export default function AddJob({ setAddJobModal, setInterviewJson }){
 
   const [newJob, setNewJob] = useState({
     company: { logoLink: "", name: "", location: "" },
@@ -13,7 +13,6 @@ export default function AddJob({ setAddJobModal }){
 
   function handleChange(e){
     const {name, value} = e.currentTarget
-    console.log(name, value)
 
     if(name.includes('company.')){
       const key = name.split('.')[1]
@@ -28,13 +27,29 @@ export default function AddJob({ setAddJobModal }){
         salaryRange:{...prev.salaryRange, [key]: Number(value)}
       }))
     }else{
-      setNewJob((prev) => ({ ...prev, [name]: value }))
+      setInterviewJson((prev) => ({ ...prev, [name]: value }))
+      setAddJobModal(false)
     }
 
   }
 
-  function handleSubmit(){
-    console.log("form submitted")
+  function handleSubmit(e){
+    e.preventDefault()
+    const formData = e.currentTarget
+
+    if (newJob.salaryRange.max < newJob.salaryRange.min) {
+      alert("Max salary must be greater than min salary");
+      return;
+    }
+
+    setAddJobModal(prev=>({
+      ...prev,
+      newJob
+    }))
+
+
+
+    console.log(formData)
   }
 
   return (
@@ -165,6 +180,7 @@ export default function AddJob({ setAddJobModal }){
           })
           }}
           className="bg-gray-400 text-white px-4 py-2 ml-4 rounded hover:bg-gray-600"
+          type='button'
         >
           Reset
         </button>
