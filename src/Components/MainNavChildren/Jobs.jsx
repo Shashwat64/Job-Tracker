@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 //Icons
 import { Bell, ChevronsRightLeft } from 'lucide-react';
 
-//helper function
 
 //contexts
 import { JobContext } from '../../App'
@@ -51,9 +50,9 @@ export default function Jobs(){
   if(interviewJson.length>0){
      filteredList = interviewJson
     .filter((interview)=>{
-      if(activeBtn==='all' && !interview.deleted)
+      if(activeBtn==='all' && !interview.isDeleted)
         return true
-      else if(!interview.deleted)
+      else if(!interview.isDeleted)
         return interview.stage.toLowerCase() === activeBtn.toLowerCase()
     }).filter(info=>{
       if(!searchParam){
@@ -95,7 +94,7 @@ export default function Jobs(){
     //Making Html of the interview detail
     if(filteredListLen>0){
       interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
-        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]`} key={i}>
+        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white h-15 shadow-sm p-3 box-border w-full`} key={i}>
     
           {checkBox}
 
@@ -159,26 +158,36 @@ export default function Jobs(){
 
   return (
     <>
-      <main className='bg-gray-100 grow'>
+      <main className='bg-gray-100 grow p-8'>
         {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
-        <section className="flex items-center h-16 w-full justify-between border border-gray-200 p-4 bg-white shadow-xs">
-          <h2>Applied Jobs</h2>
-          <div className='flex items-center gap-x-4'>
-            <input 
-              className='border border-gray-300 px-4 py-1 rounded-md' type="text" name="search" id="search" placeholder="Search"
-              onChange={(e)=>{setSearchParam(e.currentTarget.value)}} 
-            />
-            <Bell size={16} />
-          </div>
-        </section>
+       
+        <div className="w-full space-y-6">
 
-        <section className='flex m-6 bg-white p-4 rounded-lg justify-between shadow-sm'>
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Search"
+              className="border border-gray-300 rounded-md px-4 py-2 text-sm w-64 bg-white outline-none focus:border-gray-400"
+            />
+            <button className="w-9 h-9 border border-gray-300 rounded-md flex items-center justify-center bg-white hover:bg-gray-50">
+              <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        </div>
+
+        <section className='flex bg-white p-4 rounded-lg justify-between shadow-sm'>
           <p className='ml-2'>Jobs You have Applied</p>
           <p className='mr-2'>{filteredListLen} Jobs</p>
         </section>
 
         <section >
-            <div className='flex flex-row m-6 mb-0 bg-white p-4 rounded-t-lg items-baseline justify-between' >
+            <div className='flex flex-row mt-6 bg-white p-4 rounded-t-lg items-baseline justify-between' >
               <div className='bg-gray-100 p-1 rounded-lg flex gap-x-1'>
                 <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
                     activeBtn === 'all' 
@@ -206,7 +215,7 @@ export default function Jobs(){
                 onClick={()=>{setAddJobModal(true)}}
               >Add More</button>
             </div>
-          <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
+          <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-gray-100 shadow-sm p-3 box-border w-full'>
             {checkBox}
             
             <p className='text-sm text-gray-500'>Company Name</p>
@@ -220,7 +229,7 @@ export default function Jobs(){
             {/* This below is main div */}
             {interviewHtml}
             {filteredListLen>10 && 
-            <div className='flex justify-between items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
+            <div className='flex justify-between items-center bg-white h-15 shadow-sm p-3 box-border w-full'>
               <button className='bg-white 
                 border border-gray-200 
                 px-3 py-2 

@@ -204,6 +204,8 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
           >
             <option value="Pending">Pending</option>
             <option value="Shortlisted">Shortlisted</option>
+            <option value="Interview">Interview</option>
+            <option value="Offer">Offer</option>
             <option value="Rejected">Rejected</option>
           </select>
 

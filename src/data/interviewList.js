@@ -53,6 +53,21 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
   ]
 } */
 
+
+  /* 
+    updated status
+
+    Pending → Waiting for response
+
+    Shortlisted → Positive signal
+
+    Interview → In process
+
+    Offer → Success
+
+    Rejected → Closed
+  */
+
 const interviewList = [
   {
     id: 0,
@@ -67,7 +82,7 @@ const interviewList = [
     date: "2026-03-12",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted: true
+    isDeleted: true
   },
   {
     id: 1,
@@ -82,7 +97,7 @@ const interviewList = [
     date: "2026-03-18",
     interviewType: "Onsite",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 2,
@@ -142,7 +157,7 @@ const interviewList = [
     date: "2026-03-28",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 6,
@@ -157,7 +172,7 @@ const interviewList = [
     date: "2026-04-02",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 7,
@@ -172,7 +187,7 @@ const interviewList = [
     date: "2026-04-05",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 8,
@@ -187,7 +202,7 @@ const interviewList = [
     date: "2026-04-07",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 9,
@@ -202,7 +217,7 @@ const interviewList = [
     date: "2026-04-09",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 10,
@@ -217,7 +232,7 @@ const interviewList = [
     date: "2026-04-12",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 11,
@@ -232,7 +247,7 @@ const interviewList = [
     date: "2026-04-15",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 12,
@@ -247,7 +262,7 @@ const interviewList = [
     date: "2026-04-18",
     interviewType: "Onsite",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 13,
@@ -262,7 +277,7 @@ const interviewList = [
     date: "2026-04-20",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 14,
@@ -277,7 +292,7 @@ const interviewList = [
     date: "2026-04-22",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 15,
@@ -292,7 +307,7 @@ const interviewList = [
     date: "2026-04-25",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 16,
@@ -307,7 +322,7 @@ const interviewList = [
     date: "2026-04-27",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 17,
@@ -322,7 +337,7 @@ const interviewList = [
     date: "2026-04-29",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 18,
@@ -337,7 +352,7 @@ const interviewList = [
     date: "2026-05-02",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted: false
+    isDeleted: false
   },
   {
     id: 19,
@@ -352,7 +367,7 @@ const interviewList = [
     date: "2026-05-05",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted: false
+    isDeleted: false
   }
 ];
 export default interviewList

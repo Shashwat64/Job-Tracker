@@ -39,7 +39,7 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
         onClick={()=>{setInterviewJson(prev=>{
           let newArr = [...prev]
-          newArr[id].deleted = true
+          newArr[id].isDeleted = true
 
           console.log(newArr[id])
 
