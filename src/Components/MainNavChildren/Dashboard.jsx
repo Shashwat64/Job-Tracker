@@ -1,27 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 
 import { JobContext} from '../../App'
 
-//Top 4 cards
-const KPICard = ({ title, value, badge }) => (
-  <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:bg-gray-100 hover:cursor-pointer
-: transition duration-75 active:scale-95">
-    <h3 className="text-sm text-gray-500 font-medium mb-1">{title}</h3>
-    <div className="flex items-baseline space-x-2">
-      <p className="text-3xl font-semibold text-gray-900">{value}</p>
-      {badge && (
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badge.style}`}>
-          {badge.label}
-        </span>
-      )}
-    </div>
-  </div>
-)
+
 
 //Its the lower most upcomign interview
 const InterviewItem = ({ company, round, position, date, time }) => (
-  <div className="px-6 py-4 flex justify-between items-center hover:bg-gray-100 hover:cursor-pointer
+  <div className="px-6 py-4 flex justify-between items-center  hover:bg-gray-100 hover:cursor-pointer
  transition">
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 rounded border border-gray-200 bg-white flex items-center justify-center font-bold text-gray-700">
@@ -41,15 +27,6 @@ const InterviewItem = ({ company, round, position, date, time }) => (
 
 
 
-const kpiData = [
-  { title: "Total Applied", value: 19 },
-  { title: "Pending", value: 12, badge: { label: "Active", style: "text-amber-500 bg-amber-50" } },
-  { title: "Shortlisted", value: 4, badge: { label: "+1 this week", style: "text-emerald-600 bg-emerald-50" } },
-  { title: "Interview", value: 3 },
-  { title: "Offer", value: 3 },
-  { title: "Rejected", value: 3 }
-];
-
 const upcomingInterviews = []
 
 /* const upcomingInterviews = [
@@ -62,7 +39,11 @@ const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
 
 export default function Dashboard() {
 
-  const { interviewJson } = useContext(JobContext)
+
+
+  const { interviewJson, activeBtn, setActiveBtn } = useContext(JobContext)
+
+  const navigate = useNavigate()
 
   console.log(interviewJson)
 
@@ -87,11 +68,35 @@ export default function Dashboard() {
 
   console.log(cards)
 
-
+  //Top 4 cards
+  const KPICard = ({ title, value, badge }) => (
+    <div 
+      className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:bg-gray-100 hover:cursor-pointer
+      : transition duration-75 active:scale-95"
+      onClick={()=>{
+        setActiveBtn(
+          title === "Total Applied"
+            ? "all"
+            : title.toLowerCase()
+        )
+        navigate("../jobs")
+      }}
+    >
+      <h3 className="text-sm text-gray-500 font-medium mb-1">{title}</h3>
+      <div className="flex items-baseline space-x-2">
+        <p className="text-3xl font-semibold text-gray-900">{value}</p>
+        {badge && (
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badge.style}`}>
+            {badge.label}
+          </span>
+        )}
+      </div>
+    </div>
+  )
 
 
   return (
-    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow">
+    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow select-none">
       <div className="w-full space-y-6">
 
         {/* Header */}

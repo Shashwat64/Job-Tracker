@@ -11,6 +11,7 @@ export default function App() {
 
 
   const [interviewJson, setInterviewJson] = useState(interviewList)
+  const [activeBtn, setActiveBtn] = useState('all')
 
   // console.log(interviewJson)
 
@@ -19,7 +20,9 @@ export default function App() {
       {/* Global Providers Here */}
       <JobContext.Provider value={{
         interviewJson,
-        setInterviewJson
+        setInterviewJson,
+        activeBtn, 
+        setActiveBtn
       }}>
         <RouterProvider router={router} />
       </JobContext.Provider >

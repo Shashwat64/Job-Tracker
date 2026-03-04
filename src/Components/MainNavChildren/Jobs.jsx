@@ -16,12 +16,12 @@ import Dropdown from './Dropdown'
 
 export default function Jobs(){
 
-  const [activeBtn, setActiveBtn] = useState('all')
+
   const [activePage, setActivePage] = useState(1)
   const [searchParam, setSearchParam] = useState('')
 
 
-  const {interviewJson, setInterviewJson} = useContext(JobContext)
+  const {interviewJson, setInterviewJson, activeBtn, setActiveBtn} = useContext(JobContext)
 
 
   // console.log( "In Jobs.jsx", interviewJson[20])
@@ -194,16 +194,31 @@ export default function Jobs(){
                       ? 'bg-white shadow-sm' 
                       : null
                   }`} value="all" onClick={handleClick}>All</button>
+
                 <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
                     activeBtn === 'pending' 
                       ? 'bg-white shadow-sm' 
                       : null
                   }`} value="pending" onClick={handleClick}>Pending</button>
+
                 <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
                     activeBtn === 'shortlisted' 
                       ? 'bg-white shadow-sm' 
                       : null
                   }`} value="shortlisted" onClick={handleClick}>Shortlist</button>
+
+                <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'interview' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="interview" onClick={handleClick}>Interview</button>
+
+                  <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                    activeBtn === 'offer' 
+                      ? 'bg-white shadow-sm' 
+                      : null
+                  }`} value="offer" onClick={handleClick}>Offer</button>
+                  
                 <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
                     activeBtn === 'rejected' 
                       ? 'bg-white shadow-sm' 
