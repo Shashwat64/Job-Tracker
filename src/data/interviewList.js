@@ -22,6 +22,37 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
 
 //<img src={interview.company.logo} className='w-5'/>
 
+
+/* 
+  next format of data
+{
+  id: 1,
+  company: {
+    name: "Google",
+    logoLink: "https://logo.com/google.png",
+    location: "Bengaluru, India"
+  },
+  jobTitle: "Frontend Developer",
+  salaryRange: { min: 1800000, max: 2800000 },
+  stage: "Interview",
+  dateApplied: "2026-03-12",
+  source: "LinkedIn",
+  notes: "Referral from John",
+  resumeUsed: "Frontend_Resume.pdf",
+  interviews: [
+    {
+      round: 1,
+      type: "Technical",
+      date: "2026-03-15",
+      interviewer: "Jane Doe",
+      meetingLink: "https://zoom.us/abc",
+      notes: "Prepare algorithms",
+      outcome: null,
+      status: "Upcoming"
+    }
+  ]
+} */
+
 const interviewList = [
   {
     id: 0,

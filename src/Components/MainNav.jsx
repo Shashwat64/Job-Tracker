@@ -1,7 +1,6 @@
-import React from "react";
 import { Link } from 'react-router-dom'
 
-import { LayoutDashboard, Briefcase, MessagesSquare, Binoculars, FileUser, CalendarDays, Send, Settings} from 'lucide-react';
+import { LayoutDashboard, Briefcase, MessagesSquare, Binoculars, FileUser, CalendarDays, Send, Settings} from 'lucide-react'
 
 
 export default function MainNav(){

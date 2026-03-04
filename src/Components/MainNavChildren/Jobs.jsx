@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 //Icons
 import { Bell, ChevronsRightLeft } from 'lucide-react';
 
+//helper function
 
 //contexts
 import { JobContext } from '../../App'
@@ -18,6 +19,8 @@ export default function Jobs(){
 
   const [activeBtn, setActiveBtn] = useState('all')
   const [activePage, setActivePage] = useState(1)
+  const [searchParam, setSearchParam] = useState('')
+
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
@@ -51,6 +54,23 @@ export default function Jobs(){
         return true
       else if(!interview.deleted)
         return interview.stage.toLowerCase() === activeBtn.toLowerCase()
+    }).filter(info=>{
+      if(!searchParam){
+        return true
+      }else{
+        const searchFields = [
+          info.company.name,
+          info.company.location,
+          info.jobTitle,
+          info.interviewType,
+          info.date
+        ]
+        const normalize = (str) => str?.toLowerCase().replace(/[\s-_]/g, "")
+    
+    return searchFields.some(field => 
+      normalize(field).includes(normalize(searchParam))
+    )
+      }
     })
   }
   
@@ -73,7 +93,7 @@ export default function Jobs(){
     //Making Html of the interview detail
     if(filteredListLen>0){
       interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
-        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)] ${openModalId === interview.id ? 'z-50' : 'z-10'}`} key={i}>
+        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)] ${openModalId === interview.id ? 'z-50' : 'z-10'}`} key={i}>
     
           {checkBox}
 
@@ -102,9 +122,9 @@ export default function Jobs(){
             {interview.date}
           </div>
           {/* Interview Type */}
-          <div className=''>
+          {/* <div className=''>
             {interview.interviewType}
-          </div>
+          </div> */}
           {/* Stage */}
           <div className=''>
             {interview.stage}
@@ -142,7 +162,10 @@ export default function Jobs(){
         <section className="flex items-center h-16 w-full justify-between border border-gray-200 p-4 bg-white shadow-xs">
           <h2>Applied Jobs</h2>
           <div className='flex items-center gap-x-4'>
-            <input className='border border-gray-300 px-4 py-1 rounded-md' type="text" name="search" id="search" placeholder="Search" />
+            <input 
+              className='border border-gray-300 px-4 py-1 rounded-md' type="text" name="search" id="search" placeholder="Search"
+              onChange={(e)=>{setSearchParam(e.currentTarget.value)}} 
+            />
             <Bell size={16} />
           </div>
         </section>
@@ -181,14 +204,14 @@ export default function Jobs(){
                 onClick={()=>{setAddJobModal(true)}}
               >Add More</button>
             </div>
-          <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
+          <div className='grid grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-gray-100 mx-6 shadow-sm p-3 box-border w-[calc(100%-3rem)]'>
             {checkBox}
             
             <p className='text-sm text-gray-500'>Company Name</p>
             <p className='text-sm text-gray-500'>Job Title</p>
             <p className='text-sm text-gray-500'>Salary Range</p>
-            <p className='text-sm text-gray-500'>Interview Date</p>
-            <p className='text-sm text-gray-500'>Interview Type</p>
+            <p className='text-sm text-gray-500'>Last Updated On</p>
+            {/* <p className='text-sm text-gray-500'>Interview Type</p> */}
             <p className='text-sm text-gray-500'>Stage</p>
           </div>
             
