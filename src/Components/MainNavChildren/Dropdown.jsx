@@ -2,7 +2,7 @@ import { useRef, useEffect, useContext } from "react";
 
 import { JobContext } from '../../App'
 
-export default function Dropdown({ openModalId, setOpenModalId, id }) {
+export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
   const dropdownRef = useRef()
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
@@ -27,7 +27,12 @@ export default function Dropdown({ openModalId, setOpenModalId, id }) {
       ref={dropdownRef}
       className="absolute right-0 top-10 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50"
     >
-      <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+      <button 
+        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+        onClick={()=>{
+          setAddJobModal(true)
+        }}
+      >
         Edit
       </button>
       <button 

@@ -1,27 +1,43 @@
-import { useState,useContext } from 'react'
+import { useState,useContext, useEffect } from 'react'
 
 import { JobContext } from '../../App'
 
-export default function AddJob({ setAddJobModal }){
+export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  // console.log("Jobs context:", interviewJson)
+  console.log("openModalId", openModalId)
+
+  const editId = openModalId
+
+  useEffect(()=>{
+    setOpenModalId(null)
+  },[])
+
 
   const nextId = interviewJson[interviewJson.length-1].id + 1
 
+  let thatData
+
+  if(!editId){
+    thatData = {
+      id:nextId,
+      company: { logoLink: "", name: "", location: "" },
+      jobTitle: "",
+      salaryRange: { min: "", max: "" },
+      date: "",
+      interviewType: "Virtual",
+      stage: "Pending",
+      deleted:false
+    }
+  }else{
+    thatData = interviewJson[editId]
+  }
 
 
-  const [newJob, setNewJob] = useState({
-    id:nextId,
-    company: { logoLink: "", name: "", location: "" },
-    jobTitle: "",
-    salaryRange: { min: "", max: "" },
-    date: "",
-    interviewType: "Virtual",
-    stage: "Pending",
-    deleted:false
-  })
+
+
+  const [newJob, setNewJob] = useState(thatData)
 
   function handleChange(e){
     const {name, value} = e.currentTarget

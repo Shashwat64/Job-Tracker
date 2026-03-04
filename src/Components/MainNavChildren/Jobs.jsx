@@ -63,7 +63,8 @@ export default function Jobs(){
           info.company.location,
           info.jobTitle,
           info.interviewType,
-          info.date
+          info.date,
+          info.stage
         ]
         const normalize = (str) => str?.toLowerCase().replace(/[\s-_]/g, "")
     
@@ -149,7 +150,7 @@ export default function Jobs(){
             )
           } */}
 
-          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} />
+          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} setAddJobModal={setAddJobModal}/>
         </div>
       ))
     }
@@ -158,7 +159,7 @@ export default function Jobs(){
   return (
     <>
       <main className='bg-gray-100 grow'>
-        {addJobModal && <AddJob setAddJobModal={setAddJobModal} setInterviewJson={setInterviewJson} interviewJson={interviewJson}/>}
+        {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
         <section className="flex items-center h-16 w-full justify-between border border-gray-200 p-4 bg-white shadow-xs">
           <h2>Applied Jobs</h2>
           <div className='flex items-center gap-x-4'>
