@@ -59,203 +59,300 @@ const interviewList = [
     company: { 
       logoLink: googleLogo, 
       name: "Google", 
-      location: "Bengaluru, India" },
+      location: "Bengaluru, India",
+      url: "google.com"
+    },
     jobTitle: "Frontend Developer",
     salaryRange: { min: 1800000, max: 2800000 },
     date: "2026-03-12",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:true
+    deleted: true
   },
   {
     id: 1,
-    company: { logoLink: microsoftLogo, name: "Microsoft", location: "Hyderabad, India" },
+    company: { 
+      logoLink: microsoftLogo, 
+      name: "Microsoft", 
+      location: "Hyderabad, India",
+      url: "microsoft.com"
+    },
     jobTitle: "Software Engineer",
     salaryRange: { min: 1500000, max: 2500000 },
     date: "2026-03-18",
     interviewType: "Onsite",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 2,
-    company: { logoLink: amazonLogo, name: "Amazon", location: "Chennai, India" },
+    company: { 
+      logoLink: amazonLogo, 
+      name: "Amazon", 
+      location: "Chennai, India",
+      url: "amazon.com"
+    },
     jobTitle: "Full Stack Developer",
     salaryRange: { min: 1200000, max: 2000000 },
     date: "2026-03-20",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 3,
-    company: { logoLink: ibmLogo, name: "IBM", location: "Pune, India" },
+    company: { 
+      logoLink: ibmLogo, 
+      name: "IBM", 
+      location: "Pune, India",
+      url: "ibm.com"
+    },
     jobTitle: "Backend Developer",
     salaryRange: { min: 1000000, max: 1800000 },
     date: "2026-03-22",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted:false
+    deleted: false
   },
   {
     id: 4,
-    company: { logoLink: adobeLogo, name: "Adobe", location: "Noida, India" },
+    company: { 
+      logoLink: adobeLogo, 
+      name: "Adobe", 
+      location: "Noida, India",
+      url: "adobe.com"
+    },
     jobTitle: "React Developer",
     salaryRange: { min: 1600000, max: 2600000 },
     date: "2026-03-25",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 5,
-    company: { logoLink: oracleLogo, name: "Oracle", location: "Gurugram, India" },
+    company: { 
+      logoLink: oracleLogo, 
+      name: "Oracle", 
+      location: "Gurugram, India",
+      url: "oracle.com"
+    },
     jobTitle: "Cloud Engineer",
     salaryRange: { min: 1400000, max: 2200000 },
     date: "2026-03-28",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 6,
-    company: { logoLink: sapLogo, name: "SAP", location: "Bengaluru, India" },
+    company: { 
+      logoLink: sapLogo, 
+      name: "SAP", 
+      location: "Bengaluru, India",
+      url: "sap.com"
+    },
     jobTitle: "UI Engineer",
     salaryRange: { min: 1300000, max: 2100000 },
     date: "2026-04-02",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 7,
-    company: { logoLink: salesforceLogo, name: "Salesforce", location: "Hyderabad, India" },
+    company: { 
+      logoLink: salesforceLogo, 
+      name: "Salesforce", 
+      location: "Hyderabad, India",
+      url: "salesforce.com"
+    },
     jobTitle: "Platform Engineer",
     salaryRange: { min: 1700000, max: 3000000 },
     date: "2026-04-05",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 8,
-    company: { logoLink: intelLogo, name: "Intel", location: "Bengaluru, India" },
+    company: { 
+      logoLink: intelLogo, 
+      name: "Intel", 
+      location: "Bengaluru, India",
+      url: "intel.com"
+    },
     jobTitle: "Systems Engineer",
     salaryRange: { min: 1400000, max: 2300000 },
     date: "2026-04-07",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted:false
+    deleted: false
   },
   {
     id: 9,
-    company: { logoLink: ciscoLogo, name: "Cisco", location: "Pune, India" },
+    company: { 
+      logoLink: ciscoLogo, 
+      name: "Cisco", 
+      location: "Pune, India",
+      url: "cisco.com"
+    },
     jobTitle: "Network Software Engineer",
     salaryRange: { min: 1300000, max: 2200000 },
     date: "2026-04-09",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 10,
-    company: { logoLink: dellLogo, name: "Dell Technologies", location: "Hyderabad, India" },
+    company: { 
+      logoLink: dellLogo, 
+      name: "Dell Technologies", 
+      location: "Hyderabad, India",
+      url: "dell.com"
+    },
     jobTitle: "DevOps Engineer",
     salaryRange: { min: 1200000, max: 2100000 },
     date: "2026-04-12",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 11,
-    company: { logoLink: accentureLogo, name: "Accenture", location: "Mumbai, India" },
+    company: { 
+      logoLink: accentureLogo, 
+      name: "Accenture", 
+      location: "Mumbai, India",
+      url: "accenture.com"
+    },
     jobTitle: "Application Developer",
     salaryRange: { min: 800000, max: 1500000 },
     date: "2026-04-15",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 12,
-    company: { logoLink: tcsLogo, name: "TCS", location: "Kolkata, India" },
+    company: { 
+      logoLink: tcsLogo, 
+      name: "TCS", 
+      location: "Kolkata, India",
+      url: "tcs.com"
+    },
     jobTitle: "Software Developer",
     salaryRange: { min: 600000, max: 1200000 },
     date: "2026-04-18",
     interviewType: "Onsite",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 13,
-    company: { logoLink: capgeminiLogo, name: "Capgemini", location: "Noida, India" },
+    company: { 
+      logoLink: capgeminiLogo, 
+      name: "Capgemini", 
+      location: "Noida, India",
+      url: "capgemini.com"
+    },
     jobTitle: "Java Developer",
     salaryRange: { min: 700000, max: 1400000 },
     date: "2026-04-20",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted:false
+    deleted: false
   },
   {
     id: 14,
-    company: { logoLink: infosysLogo, name: "Infosys", location: "Bengaluru, India" },
+    company: { 
+      logoLink: infosysLogo, 
+      name: "Infosys", 
+      location: "Bengaluru, India",
+      url: "infosys.com"
+    },
     jobTitle: "Associate Engineer",
     salaryRange: { min: 650000, max: 1100000 },
     date: "2026-04-22",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 15,
-    company: { logoLink: wiproLogo, name: "Wipro", location: "Hyderabad, India" },
+    company: { 
+      logoLink: wiproLogo, 
+      name: "Wipro", 
+      location: "Hyderabad, India",
+      url: "wipro.com"
+    },
     jobTitle: "Frontend Engineer",
     salaryRange: { min: 700000, max: 1300000 },
     date: "2026-04-25",
     interviewType: "Virtual",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 16,
-    company: { logoLink: hpeLogo, name: "HPE", location: "Chennai, India" },
+    company: { 
+      logoLink: hpeLogo, 
+      name: "HPE", 
+      location: "Chennai, India",
+      url: "hpe.com"
+    },
     jobTitle: "Cloud Support Engineer",
     salaryRange: { min: 900000, max: 1600000 },
     date: "2026-04-27",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 17,
-    company: { logoLink: siemensLogo, name: "Siemens", location: "Pune, India" },
+    company: { 
+      logoLink: siemensLogo, 
+      name: "Siemens", 
+      location: "Pune, India",
+      url: "siemens.com"
+    },
     jobTitle: "Software Consultant",
     salaryRange: { min: 1000000, max: 1900000 },
     date: "2026-04-29",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   },
   {
     id: 18,
-    company: { logoLink: paypalLogo, name: "PayPal", location: "Bengaluru, India" },
+    company: { 
+      logoLink: paypalLogo, 
+      name: "PayPal", 
+      location: "Bengaluru, India",
+      url: "paypal.com"
+    },
     jobTitle: "Full Stack Engineer",
     salaryRange: { min: 1800000, max: 3200000 },
     date: "2026-05-02",
     interviewType: "Virtual",
     stage: "Shortlisted",
-    deleted:false
+    deleted: false
   },
   {
     id: 19,
-    company: { logoLink: uberLogo, name: "Uber", location: "Hyderabad, India" },
+    company: { 
+      logoLink: uberLogo, 
+      name: "Uber", 
+      location: "Hyderabad, India",
+      url: "uber.com"
+    },
     jobTitle: "Backend Engineer",
     salaryRange: { min: 2000000, max: 3500000 },
     date: "2026-05-05",
     interviewType: "Onsite",
     stage: "Pending",
-    deleted:false
+    deleted: false
   }
-]
+];
 export default interviewList

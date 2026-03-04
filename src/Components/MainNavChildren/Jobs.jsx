@@ -24,8 +24,9 @@ export default function Jobs(){
 
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
-  console.log( "In Jobs.jsx", interviewJson[20])
-  console.log("Jobs re-rendered")
+
+  // console.log( "In Jobs.jsx", interviewJson[20])
+  // console.log("Jobs re-rendered")
 
   const [addJobModal, setAddJobModal] = useState(false)
   const [openModalId, setOpenModalId] = useState(null)
@@ -94,7 +95,7 @@ export default function Jobs(){
     //Making Html of the interview detail
     if(filteredListLen>0){
       interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
-        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)] ${openModalId === interview.id ? 'z-50' : 'z-10'}`} key={i}>
+        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white mx-6 h-15 shadow-sm p-3 box-border w-[calc(100%-3rem)]`} key={i}>
     
           {checkBox}
 

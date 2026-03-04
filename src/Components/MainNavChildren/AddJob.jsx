@@ -1,4 +1,4 @@
-import { useState,useContext, useEffect } from 'react'
+import { useState,useContext, useEffect, useRef } from 'react'
 
 import { JobContext } from '../../App'
 
@@ -6,9 +6,13 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
+  console.log(interviewJson)
+  
   console.log("openModalId", openModalId)
-
-  const editId = openModalId
+  
+  const [editId] = useState(openModalId)
+  
+  console.log(editId)
 
   useEffect(()=>{
     setOpenModalId(null)
@@ -22,7 +26,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   if(!editId){
     thatData = {
       id:nextId,
-      company: { logoLink: "", name: "", location: "" },
+      company: { logoLink: "", name: "", location: "", url:"" },
       jobTitle: "",
       salaryRange: { min: "", max: "" },
       date: "",
@@ -32,6 +36,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     }
   }else{
     thatData = interviewJson[editId]
+    console.log(interviewJson[editId])
   }
 
 
@@ -69,17 +74,24 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       return;
     }
     
-    let cleanUrl = newJob.company.logoLink
+    let cleanUrl = newJob.company.url
     if (cleanUrl.includes("https://")) {
-      cleanUrl = newJob.company.logoLink.split('/')[2]
+      cleanUrl = newJob.company.url.split('/')[2]
     }
     
     setAddJobModal(false)
-    setInterviewJson(prev=>([
-      ...prev,
-      {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
-    ]))
-    console.log(interviewJson)
+    if(!editId){
+      setInterviewJson(prev=>([
+        ...prev,
+        {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
+      ]))
+    }else{
+      setInterviewJson(prev=>([
+        ...prev.slice(0,editId),
+        {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
+        ...prev.slice(editId+1)
+      ]))
+    }
   }
 
   return (
@@ -113,8 +125,8 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
             required
           />
           <input
-            name="company.logoLink"
-            value={newJob.company.logoLink}
+            name="company.url"
+            value={newJob.company.url}
             onChange={handleChange}
             placeholder="Company Website"
             className="w-full border p-2 rounded mb-2"
@@ -199,7 +211,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
             type='submit'
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Add Job
+            {editId ? "Edit" : "Add"} Job
           </button>
 
           <button

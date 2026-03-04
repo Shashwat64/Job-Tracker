@@ -25,7 +25,7 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-10 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50"
+      className="absolute right-0 top-10 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md z-40"
     >
       <button 
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
