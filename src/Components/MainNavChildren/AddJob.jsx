@@ -32,7 +32,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       date: "",
       interviewType: "Virtual",
       stage: "Pending",
-      deleted:false
+      isDeleted:false
     }
   }else{
     thatData = interviewJson[editId]
@@ -252,6 +252,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     date: "2026-03-12", //add input type data
     interviewType: "Virtual", //add options
     stage: "Pending", //options
-    deleted:false //default
+    isDeleted:false //default
 
 */

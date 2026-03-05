@@ -8,8 +8,8 @@ export default function MainNav(){
     <aside className="flex flex-col p-4 bg-white h-screen w-60 border-r border-gray-200">
       <Link to="/">
         <div className="flex py-2 px-1 border-b border-gray-200 h-12">
-          <h1 className="text-2xl">Interview</h1>
-          <button>-</button>
+          <h1 className="text-2xl">Interview Tracker</h1>
+          {/* <button className='ml-4'>-</button> */}
         </div>
       </Link>
 

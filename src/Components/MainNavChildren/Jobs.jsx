@@ -165,7 +165,7 @@ export default function Jobs(){
 
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Jobs</h1>
           <div className="flex items-center space-x-4">
             <input
               type="text"
