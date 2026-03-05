@@ -4,7 +4,7 @@ import { JobContext } from '../../App'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
-  const {interviewJson, setInterviewJson} = useContext(JobContext)
+  const {interviewJson, setInterviewJson, activeBtn} = useContext(JobContext)
 
   console.log(interviewJson)
   

@@ -101,7 +101,7 @@ export default function Jobs(){
           {/* Company Name */}
           <div className='flex ' >
             <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-              <img src={interview.company.logoLink} className='w-6' alt={`${interview.company.name} logo`}/>
+              <img src={ `https://img.logo.dev/${interview.company.url}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`} className='w-6' alt={`${interview.company.name} logo`}/>
             </div>
 
             <div className='ml-2'>
@@ -158,7 +158,7 @@ export default function Jobs(){
 
   return (
     <>
-      <main className='bg-gray-100 grow p-8'>
+      <main className='bg-gray-100 grow p-8 overflow-auto ml-60'>
         {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
        
         <div className="w-full space-y-6">

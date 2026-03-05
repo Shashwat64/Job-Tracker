@@ -81,8 +81,8 @@ const interviewList = [
     salaryRange: { min: 1800000, max: 2800000 },
     date: "2026-03-12",
     interviewType: "Virtual",
-    stage: "Pending",
-    isDeleted: true
+    stage: "Interview",
+    isDeleted: false 
   },
   {
     id: 1,

@@ -96,8 +96,8 @@ export default function Dashboard() {
 
 
   return (
-    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow select-none">
-      <div className="w-full space-y-6">
+    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow select-none ml-60 h-screen">
+      <div className="w-full h-full space-y-6">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
