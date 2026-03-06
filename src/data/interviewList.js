@@ -1,23 +1,23 @@
-const googleLogo = `https://img.logo.dev/name/google?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const microsoftLogo = `https://img.logo.dev/name/microsoft?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const amazonLogo = `https://img.logo.dev/name/amazon?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const ibmLogo = `https://img.logo.dev/name/ibm?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const adobeLogo = `https://img.logo.dev/name/adobe?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const oracleLogo = `https://img.logo.dev/name/oracle?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const sapLogo = `https://img.logo.dev/name/sap?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const salesforceLogo = `https://img.logo.dev/name/salesforce?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const intelLogo = `https://img.logo.dev/name/intel?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const ciscoLogo = `https://img.logo.dev/name/cisco?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const dellLogo = `https://img.logo.dev/name/dell?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const accentureLogo = `https://img.logo.dev/name/accenture?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const tcsLogo = `https://img.logo.dev/tcs.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true&fallback=404`
-const capgeminiLogo = `https://img.logo.dev/name/capgemini?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const infosysLogo = `https://img.logo.dev/name/infosys?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const wiproLogo = `https://img.logo.dev/name/wipro?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const hpeLogo = `https://img.logo.dev/name/Hewlett%20Packard%20Enterprise?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const siemensLogo = `https://img.logo.dev/name/siemens?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const paypalLogo = `https://img.logo.dev/name/paypal?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
-const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+const googleLogo = `https://img.logo.dev/name/google?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const microsoftLogo = `https://img.logo.dev/name/microsoft?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const amazonLogo = `https://img.logo.dev/name/amazon?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const ibmLogo = `https://img.logo.dev/name/ibm?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const adobeLogo = `https://img.logo.dev/name/adobe?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const oracleLogo = `https://img.logo.dev/name/oracle?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const sapLogo = `https://img.logo.dev/name/sap?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const salesforceLogo = `https://img.logo.dev/name/salesforce?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const intelLogo = `https://img.logo.dev/name/intel?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const ciscoLogo = `https://img.logo.dev/name/cisco?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const dellLogo = `https://img.logo.dev/name/dell?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const accentureLogo = `https://img.logo.dev/name/accenture?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const tcsLogo = `https://img.logo.dev/tcs.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true&fallback=404`
+const capgeminiLogo = `https://img.logo.dev/name/capgemini?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const infosysLogo = `https://img.logo.dev/name/infosys?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const wiproLogo = `https://img.logo.dev/name/wipro?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const hpeLogo = `https://img.logo.dev/name/Hewlett%20Packard%20Enterprise?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const siemensLogo = `https://img.logo.dev/name/siemens?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const paypalLogo = `https://img.logo.dev/name/paypal?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
 
 
 //<img src={interview.company.logo} className='w-5'/>
@@ -68,6 +68,13 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
     Rejected → Closed
   */
 
+
+    /* 
+      Main points to keep in mind:
+        1. The rounds in the interviews, should be desending order, when add or modifying it
+    
+    */
+
 const interviewList = [
   {
     id: 0,
@@ -82,7 +89,27 @@ const interviewList = [
     date: "2026-03-12",
     interviewType: "Virtual",
     stage: "Interview",
-    isDeleted: false 
+    isDeleted: false,
+    source: "LinkedIn",
+    notes: "Referral from John",
+    resumeUsed: "Frontend_Resume.pdf",
+    interviews: [
+      {
+        round: 1,
+        type: "Technical",
+        date: "2026-03-15",
+        time:{
+          start: '20:00',
+          duration: 60
+        },
+        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        interviewer: "Jane Doe",
+        meetingLink: "https://zoom.us/abc",
+        notes: "Prepare algorithms",
+        outcome: null,
+        status: "Upcoming"
+      }
+    ]
   },
   {
     id: 1,
@@ -96,8 +123,40 @@ const interviewList = [
     salaryRange: { min: 1500000, max: 2500000 },
     date: "2026-03-18",
     interviewType: "Onsite",
-    stage: "Shortlisted",
-    isDeleted: false
+    stage: "Interview",
+    isDeleted: false,
+    interviews: [
+      {
+        round: 2,
+        type: "DSA",
+        date: "2026-05-15",
+        time:{
+          start: '16:00',
+          duration: 120
+        },
+        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        outcome: null,
+        status: "Upcoming"
+      },
+      {
+        round: 1,
+        type: "Technical",
+        date: "2026-04-15",
+        time:{
+          start: '12:00',
+          duration: 45
+        },
+        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        interviewer: "Jimmy Doe",
+        meetingLink: "https://zoom.us/abcd",
+        notes: "Prepare DSA",
+        outcome: null,
+        status: "Passed"
+      }
+    ]
   },
   {
     id: 2,

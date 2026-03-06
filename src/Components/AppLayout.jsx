@@ -5,7 +5,7 @@ import MainNav from './MainNav'
 
 export default function AppLayout(){
   return (
-      <div className="flex"> {/* This is the wrapper Div */}
+      <div className="flex h-screen"> {/* This is the wrapper Div */}
         <MainNav/>
         <Outlet/>
       </div>
