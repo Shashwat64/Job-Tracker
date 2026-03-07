@@ -48,19 +48,19 @@ export default function Interview(){
     </div>
   ))
 
-  const sortedRoundHtml = selectedIdSortedInterview.map(round=>{
-    return (<div className='mb-4'>
+  const sortedRoundHtml = selectedIdSortedInterview.map((round,i)=>{
+    return (<div className='mb-4' key={i}>
       <h3>{round.type} Round</h3>
       <p>{formatLongDate(round.date)}, {addingAmPm(round.time.start)} 
         <span className='text-gray-400'> | {round.time.duration} mins</span>
       </p>
       <ul className="list-disc pl-5 mt-4">
-        {round.details.map((detail,i)=>(<li key={i}>{detail}</li>))}
+        {round.details.split(".").map((detail,i)=>(<li key={i}>{`${detail}.`}</li>))}
       </ul>
     </div>)
   })
 
-  console.log(interviewJson)
+  // console.log(interviewJson)
 
 
 

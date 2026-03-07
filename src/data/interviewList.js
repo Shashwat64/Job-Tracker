@@ -102,7 +102,7 @@ const interviewList = [
           start: '20:00',
           duration: 60
         },
-        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
         interviewer: "Jane Doe",
         meetingLink: "https://zoom.us/abc",
         notes: "Prepare algorithms",
@@ -134,7 +134,7 @@ const interviewList = [
           start: '18:00',
           duration: 60
         },
-        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
@@ -149,7 +149,7 @@ const interviewList = [
           start: '16:00',
           duration: 120
         },
-        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
@@ -164,7 +164,7 @@ const interviewList = [
           start: '12:00',
           duration: 45
         },
-        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+       details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
         interviewer: "Jimmy Doe",
         meetingLink: "https://zoom.us/abcd",
         notes: "Prepare DSA",

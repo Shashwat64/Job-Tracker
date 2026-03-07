@@ -22,7 +22,6 @@ export function urlToLogoLink(url){
 
 export function addingAmPm(time){
 
-  console.log(time)
   let [hr, min] = time.split(':')
   hr = Number(hr)
 

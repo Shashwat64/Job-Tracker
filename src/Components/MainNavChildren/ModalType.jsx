@@ -5,7 +5,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   
   const jobAtInterviewStage = interviewJson.filter(interview=>interview.stage.toLowerCase() === "interview")
 
-  console.log(jobAtInterviewStage)
+  // console.log(jobAtInterviewStage)
 
   const [selectedJob, setSelectedJob] = useState("")
 
@@ -18,50 +18,66 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   function handleChange(e){
     const {name, value} = e.currentTarget
 
-    // if(name.includes('company.')){
-    //   const key = name.split('.')[1]
-    //   setNewJob(prev=>({
-    //     ...prev,
-    //     company:{...prev.company, [key]:value}
-    //   }))
-    // }else if(name.includes('salaryRange.')){
-    //   const key = name.split('.')[1]
-    //   setNewJob(prev=>({
-    //     ...prev,
-    //     salaryRange:{...prev.salaryRange, [key]: Number(value)}
-    //   }))
-    // }else{
-    //   setNewJob((prev) => ({ ...prev, [name]: value }))
-    // }
+    // console.log("Inside handleChange "+name, value)
+
+    if(name.includes('time.')){
+      const key = name.split('.')[1]
+      setSelectedInterview(prev=>({
+        ...prev,
+        time:{...prev.time, [key]:Number(value)||value}
+      }))
+    }else{
+      setSelectedInterview((prev) => ({ ...prev, [name]: value }))
+    }
   }
+
+  /* 
+  else if(name.includes('details')){
+      setSelectedInterview(prev=>({
+        ...prev,
+        details: value
+          .split(/[.\n]/)
+          .map(item => item.trim())
+          .filter(Boolean)
+      }))
+    }
+   */
 
   function handleSubmit(e){
     e.preventDefault()
-    // const formData = e.currentTarget
+
+    // console.log(selectedInterview)
     
-    // if (newJob.salaryRange.max < newJob.salaryRange.min) {
-    //   alert("Max salary must be greater than min salary");
-    //   return;
-    // }
-    
-    // let cleanUrl = newJob.company.url
-    // if (cleanUrl.includes("https://")) {
-    //   cleanUrl = newJob.company.url.split('/')[2]
-    // }
-    
-    // setAddJobModal(false)
-    // if(!editId){
-    //   setInterviewJson(prev=>([
-    //     ...prev,
-    //     {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
-    //   ]))
-    // }else{
-    //   setInterviewJson(prev=>([
-    //     ...prev.slice(0,editId),
-    //     {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
-    //     ...prev.slice(editId+1)
-    //   ]))
-    // }
+    if(modaltype==='add'){
+      setInterviewJson(prev=>(
+        prev.map(info=>(
+          info.id===selectedId ? 
+          {...info,
+            interviews:[
+              selectedInterview, 
+              ...info.interviews
+            ]
+          }
+          : info
+        ))
+      ))
+    }else if(modaltype==='edit'){
+      setInterviewJson(prev=>(
+        prev.map(info=>(
+          info.id===selectedId ? 
+          {...info,
+            interviews:info.interviews.map((round, i)=>(
+              round.round === Number(selectedRound) ? selectedInterview : round
+            ))
+          }
+          : info
+        ))
+      ))
+    }
+
+
+
+    setModalType(null)
   }
 
   // const [selectedInterview, setSelectedInterview] = useState({
@@ -80,7 +96,8 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   //   status: ""
   // })
 
-  console.log(selectedId)
+  console.log(interviewJson[1].interviews.map(round=>round.time.duration))
+  console.log(selectedRound)
 
   const [selectedInterview, setSelectedInterview] = useState({
     round: nextRound,
@@ -94,23 +111,23 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
     interviewer: "",
     meetingLink: "",
     notes: "",
-    outcome: null,
+    outcome: "",
     status: ""
   })
 
   useEffect(()=>{
     if(modaltype === "edit"){
 
-      console.log(selectedInterview)
+      // console.log(selectedInterview)
       setSelectedInterview(interviewJson[selectedId].interviews.find(
         round => round.round === Number(selectedRound)
       ))
     }
   },[selectedId, selectedRound])
 
-console.log("selectedId:", selectedId)
-console.log("selectedRound:", selectedRound)
-console.log("interviews:", interviewJson[selectedId]?.interviews)
+// console.log("selectedId:", selectedId)
+// console.log("selectedRound:", selectedRound)
+// console.log("interviews:", interviewJson[selectedId]?.interviews)
 
 
   // if(modaltype === "add"){
@@ -134,30 +151,30 @@ console.log("interviews:", interviewJson[selectedId]?.interviews)
   //   console.log(interviewJson[selectedId])
   // }
   
-  console.log(interviewJson[selectedId].interviews)
-  console.log(selectedInterview)
+  // console.log(interviewJson[selectedId].interviews)
+  // console.log(selectedInterview)
   
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex justify-center items-center overflow-y-auto pt-10  bg-black/40"
       onClick={() => setModalType(null)}
     >
       <div 
-        className="min-w-100 min-h-150 w-1/3 h-2/3 bg-white rounded-xl shadow-xl p-6 relative "
+        className="min-w-100 min-h-150 w-1/3 h-2/3 bg-white rounded-xl shadow-xl p-6 relative overflow-y-auto"
         onClick={(e) => {
           e.stopPropagation()
         }}
       >
         <div 
-          className="absolute flex top-8 left-6 w-7 h-7  justify-center items-center rounded-full hover:bg-gray-200"
+          className="absolute flex top-8 left-6 w-7 h-7 justify-center items-center rounded-full hover:bg-gray-200"
         >
           <button className="text-xl leading-none" onClick={()=>(setModalType(null))}>&times;</button>
         </div>
 
-        <div className=" flex flex-col justify-center items-center w-full h-full p-8 gap-4">
+        <div className=" flex flex-col justify-start items-center w-full h-full p-8 gap-4 overflow-auto">
           <p>{capitalise(modaltype)} Interview</p>
           <div>
-            <form onSubmit="">
+            <form onSubmit={handleSubmit} className="overflow-auto">
               <select name="addInterview" id=""
                 value={selectedId}
                 onChange={(e) => {
@@ -165,8 +182,8 @@ console.log("interviews:", interviewJson[selectedId]?.interviews)
                   setSelectedId(e.target.value)
                 }}
               >
-                {jobAtInterviewStage.map(interview=>(
-                  <option value={interview.id}>{interview.company.name} - {interview.jobTitle}</option>
+                {jobAtInterviewStage.map((interview,i)=>(
+                  <option value={interview.id} key={i}>{interview.company.name} - {interview.jobTitle} </option>
                 ))}
               </select>
 
@@ -179,28 +196,30 @@ console.log("interviews:", interviewJson[selectedId]?.interviews)
                       ).round
                     }
                     onChange={(e) => {
-                      console.log(e.target.value)
+                      // console.log(e.target.value)
                       return setSelectedRound(e.target.value)
                     }}
                   >
-                    {interviewJson[selectedId].interviews.map(round=>(
-                      <option value={round.round}>{`Round ${round.round}`}</option>
+                    {interviewJson[selectedId].interviews.map((round,i)=>(
+                      <option value={round.round} key={i}>{`Round ${round.round}`}</option>
 
                     ))}
                   </select>
                 : <p>Round {nextRound}</p>}
                
-              
+              <label htmlFor="type">Round Type</label>
               <input
                 name="type"
+                id="type"
                 value={selectedInterview.type}
                 onChange={handleChange}
-                placeholder="type"
+                placeholder="e.g. HR, Technical, System Design"
                 className="w-full border p-2 rounded mb-2"
                 required
               />
 
               {/* Date */}
+              <label htmlFor="date">Interview Date</label>
               <input
                 name="date"
                 value={selectedInterview.date}
@@ -212,68 +231,80 @@ console.log("interviews:", interviewJson[selectedId]?.interviews)
 
               {/* Time and duration */}
               <div className="flex gap-2 mb-2">
-                <input
-                  name="time.start"
-                  value={selectedInterview.time.start}
-                  onChange={handleChange}
-                  placeholder="Start Time"
-                  type="text"
-                  className="w-1/2 border p-2 rounded"
-                  required
-                />
-                <input
-                  name="time.duration"
-                  value={selectedInterview.time.duration}
-                  onChange={handleChange}
-                  placeholder="Duration in minutes"
-                  type="number"
-                  className="w-1/2 border p-2 rounded"
-                  required
-                />
+                <div className="w-1/2">
+                  <label htmlFor="time.start">Start Time</label>
+                  <input
+                    name="time.start"
+                    id="time.start"
+                    value={selectedInterview.time.start}
+                    onChange={handleChange}
+                    placeholder="Start Time"
+                    type="time"
+                    className="w-full border p-2 rounded"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="time.duration">Duration</label>
+                  <input
+                    name="time.duration"
+                    value={selectedInterview.time.duration}
+                    onChange={handleChange}
+                    placeholder="Duration in minutes"
+                    type="number"
+                    className="w-full border p-2 rounded"
+                    required
+                  />
+                </div>
               </div>
 
                 {/* details, this will be sentences, I have to split it by '.' */}
+              <label htmlFor="details">Details</label>
               <input
                 name="details"
                 value={selectedInterview.details}
                 onChange={handleChange}
-                placeholder="Details"
-                className="w-full border p-2 rounded mb-2"
-                required
-              />
-              <input
-                name="company.interviewer"
-                value={selectedInterview.interviewer}
-                onChange={handleChange}
-                placeholder="Interviewer Details"
+                placeholder="e.g. Introduction. Resume review. Culture fit discussion."
                 className="w-full border p-2 rounded mb-2"
                 required
               />
 
+              <label htmlFor="interviewer">Interviewer</label>
               <input
-                name="company.meetingLink"
+                name="interviewer"
+                value={selectedInterview.interviewer}
+                onChange={handleChange}
+                placeholder="e.g. Jane Smith (Engineering Manager)"
+                className="w-full border p-2 rounded mb-2"
+                required
+              />
+
+              <label htmlFor="meetingLink">Meeting Link</label>
+              <input
+                name="meetingLink"
                 value={selectedInterview.meetingLink}
                 onChange={handleChange}
-                placeholder="Meeting Link"
+                placeholder="Zoom / Google Meet"
                 className="w-full border p-2 rounded mb-2"
                 type="text"
               />
-
-
+  
+              <label htmlFor="notes">Notes</label>        
               <input
                 name="notes"
                 value={selectedInterview.notes}
                 onChange={handleChange}
-                placeholder="notes"
+                placeholder="Preparation notes or reminders"
                 className="w-full border p-2 rounded mb-2"
                 required
               />
 
+              <label htmlFor="outcome">Outcome</label>
               <input
                 name="outcome"
                 value={selectedInterview.outcome}
                 onChange={handleChange}
-                placeholder="Outcome"
+                placeholder="e.g. Passed, Rejected, Waiting"
                 className="w-full border p-2 rounded mb-2"
               />
 
