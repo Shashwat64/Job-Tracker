@@ -2,6 +2,8 @@ import { RouterProvider} from "react-router-dom"
 import { useState, createContext} from "react"
 import { router } from "./router"
 
+import { Analytics } from "@vercel/analytics/react"
+
 import interviewList from './data/interviewList'
 
 export const JobContext = createContext()

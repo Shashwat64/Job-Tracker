@@ -67,7 +67,7 @@ export default function Interview(){
 
   return (
     <>
-      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} interviewJson={interviewJson} setInterviewJson={setInterviewJson} selectedId={selectedId}/>}
+      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} interviewJson={interviewJson} setInterviewJson={setInterviewJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
       <main className='bg-gray-100 grow p-8 ml-60 h-screen overflow-hidden'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        

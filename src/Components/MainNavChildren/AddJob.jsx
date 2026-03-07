@@ -18,12 +18,14 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     setOpenModalId(null)
   },[])
 
+  console.log("editId " + editId)
+
 
   const nextId = interviewJson[interviewJson.length-1].id + 1
 
   let thatData
 
-  if(!editId){
+  if(editId===null){
     thatData = {
       id:nextId,
       company: { logoLink: "", name: "", location: "", url:"" },

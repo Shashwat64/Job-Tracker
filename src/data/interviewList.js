@@ -127,6 +127,21 @@ const interviewList = [
     isDeleted: false,
     interviews: [
       {
+        round: 3,
+        type: "HR",
+        date: "2026-05-25",
+        time:{
+          start: '18:00',
+          duration: 60
+        },
+        details:["Introduction and resume overview", "Discussion about team fit", "Initial salary expectations"],
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        outcome: null,
+        status: "Upcoming"
+      },
+      {
         round: 2,
         type: "DSA",
         date: "2026-05-15",
