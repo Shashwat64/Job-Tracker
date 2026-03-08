@@ -35,3 +35,67 @@ export function addingAmPm(time){
 export function capitalise(string){
   return string[0].toUpperCase() + string.slice(1)
 }
+
+const allMonths = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+]
+export function getLast6Month(month){
+
+  const months = []
+  
+  for(let i = month-5; i<=month;i+=1){
+    const index = (i + 12) % 12
+    months.push(allMonths[index])
+  }
+  // console.log(months)
+  return months
+}
+
+export function dateInYYYYMMDD(now){
+  const date = new Date(now);
+
+  const formatted =
+    date.getFullYear() +
+    "-" +
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0");
+
+  return formatted
+}
+
+export function interviewInLast6Months(interviewJson){
+  const withInterview = interviewJson.filter(info=>info.stage.toLowerCase() === "interview")
+
+  const onlyRound = withInterview.map(info=>([info.company, ...info.interviews ]))
+
+  
+  let last6Month = []
+  const nowDate = new Date()
+
+  for (let i = 5; i > -1; i--) {
+    const date = new Date(nowDate)
+    date.setMonth(date.getMonth() - i)
+    last6Month.push({value:date.toISOString().slice(0,7), count:0, companies:{}})
+  }
+
+  /*  const last6MonthCounts =  */
+
+  last6Month.forEach(month=>{
+    onlyRound.map(interview=>{
+      interview.slice(1).map(round=>{
+        if(round.date.includes(month.value)){
+          console.log("match found at", month)
+          month.count+=1
+        }
+      })
+    })
+  })
+
+  const bars = last6Month.map(month=>month.count)
+  
+  return bars
+
+
+}

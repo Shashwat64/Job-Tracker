@@ -160,7 +160,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
       onClick={() => setModalType(null)}
     >
       <div 
-        className="min-w-100 min-h-150 w-1/3 h-2/3 bg-white rounded-xl shadow-xl p-6 relative overflow-y-auto"
+        className="min-w-100 min-h-150 w-1/2 h-2/3 bg-white rounded-xl shadow-xl p-6 relative overflow-y-auto"
         onClick={(e) => {
           e.stopPropagation()
         }}
@@ -244,7 +244,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                     required
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col w-1/2">
                   <label htmlFor="time.duration">Duration</label>
                   <input
                     name="time.duration"
@@ -299,12 +299,12 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 required
               />
 
-              <label htmlFor="outcome">Outcome</label>
+              <label htmlFor="status">Status</label>
               <input
-                name="outcome"
-                value={selectedInterview.outcome}
+                name="status"
+                value={selectedInterview.status}
                 onChange={handleChange}
-                placeholder="e.g. Passed, Rejected, Pending"
+                placeholder="e.g. Passed, Rejected, Pending or Scheduled"
                 className="w-full border p-2 rounded mb-2"
               />
 

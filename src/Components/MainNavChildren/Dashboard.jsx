@@ -3,6 +3,8 @@ import { useContext } from 'react'
 
 import { JobContext} from '../../App'
 
+import { getLast6Month, interviewInLast6Months } from '../../utils/helperFunctions'
+
 
 
 //Its the lower most upcomign interview
@@ -34,21 +36,37 @@ const upcomingInterviews = []
   { company: "Oracle", round: "HR Screening", position: "Cloud Engineer", date: "Apr 18, 2026", time: "02:30 PM - 03:00 PM" },
 ]  */
 
-const bars = [30, 50, 40, 80, 100, 60] 
-const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"] 
 
 
-console.log()
+
+
+
+
+
 
 export default function Dashboard() {
-
-
-
   const { interviewJson, activeBtn, setActiveBtn } = useContext(JobContext)
 
   const navigate = useNavigate()
 
-  console.log(interviewJson)
+  const now = new Date()
+  const month = now.getMonth()
+  // console.log(month)
+
+  
+  const numOfInterviewInMonth = interviewInLast6Months(interviewJson)
+  console.log(numOfInterviewInMonth)
+  
+  const maxInterviewInMonth = Math.max(...numOfInterviewInMonth.map(d => d))
+  console.log(maxInterviewInMonth)
+  
+  const bars = numOfInterviewInMonth.map(num=>(num/maxInterviewInMonth)*100)
+
+  const months = getLast6Month(month).map(name=>name.slice(0,3))
+
+  // console.log(interviewJson.filter(info=>info.stage.toLowerCase() === "interview"))
+
+  interviewInLast6Months(interviewJson)
 
 
   const statusCounts = interviewJson.filter(info=>!info.isDeleted)
@@ -58,7 +76,7 @@ export default function Dashboard() {
     return acc 
   }, {})
 
-  console.log(statusCounts)
+  // console.log(statusCounts)
 
   const cards = [
     { title: "Total Applied", value: statusCounts.total || 0 },
@@ -69,9 +87,9 @@ export default function Dashboard() {
     { title: "Rejected", value: statusCounts.Refected || 0 }
   ]
 
-  console.log(cards)
+  // console.log(cards)
 
-  //Top 4 cards
+  //Top 6 cards
   const KPICard = ({ title, value, badge }) => (
     <div 
       className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:bg-gray-100 hover:cursor-pointer
@@ -123,7 +141,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Bar Chart */}
           <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col h-80">
-            <h3 className="text-sm font-semibold text-gray-800 mb-6">Application Activity (Last 6 Months)</h3>
+            <h3 className="text-sm font-semibold text-gray-800 mb-6">Interview Activity (Last 6 Months)</h3>
             <div className="flex-1 flex items-end space-x-4 justify-center pb-2">
               {bars.map((height, i) => (
                 <div key={i} className="w-10 bg-gray-400 rounded-t-sm" style={{ height: `${height}%` }} />

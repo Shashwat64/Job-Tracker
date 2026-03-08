@@ -138,7 +138,6 @@ const interviewList = [
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
-        outcome: null,
         status: "Upcoming"
       },
       {
@@ -153,8 +152,7 @@ const interviewList = [
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
-        outcome: null,
-        status: "Upcoming"
+        status: "Passed"
       },
       {
         round: 1,
@@ -168,7 +166,6 @@ const interviewList = [
         interviewer: "Jimmy Doe",
         meetingLink: "https://zoom.us/abcd",
         notes: "Prepare DSA",
-        outcome: null,
         status: "Passed"
       }
     ]
@@ -185,8 +182,52 @@ const interviewList = [
     salaryRange: { min: 1200000, max: 2000000 },
     date: "2026-03-20",
     interviewType: "Virtual",
-    stage: "Pending",
-    deleted: false
+    stage: "Interview",
+    deleted: false,
+    interviews: [
+      {
+        round: 3,
+        type: "HR",
+        date: "2026-01-25",
+        time:{
+          start: '18:00',
+          duration: 60
+        },
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        status: "Upcoming"
+      },
+      {
+        round: 2,
+        type: "DSA",
+        date: "2025-12-15",
+        time:{
+          start: '16:00',
+          duration: 120
+        },
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        status: "Passed"
+      },
+      {
+        round: 1,
+        type: "Technical",
+        date: "2025-11-15",
+        time:{
+          start: '12:00',
+          duration: 45
+        },
+       details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Jimmy Doe",
+        meetingLink: "https://zoom.us/abcd",
+        notes: "Prepare DSA",
+        status: "Passed"
+      }
+    ]
   },
   {
     id: 3,
