@@ -160,7 +160,7 @@ export default function Jobs(){
 
   return (
     <>
-      <main className='bg-gray-100 grow p-8 overflow-auto ml-60 h-full'>
+      <main className='bg-gray-100 grow p-8 ml-60 h-full flex flex-col min-h-0'>
         {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
        
         <div className="w-full space-y-6">
@@ -189,7 +189,7 @@ export default function Jobs(){
           <p className='mr-2'>{filteredListLen} Jobs</p>
         </section>
 
-        <section >
+        <section className='h-full overflow-hidden flex flex-col min-h-0'>
             <div className='flex flex-row mt-6 bg-white p-4 rounded-t-lg items-baseline justify-between' >
               <div className='bg-gray-100 p-1 rounded-lg flex gap-x-1'>
                 <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
@@ -245,48 +245,51 @@ export default function Jobs(){
           </div>
             
             {/* This below is main div */}
-            {interviewHtml}
-            {filteredListLen>10 && 
-            <div className='flex justify-between items-center bg-white h-15 shadow-sm p-3 box-border w-full'>
-              <button className='bg-white 
-                border border-gray-200 
-                px-3 py-2 
-                rounded-lg 
-                flex gap-x-1 
-                transition-all duration-150
 
-                hover:bg-gray-100 hover:border-gray-300
+            <div className='overflow-auto min-h-0 flex flex-col flex-1'>
+              {interviewHtml}
+              {filteredListLen>10 && 
+              <div className='flex justify-between items-center bg-white h-15 shadow-sm p-3 box-border w-full'>
+                <button className='bg-white 
+                  border border-gray-200 
+                  px-3 py-2 
+                  rounded-lg 
+                  flex gap-x-1 
+                  transition-all duration-150
 
-                active:scale-95 active:bg-gray-800 active:text-white
+                  hover:bg-gray-100 hover:border-gray-300
 
-                disabled:bg-gray-200 
-                disabled:text-gray-500 
-                disabled:cursor-not-allowed'
-                onClick={()=>{if(activePage>1){
-                  setActivePage(prev=>prev-1)
-                }}}
-                disabled={activePage===1 ? true : false} 
-              >&larr; Previous</button>
-              <button className='bg-white 
-                border border-gray-200 
-                px-3 py-2 
-                rounded-lg 
-                flex gap-x-1 
-                transition-all duration-150
+                  active:scale-95 active:bg-gray-800 active:text-white
 
-                hover:bg-gray-100 hover:border-gray-300
+                  disabled:bg-gray-200 
+                  disabled:text-gray-500 
+                  disabled:cursor-not-allowed'
+                  onClick={()=>{if(activePage>1){
+                    setActivePage(prev=>prev-1)
+                  }}}
+                  disabled={activePage===1 ? true : false} 
+                >&larr; Previous</button>
+                <button className='bg-white 
+                  border border-gray-200 
+                  px-3 py-2 
+                  rounded-lg 
+                  flex gap-x-1 
+                  transition-all duration-150
 
-                active:scale-95 active:bg-gray-800 active:text-white
+                  hover:bg-gray-100 hover:border-gray-300
 
-                disabled:bg-gray-200 
-                disabled:text-gray-500 
-                disabled:cursor-not-allowed' 
-                onClick={()=>{if(activePage < Math.ceil(filteredListLen/10)){
-                  setActivePage(prev=>prev+1)
-                }}}
-                disabled={activePage===Math.ceil(filteredListLen/10) ? true : false} 
-              >Next &rarr;</button>
-            </div>}
+                  active:scale-95 active:bg-gray-800 active:text-white
+
+                  disabled:bg-gray-200 
+                  disabled:text-gray-500 
+                  disabled:cursor-not-allowed' 
+                  onClick={()=>{if(activePage < Math.ceil(filteredListLen/10)){
+                    setActivePage(prev=>prev+1)
+                  }}}
+                  disabled={activePage===Math.ceil(filteredListLen/10) ? true : false} 
+                >Next &rarr;</button>
+              </div>}
+            </div>
         </section>
       </main>
     </>

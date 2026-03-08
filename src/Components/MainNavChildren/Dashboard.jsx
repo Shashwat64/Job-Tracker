@@ -23,7 +23,7 @@ const InterviewItem = ({ company, round, position, date, time }) => (
       <p className="text-xs text-gray-500">{time}</p>
     </div>
   </div>
-);
+)
 
 
 
@@ -32,10 +32,13 @@ const upcomingInterviews = []
 /* const upcomingInterviews = [
   { company: "Cisco", round: "Technical Round 1", position: "Network Software Engineer", date: "Apr 15, 2026", time: "10:00 AM - 11:00 AM" },
   { company: "Oracle", round: "HR Screening", position: "Cloud Engineer", date: "Apr 18, 2026", time: "02:30 PM - 03:00 PM" },
-]; */
+]  */
 
-const bars = [30, 50, 40, 80, 100, 60];
-const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
+const bars = [30, 50, 40, 80, 100, 60] 
+const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"] 
+
+
+console.log()
 
 export default function Dashboard() {
 
@@ -50,10 +53,10 @@ export default function Dashboard() {
 
   const statusCounts = interviewJson.filter(info=>!info.isDeleted)
   .reduce((acc, job) => {
-    acc.total = (acc.total || 0) + 1;
-    acc[job.stage] = (acc[job.stage] || 0) + 1;
-    return acc;
-  }, {});
+    acc.total = (acc.total || 0) + 1 
+    acc[job.stage] = (acc[job.stage] || 0) + 1 
+    return acc 
+  }, {})
 
   console.log(statusCounts)
 
@@ -157,5 +160,5 @@ export default function Dashboard() {
 
       </div>
     </div>
-  );
+  ) 
 }

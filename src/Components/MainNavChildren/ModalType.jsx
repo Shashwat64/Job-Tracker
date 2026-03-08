@@ -304,7 +304,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 name="outcome"
                 value={selectedInterview.outcome}
                 onChange={handleChange}
-                placeholder="e.g. Passed, Rejected, Waiting"
+                placeholder="e.g. Passed, Rejected, Pending"
                 className="w-full border p-2 rounded mb-2"
               />
 

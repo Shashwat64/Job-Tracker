@@ -5,7 +5,7 @@ import { LayoutDashboard, Briefcase, MessagesSquare, Binoculars, FileUser, Calen
 
 export default function MainNav(){
   return (
-    <aside className="flex flex-col fixed top-0 bottom-0 left-0 p-4 bg-white h-screen w-60 border-r border-gray-200 overflow-hidden">
+    <aside className="flex flex-col fixed top-0 bottom-0 left-0 p-4 bg-white h-screen w-60 border-r border-gray-200 ">
       <Link to="/">
         <div className="flex py-2 px-1 border-b border-gray-200 h-12">
           <h1 className="text-2xl">Interview Tracker</h1>

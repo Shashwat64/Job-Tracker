@@ -49,7 +49,7 @@ export default function Interview(){
   ))
 
   const sortedRoundHtml = selectedIdSortedInterview.map((round,i)=>{
-    return (<div className='mb-4' key={i}>
+    return (<div className='flex flex-col' key={i}>
       <h3>{round.type} Round</h3>
       <p>{formatLongDate(round.date)}, {addingAmPm(round.time.start)} 
         <span className='text-gray-400'> | {round.time.duration} mins</span>
@@ -57,6 +57,10 @@ export default function Interview(){
       <ul className="list-disc pl-5 mt-4">
         {round.details.split(".").map((detail,i)=>(detail.trim() ? <li key={i}>{`${detail}.`}</li> : null))}
       </ul>
+      <p className='m-2'>
+        <span className='font-semibold'>Notes: </span>
+        {round.notes}
+      </p>
     </div>)
   })
 
@@ -68,7 +72,7 @@ export default function Interview(){
   return (
     <>
       {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} interviewJson={interviewJson} setInterviewJson={setInterviewJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
-      <main className='bg-gray-100 grow p-8 ml-60 h-screen overflow-hidden'>
+      <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        
         <div className="w-full space-y-6 ">
@@ -77,11 +81,7 @@ export default function Interview(){
           <div className="flex justify-between items-center mb-8 ">
             <h1 className="text-2xl font-semibold text-gray-900">Interview</h1>
             <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Search"
-                className="border border-gray-300 rounded-md px-4 py-2 text-sm w-64 bg-white outline-none focus:border-gray-400"
-              />
+              
               <button className="w-9 h-9 border border-gray-300 rounded-md flex items-center justify-center bg-white hover:bg-gray-50">
                 <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -96,19 +96,20 @@ export default function Interview(){
         </div>
 
         <div className='h-full flex gap-4 overflow-hidden'>
-          <div className='h-full w-2/5 bg-gray-100 py-4 overflow-y-auto'>
-            <input className='bg-white w-full px-6 py-3 rounded-lg' 
+          <div className='flex flex-col h-full w-2/5 bg-gray-100 py-4 px-1 overflow-y-auto overflow-x-hidden'>
+            <input className='bg-white w-full self-center px-6 py-3 rounded-lg ' 
                type="text" 
                placeholder="Search Interviews..."
+               onChange={e=>console.log(e.target.value)}
             />
             <h2 className='w-full bg-white mt-4 p-3 px-6 text-xl font-semibold rounded-lg'>Interviews</h2>
-            <div className='p-2 bg-gray-50  shadow'>
+            <div className='p-2 bg-gray-50 shadow '>
               {interviewLeftHtml}
             </div>
             
           </div>
           {!interviewJson[selectedId].isDeleted &&
-            <div className='flex flex-col bg-gray-100 h-full w-3/5 p-4 overflow-y-auto'> {/* Right side of the Interview */}
+            <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4  min-h-0'> {/* Right side of the Interview */}
               <div className='flex w-full items-start justify-end gap-2 mb-4'>
                 <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                   onClick={()=>(setModalType('add'))}
@@ -156,10 +157,14 @@ export default function Interview(){
                 </div>
               </div>
               <div className='bg-white px-6 py-4 font-semibold border-b border-gray-200'>Interview Process</div>
-              <div className='px-6 py-4 bg-white border-b border-gray-200'>
-                {sortedRoundHtml}
-              </div>
-            </div>}
+
+                <div className='p-6 flex flex-1 shrink flex-col gap-8 bg-white border-b border-gray-200 overflow-x-auto'> {/* add h-100 to this */}
+                  {sortedRoundHtml}
+                </div>
+                <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-linear-to-l from-white to-transparent"></div>
+                </div>
+            
+            }
         </div>
         </main>
     </>
