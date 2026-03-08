@@ -55,7 +55,7 @@ export default function Interview(){
         <span className='text-gray-400'> | {round.time.duration} mins</span>
       </p>
       <ul className="list-disc pl-5 mt-4">
-        {round.details.split(".").map((detail,i)=>(<li key={i}>{`${detail}.`}</li>))}
+        {round.details.split(".").map((detail,i)=>(detail.trim() ? <li key={i}>{`${detail}.`}</li> : null))}
       </ul>
     </div>)
   })
