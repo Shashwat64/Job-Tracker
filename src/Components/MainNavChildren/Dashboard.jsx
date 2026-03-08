@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { JobContext} from '../../App'
 
@@ -45,6 +45,9 @@ const upcomingInterviews = []
 
 
 export default function Dashboard() {
+
+  const [hovered, setHovered] = useState(null) //have to remove this
+
   const { interviewJson, activeBtn, setActiveBtn } = useContext(JobContext)
 
   const navigate = useNavigate()
@@ -141,13 +144,31 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Bar Chart */}
           <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col h-80">
-            <h3 className="text-sm font-semibold text-gray-800 mb-6">Interview Activity (Last 6 Months)</h3>
-            <div className="flex-1 flex items-end space-x-4 justify-center pb-2">
+            <h3 className="text-sm font-semibold text-gray-800 mb-12">Interview Activity (Last 6 Months)</h3>
+            <div className="flex-1 flex items-end space-x-4 justify-center">
               {bars.map((height, i) => (
-                <div key={i} className="w-10 bg-gray-400 rounded-t-sm" style={{ height: `${height}%` }} />
+                <div 
+                  key={i} 
+                  className="w-10 bg-gray-400 rounded-t-sm relative" 
+                  style={{ height: `${height}%` }} 
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  {hovered === i && (
+                    <div className='absolute -top-15 left-1/2 -translate-x-1/2 text-white/90 border bg-[#1E2A38] px-2 py-1 z-10 w-30 text-center'>    
+                      Number of Interview: {numOfInterviewInMonth[i]}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2
+                        w-0 h-0
+                        border-l-[6px] border-l-transparent
+                        border-r-[6px] border-r-transparent
+                        border-t-[6px] border-t-black">
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
-            <div className="flex justify-center space-x-8 text-xs text-gray-400 mt-2 border-t border-gray-100 pt-2">
+            <div className="flex justify-center space-x-8 text-xs text-gray-400 border-t border-gray-100 pt-2">
               {months.map(m => <span key={m}>{m}</span>)}
             </div>
           </div>
