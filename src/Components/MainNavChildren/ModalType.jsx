@@ -299,14 +299,19 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 required
               />
 
+             
+
               <label htmlFor="status">Status</label>
-              <input
+               <select
                 name="status"
                 value={selectedInterview.status}
                 onChange={handleChange}
-                placeholder="e.g. Passed, Rejected, Pending or Scheduled"
-                className="w-full border p-2 rounded mb-2"
-              />
+                className="w-full border p-2 rounded mb-4"
+              >
+                <option value="upcoming">Upcoming</option>
+                <option value="failed">Failed</option>
+                <option value="passed">Passed</option>
+              </select>
 
               
 

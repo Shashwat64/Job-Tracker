@@ -1,6 +1,26 @@
 To do next:
-1. 
+
+Overall
+1.Polish UI
+2.Add Auth
+3. Think of Resume
+
+Sepcific Page
+1. Dashboard
+  1. Add the winrate from one level to next, like from Applied to Pending, and pending to shortlist and all on the top card
+  2.Instead of Circle graph, make "Needs Follow-Up" or "Stale" Applications, A widget that flags applications that have been sitting in the "Pending" state for more than 7 to 10 days. It turns that dashboard space from purely informational into actionable.
+  3.Add upcoming interviews
+2. Jobs 
+  1. Do something that the checkbox that I added
+  2.Can add bookmark kind of thing
 
 
 Bugs:
-1.TCS logo is not showing
+Main:
+  1. Interview Page: Can't add new Interview with 0 round of interview
+
+Secondary:
+
+UI:
+
+Minor UI: 

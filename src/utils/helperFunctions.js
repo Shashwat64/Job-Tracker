@@ -86,7 +86,6 @@ export function interviewInLast6Months(interviewJson){
     onlyRound.map(interview=>{
       interview.slice(1).map(round=>{
         if(round.date.includes(month.value)){
-          console.log("match found at", month)
           month.count+=1
         }
       })

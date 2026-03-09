@@ -55,16 +55,12 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
 
 
   /* 
-    updated status
 
+  Application Status
     Pending → Waiting for response
-
     Shortlisted → Positive signal
-
     Interview → In process
-
     Offer → Success
-
     Rejected → Closed
   */
 
@@ -72,7 +68,13 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
     /* 
       Main points to keep in mind:
         1. The rounds in the interviews, should be desending order, when add or modifying it
-    
+
+        Status of the interview
+          Simple single-status system
+          upcoming → interview is scheduled and hasn’t happened yet
+          pending → interview happened but result isn’t decided yet
+          passed → interview done and candidate passed
+          failed → interview done and candidate didn’t pass 
     */
 
 const interviewList = [
@@ -106,7 +108,6 @@ const interviewList = [
         interviewer: "Jane Doe",
         meetingLink: "https://zoom.us/abc",
         notes: "Prepare algorithms",
-        outcome: null,
         status: "Upcoming"
       }
     ]
@@ -197,7 +198,7 @@ const interviewList = [
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
-        status: "Upcoming"
+        status: "Pending"
       },
       {
         round: 2,
@@ -242,7 +243,51 @@ const interviewList = [
     date: "2026-03-22",
     interviewType: "Virtual",
     stage: "Rejected",
-    deleted: false
+    deleted: false,
+    interviews: [
+      {
+        round: 3,
+        type: "HR",
+        date: "2026-05-25",
+        time:{
+          start: '18:00',
+          duration: 60
+        },
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        status: "Failed"
+      },
+      {
+        round: 2,
+        type: "DSA",
+        date: "2026-05-15",
+        time:{
+          start: '16:00',
+          duration: 120
+        },
+        details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Kimmy Doe",
+        meetingLink: "https://google.meet.us/abcd",
+        notes: "Prepare DSA",
+        status: "Passed"
+      },
+      {
+        round: 1,
+        type: "Technical",
+        date: "2026-04-15",
+        time:{
+          start: '12:00',
+          duration: 45
+        },
+       details: "Introduction and resume overview. Discussion about team fit. Initial salary expectations",
+        interviewer: "Jimmy Doe",
+        meetingLink: "https://zoom.us/abcd",
+        notes: "Prepare DSA",
+        status: "Passed"
+      }
+    ]
   },
   {
     id: 4,

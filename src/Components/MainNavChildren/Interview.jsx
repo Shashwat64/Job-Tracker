@@ -20,6 +20,8 @@ export default function Interview(){
   const {interviewJson, setInterviewJson} = useContext(JobContext)
 
   const [selectedId, setSelectedId] = useState(0) /* Set to 0, so that html for the right side will not throw error */
+
+  const [activeBtn, setActiveBtn] = useState("all")
   
   const [modaltype, setModalType] = useState(null)
   
@@ -29,7 +31,13 @@ export default function Interview(){
 
   const selectedIdSortedInterview = interviewJson[selectedId].interviews.sort((a,b)=>b.round-a.round)
 
-  const interviewLeftHtml = withInterview.map((info, i)=>(!info.isDeleted &&
+  const interviewLeftHtml = withInterview.filter((interview)=>{
+      if(activeBtn==='all' && !interview.isDeleted)
+        return true
+      else if(!interview.isDeleted)
+        return interview.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
+    })
+    .map((info, i)=>(
     <div 
       className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
       key={i}
@@ -109,27 +117,56 @@ export default function Interview(){
             
           </div>
           {!interviewJson[selectedId].isDeleted &&
-            <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4  min-h-0'> {/* Right side of the Interview */}
-              <div className='flex w-full items-start justify-end gap-2 mb-4'>
-                <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
-                  onClick={()=>(setModalType('add'))}
-                  >Add</button>
-                <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
-                  onClick={()=>(setModalType('edit'))}
-                >Edit</button>
-                <button 
-                  className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
-                  onClick={()=>{setInterviewJson(prev=>prev.map(job =>
-                    job.id === selectedId
-                      ? { ...job, isDeleted: true }
-                      : job
-                  ))}}
-                >Delete</button>
+            <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4 min-h-0'> {/* Right side of the Interview */}
+              <div className='flex w-full items-center justify-between'>
+
+                <div className='bg-gray-200 p-1 rounded-lg flex'>
+                  <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                      activeBtn === 'all' 
+                        ? 'bg-white shadow-sm' 
+                        : null
+                    }`} value="all" onClick={(e)=>setActiveBtn(e.currentTarget.value)}>All</button>
+
+                  <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                      activeBtn === 'upcoming' 
+                        ? 'bg-white shadow-sm' 
+                        : null
+                    }`} value="upcoming" onClick={(e)=>(setActiveBtn(e.currentTarget.value))}>Upcoming</button>
+
+                  <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                      activeBtn === 'passed' 
+                        ? 'bg-white shadow-sm' 
+                        : null
+                    }`} value="passed" onClick={(e)=>setActiveBtn(e.currentTarget.value)}>Passed</button>
+
+                    <button className={`px-4 py-2 rounded-lg hover:bg-gray-50 ${
+                      activeBtn === 'failed' 
+                        ? 'bg-white shadow-sm' 
+                        : null
+                    }`} value="failed" onClick={(e)=>setActiveBtn(e.currentTarget.value)}>Failed</button>
+                </div>
+
+                <div className='flex w-full justify-end gap-2'>
+                  <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
+                    onClick={()=>(setModalType('add'))}
+                    >Add</button>
+                  <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
+                    onClick={()=>(setModalType('edit'))}
+                  >Edit</button>
+                  <button 
+                    className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
+                    onClick={()=>{setInterviewJson(prev=>prev.map(job =>
+                      job.id === selectedId
+                        ? { ...job, isDeleted: true }
+                        : job
+                    ))}}
+                  >Delete</button>
+                </div>
               </div>
 
               {/* {selectedId && } */}
 
-              <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg' >
+              <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
                 Interview {'> ' + interviewJson[selectedId].company.name}  Interview
               </div>
               <div 

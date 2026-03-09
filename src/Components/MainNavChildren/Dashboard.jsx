@@ -5,31 +5,31 @@ import { JobContext} from '../../App'
 
 import { getLast6Month, interviewInLast6Months } from '../../utils/helperFunctions'
 
+import { urlToLogoLink } from '../../utils/helperFunctions'
+
 
 
 //Its the lower most upcomign interview
-const InterviewItem = ({ company, round, position, date, time }) => (
+const InterviewItem = ({ companyName, type, jobTitle, date, time, id, logoLink }) => (
   <div className="px-6 py-4 flex justify-between items-center  hover:bg-gray-100 hover:cursor-pointer
  transition">
     <div className="flex items-center gap-4">
-      <div className="w-10 h-10 rounded border border-gray-200 bg-white flex items-center justify-center font-bold text-gray-700">
-        {company[0]}
+      <div className="w-10 h-10 rounded bg-white flex items-center justify-center font-bold text-gray-700">
+        <img src={urlToLogoLink(logoLink)} alt="" />
       </div>
       <div>
-        <p className="text-sm font-medium text-gray-900">{company}</p>
-        <p className="text-xs text-gray-500">{round} • {position}</p>
+        <p className="text-sm font-medium text-gray-900">{companyName}</p>
+        <p className="text-xs text-gray-500">{type} Round • {jobTitle}</p>
       </div>
     </div>
     <div className="text-right">
       <p className="text-sm font-medium text-gray-900">{date}</p>
-      <p className="text-xs text-gray-500">{time}</p>
+      <p className="text-xs text-gray-500">{time.start}</p>
     </div>
   </div>
 )
+// id:info.id, jobTitle:info.jobTitle, companyName: info.company.name
 
-
-
-const upcomingInterviews = []
 
 /* const upcomingInterviews = [
   { company: "Cisco", round: "Technical Round 1", position: "Network Software Engineer", date: "Apr 15, 2026", time: "10:00 AM - 11:00 AM" },
@@ -58,16 +58,15 @@ export default function Dashboard() {
 
   
   const numOfInterviewInMonth = interviewInLast6Months(interviewJson)
-  console.log(numOfInterviewInMonth)
+  // console.log(numOfInterviewInMonth) 
   
   const maxInterviewInMonth = Math.max(...numOfInterviewInMonth.map(d => d))
-  console.log(maxInterviewInMonth)
+  // console.log(maxInterviewInMonth)
   
   const bars = numOfInterviewInMonth.map(num=>(num/maxInterviewInMonth)*100)
 
   const months = getLast6Month(month).map(name=>name.slice(0,3))
 
-  // console.log(interviewJson.filter(info=>info.stage.toLowerCase() === "interview"))
 
   interviewInLast6Months(interviewJson)
 
@@ -79,7 +78,6 @@ export default function Dashboard() {
     return acc 
   }, {})
 
-  // console.log(statusCounts)
 
   const cards = [
     { title: "Total Applied", value: statusCounts.total || 0 },
@@ -117,6 +115,17 @@ export default function Dashboard() {
       </div>
     </div>
   )
+  // console.log(interviewJson)
+
+  //Upcoming Interview
+  const upcomingInterviews = interviewJson.filter(info=>info.interviews?.length)
+    .map(info=>info.interviews[0].status.toLowerCase()!=="rejected"
+      ? {id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]} 
+      : null)
+    .sort((a,b)=>b.date.localeCompare(a.date))
+
+  console.log(upcomingInterviews)
+  console.log(upcomingInterviews.sort((a,b)=>b.date.localeCompare(a.date)))
 
 
   return (
@@ -175,7 +184,7 @@ export default function Dashboard() {
 
           {/* Donut Chart */}
           <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col h-80">
-            <h3 className="text-sm font-semibold text-gray-800 mb-6">Status Breakdown</h3>
+            <h3 className="text-sm font-semibold text-gray-800 mb-6">Round Breakdown</h3>
             <div className="flex-1 flex items-center justify-center">
               <div className="w-40 h-40 rounded-full border-15 border-amber-400 border-r-emerald-500 border-b-gray-200 border-l-amber-400" />
             </div>
@@ -201,3 +210,5 @@ export default function Dashboard() {
     </div>
   ) 
 }
+
+/* { company, round, position, date, time } */
