@@ -15,7 +15,7 @@ export default function App() {
   const [interviewJson, setInterviewJson] = useState(interviewList)
   const [activeBtn, setActiveBtn] = useState('all')
 
-  // console.log(interviewJson)
+  console.log(interviewJson)
 
   return (
     <>

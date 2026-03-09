@@ -9,11 +9,21 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
 
   const [selectedJob, setSelectedJob] = useState("")
 
+  const [modalSelectedId, setModalSelectedId] = useState(selectedId)
+
+  console.log(selectedId)
+
+
+  useEffect(() => {
+    setModalSelectedId(selectedId)
+  }, [selectedId])
+
   
+  const nextRound = interviewJson[selectedId]?.interviews?.[0]?.round+1 || 1
+  console.log(interviewJson[selectedId]?.interviews?.[0]?.round+1)
+  console.log(nextRound)
 
-  const nextRound = interviewJson[selectedId].interviews[0].round+1
-
-  const[selectedRound, setSelectedRound] = useState(interviewJson[selectedId].interviews[0].round)
+  const[selectedRound, setSelectedRound] = useState(interviewJson[selectedId]?.interviews?.[0]?.round)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -46,21 +56,30 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   function handleSubmit(e){
     e.preventDefault()
 
-    // console.log(newRound)
+    console.log(newRound)
+    console.log(selectedId, interviewJson[4].id)
+
     
-    if(modaltype==='add'){
-      setInterviewJson(prev=>(
-        prev.map(info=>(
-          info.id===selectedId ? 
-          {...info,
-            interviews:[
-              newRound, 
-              ...info.interviews
-            ]
-          }
-          : info
-        ))
-      ))
+    if (modaltype === 'add') {
+      setInterviewJson(prev => {
+        console.log(typeof selectedId)
+        // Check if the ID actually exists in our data first
+        const exists = prev.some(info => info.id === Number(selectedId));
+        
+        if (!exists) {
+          console.error("Cannot add round: Selected ID not found");
+          return prev; 
+        }
+
+        return prev.map(info => (
+          info.id === selectedId 
+            ? {
+                ...info,
+                interviews: [newRound, ...(info.interviews ?? [])]
+              }
+            : info
+        ));
+      });
     }else if(modaltype==='edit'){
       setInterviewJson(prev=>(
         prev.map(info=>(
@@ -105,25 +124,28 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
     date: "",
     time:{
       start: '',
-      duration: null
+      duration: ""
     },
-    details:[],
+    details:"",
     interviewer: "",
     meetingLink: "",
     notes: "",
-    outcome: "",
-    status: ""
+    status: "upcoming"
   })
 
   useEffect(()=>{
-    if(modaltype === "edit"){
+    if(modaltype === "edit" ){
 
       // console.log(newRound)
       setNewRound(interviewJson[selectedId].interviews.find(
-        round => round.round === Number(selectedRound)
+        round => round.round === selectedRound
       ))
     }
   },[selectedId, selectedRound])
+
+  console.log(newRound)
+  console.log(interviewJson)
+  console.log(selectedId)
 
 // console.log("selectedId:", selectedId)
 // console.log("selectedRound:", selectedRound)
@@ -178,11 +200,20 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <select name="addInterview" id=""
                 value={selectedId}
                 onChange={(e) => {
-                  setSelectedRound(interviewJson[e.target.value].interviews[0].round)
-                  setSelectedId(e.target.value)
+                  const round = interviewJson[e.target.value]?.interviews?.[0]?.round;
+                  if (round !== undefined) {
+                    setSelectedRound(round);
+                  }
+                  setSelectedId(Number(e.target.value))
                 }}
               >
-                {jobAtInterviewStage.map((interview,i)=>(
+                {jobAtInterviewStage.filter(interview=>{
+                  if(modaltype==="add")
+                    return true
+                  else
+                    return interview.interviews?.length>0
+                })
+                .map((interview,i)=>(
                   <option  value={interview.id} key={i}>{interview.company.name} - {interview.jobTitle} </option>
                 ))}
               </select>

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { useContext, useState} from 'react'
 
 //context
@@ -25,24 +24,27 @@ export default function Interview(){
   
   const [modaltype, setModalType] = useState(null)
   
-  const latestSelectedIdInterview = interviewJson[selectedId].interviews[0]
+  const latestSelectedIdInterview = interviewJson[selectedId]?.interviews?.[0]
+
+
+  // console.log(interviewJson[selectedId]?.interviews)
 
   const withInterview = interviewJson.filter(info=>info.interviews?.length)
 
-  const selectedIdSortedInterview = interviewJson[selectedId].interviews.sort((a,b)=>b.round-a.round)
+  const selectedIdSortedInterview = interviewJson[selectedId]?.interviews?.sort((a,b)=>b.round-a.round)
 
   const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
         return true
       else if(!interview.isDeleted)
-        return interview.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
+        return interview?.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
     })
 
   const interviewLeftHtml = interviewOnPage.map((info, i)=>(
     <div 
       className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
       key={i}
-      onClick={()=>{setSelectedId(info.id)}}
+      onClick={()=>{setSelectedId(Number(info.id))}}
     >
       <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
         <div className='' >
@@ -57,7 +59,8 @@ export default function Interview(){
     </div>
   ))
 
-  const sortedRoundHtml = selectedIdSortedInterview.map((round,i)=>{
+
+  const sortedRoundHtml = selectedIdSortedInterview?.map((round,i)=>{
     return (<div className='flex flex-col' key={i}>
       <h3>{round.type} Round</h3>
       <p>{formatLongDate(round.date)}, {addingAmPm(round.time.start)} 
@@ -73,12 +76,13 @@ export default function Interview(){
     </div>)
   })
 
-  // console.log(interviewJson)
+  console.log(interviewJson)
 
 
 
 
   return (
+    
     <>
       {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} interviewJson={interviewJson} setInterviewJson={setInterviewJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
       <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
@@ -117,7 +121,7 @@ export default function Interview(){
             </div>
             
           </div>
-          {!interviewJson[selectedId].isDeleted &&
+          {latestSelectedIdInterview && !interviewJson[selectedId].isDeleted &&
             <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4 min-h-0'> {/* Right side of the Interview */}
               <div className='flex w-full items-center justify-between'>
 
@@ -203,7 +207,7 @@ export default function Interview(){
                 </div>
             
             }
-        </div>
+          </div>
         </main>
     </>
   )

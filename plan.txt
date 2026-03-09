@@ -24,3 +24,10 @@ Secondary:
 UI:
 
 Minor UI: 
+
+
+Temp:
+latestSelectedIdInterview = undefined
+selectedIdSortedInterview = undefined
+
+interviewOnPage = list of application with interview
