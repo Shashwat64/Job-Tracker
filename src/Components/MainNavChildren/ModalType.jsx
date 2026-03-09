@@ -9,9 +9,9 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
 
   const [selectedJob, setSelectedJob] = useState("")
 
-  const nextRound = interviewJson[selectedId].interviews[0].round+1
+  
 
-  const [editRound, setEditRound] = useState(null)
+  const nextRound = interviewJson[selectedId].interviews[0].round+1
 
   const[selectedRound, setSelectedRound] = useState(interviewJson[selectedId].interviews[0].round)
 
@@ -22,18 +22,18 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
 
     if(name.includes('time.')){
       const key = name.split('.')[1]
-      setSelectedInterview(prev=>({
+      setNewRound(prev=>({
         ...prev,
         time:{...prev.time, [key]:Number(value)||value}
       }))
     }else{
-      setSelectedInterview((prev) => ({ ...prev, [name]: value }))
+      setNewRound((prev) => ({ ...prev, [name]: value }))
     }
   }
 
   /* 
   else if(name.includes('details')){
-      setSelectedInterview(prev=>({
+      setNewRound(prev=>({
         ...prev,
         details: value
           .split(/[.\n]/)
@@ -46,7 +46,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   function handleSubmit(e){
     e.preventDefault()
 
-    // console.log(selectedInterview)
+    // console.log(newRound)
     
     if(modaltype==='add'){
       setInterviewJson(prev=>(
@@ -54,7 +54,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
           info.id===selectedId ? 
           {...info,
             interviews:[
-              selectedInterview, 
+              newRound, 
               ...info.interviews
             ]
           }
@@ -67,7 +67,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
           info.id===selectedId ? 
           {...info,
             interviews:info.interviews.map((round, i)=>(
-              round.round === Number(selectedRound) ? selectedInterview : round
+              round.round === Number(selectedRound) ? newRound : round
             ))
           }
           : info
@@ -80,7 +80,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
     setModalType(null)
   }
 
-  // const [selectedInterview, setSelectedInterview] = useState({
+  // const [newRound, setNewRound] = useState({
   //   round: nextRound,
   //   type: "",
   //   date: "",
@@ -99,7 +99,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   console.log(interviewJson[1].interviews.map(round=>round.time.duration))
   console.log(selectedRound)
 
-  const [selectedInterview, setSelectedInterview] = useState({
+  const [newRound, setNewRound] = useState({
     round: nextRound,
     type: "",
     date: "",
@@ -118,8 +118,8 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   useEffect(()=>{
     if(modaltype === "edit"){
 
-      // console.log(selectedInterview)
-      setSelectedInterview(interviewJson[selectedId].interviews.find(
+      // console.log(newRound)
+      setNewRound(interviewJson[selectedId].interviews.find(
         round => round.round === Number(selectedRound)
       ))
     }
@@ -131,7 +131,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
 
 
   // if(modaltype === "add"){
-  //   selectedInterview = {
+  //   newRound = {
   //     round: nextRound,
   //     type: "",
   //     date: "",
@@ -147,12 +147,12 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   //     status: ""
   //     }
   // }else{
-  //   selectedInterview = interviewJson[selectedId].interviews[0]
+  //   newRound = interviewJson[selectedId].interviews[0]
   //   console.log(interviewJson[selectedId])
   // }
   
   // console.log(interviewJson[selectedId].interviews)
-  // console.log(selectedInterview)
+  // console.log(newRound)
   
   return (
     <div 
@@ -183,7 +183,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 }}
               >
                 {jobAtInterviewStage.map((interview,i)=>(
-                  <option value={interview.id} key={i}>{interview.company.name} - {interview.jobTitle} </option>
+                  <option  value={interview.id} key={i}>{interview.company.name} - {interview.jobTitle} </option>
                 ))}
               </select>
 
@@ -211,7 +211,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <input
                 name="type"
                 id="type"
-                value={selectedInterview.type}
+                value={newRound.type}
                 onChange={handleChange}
                 placeholder="e.g. HR, Technical, System Design"
                 className="w-full border p-2 rounded mb-2"
@@ -222,7 +222,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="date">Interview Date</label>
               <input
                 name="date"
-                value={selectedInterview.date}
+                value={newRound.date}
                 onChange={handleChange}
                 type="date"
                 className="w-full border p-2 rounded mb-2"
@@ -236,7 +236,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                   <input
                     name="time.start"
                     id="time.start"
-                    value={selectedInterview.time.start}
+                    value={newRound.time.start}
                     onChange={handleChange}
                     placeholder="Start Time"
                     type="time"
@@ -248,7 +248,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                   <label htmlFor="time.duration">Duration</label>
                   <input
                     name="time.duration"
-                    value={selectedInterview.time.duration}
+                    value={newRound.time.duration}
                     onChange={handleChange}
                     placeholder="Duration in minutes"
                     type="number"
@@ -262,7 +262,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="details">Details</label>
               <input
                 name="details"
-                value={selectedInterview.details}
+                value={newRound.details}
                 onChange={handleChange}
                 placeholder="e.g. Introduction. Resume review. Culture fit discussion."
                 className="w-full border p-2 rounded mb-2"
@@ -272,7 +272,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="interviewer">Interviewer</label>
               <input
                 name="interviewer"
-                value={selectedInterview.interviewer}
+                value={newRound.interviewer}
                 onChange={handleChange}
                 placeholder="e.g. Jane Smith (Engineering Manager)"
                 className="w-full border p-2 rounded mb-2"
@@ -282,7 +282,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="meetingLink">Meeting Link</label>
               <input
                 name="meetingLink"
-                value={selectedInterview.meetingLink}
+                value={newRound.meetingLink}
                 onChange={handleChange}
                 placeholder="Zoom / Google Meet"
                 className="w-full border p-2 rounded mb-2"
@@ -292,7 +292,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="notes">Notes</label>        
               <input
                 name="notes"
-                value={selectedInterview.notes}
+                value={newRound.notes}
                 onChange={handleChange}
                 placeholder="Preparation notes or reminders"
                 className="w-full border p-2 rounded mb-2"
@@ -304,7 +304,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <label htmlFor="status">Status</label>
                <select
                 name="status"
-                value={selectedInterview.status}
+                value={newRound.status}
                 onChange={handleChange}
                 className="w-full border p-2 rounded mb-4"
               >
@@ -324,7 +324,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
 
               <button
                 onClick={()=>{
-                  setSelectedInterview({
+                  setNewRound({
                     round: nextRound,
                     type: "",
                     date: "",

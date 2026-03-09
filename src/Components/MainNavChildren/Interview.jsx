@@ -25,19 +25,20 @@ export default function Interview(){
   
   const [modaltype, setModalType] = useState(null)
   
-  const latestSelectedIdInterview = interviewJson[selectedId].interviews[interviewJson[selectedId].interviews.length-1]
+  const latestSelectedIdInterview = interviewJson[selectedId].interviews[0]
 
   const withInterview = interviewJson.filter(info=>info.interviews?.length)
 
   const selectedIdSortedInterview = interviewJson[selectedId].interviews.sort((a,b)=>b.round-a.round)
 
-  const interviewLeftHtml = withInterview.filter((interview)=>{
+  const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
         return true
       else if(!interview.isDeleted)
         return interview.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
     })
-    .map((info, i)=>(
+
+  const interviewLeftHtml = interviewOnPage.map((info, i)=>(
     <div 
       className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
       key={i}
@@ -99,7 +100,7 @@ export default function Interview(){
           </div>
           <section className='flex bg-white p-4 rounded-lg justify-between shadow-sm'>
             <p className='ml-2'>Total Interview</p>
-            <p className='mr-2'>Interview</p>
+            <p className='mr-2'>{interviewOnPage.length>1 ? `${interviewOnPage.length} Interviews` : `${interviewOnPage.length} Interview`}</p>
           </section>
         </div>
 

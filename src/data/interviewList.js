@@ -198,7 +198,7 @@ const interviewList = [
         interviewer: "Kimmy Doe",
         meetingLink: "https://google.meet.us/abcd",
         notes: "Prepare DSA",
-        status: "Pending"
+        status: "Upcoming"
       },
       {
         round: 2,
@@ -301,7 +301,7 @@ const interviewList = [
     salaryRange: { min: 1600000, max: 2600000 },
     date: "2026-03-25",
     interviewType: "Onsite",
-    stage: "Pending",
+    stage: "Interview",
     deleted: false
   },
   {
