@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 //logo and icon
 import logoOrange from '../assets/logoOrange.png'
@@ -27,6 +27,8 @@ export default function LandingPage(){
   console.log(last6Month)
   const graphH = [40, 50, 70, 80, 40, 30]
 
+  const navigate = useNavigate()
+
   //Features cards info
   const featuresCard = [
     {title:"Application Tracker", subTitle:"Log every job you apply to with status, company, role, and date. Never lose track of where you stand with any company."},
@@ -47,9 +49,14 @@ export default function LandingPage(){
   return (
     <>
       <main className=" bg-background-light">
-        <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-15 px-8 border-b bg-surface border-border">
-          <div class="h-full w-40 flex items-center justify-center">
-            <img src={logoOrange} alt="" className="object-cover self-center" />
+        <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-10 border-b bg-surface border-border z-10">
+          <div class="h-full w-40 flex items-center justify-center" 
+            onClick={() => {
+              navigate('/');
+              window.scrollTo(0, 0);
+            }}
+          >
+            <img src={logoOrange} alt="logo"  className="object-cover self-center mt-2 mr-px"/>
           </div>
 
           <div className="flex gap-4 text-text-secondary ">
@@ -145,9 +152,9 @@ export default function LandingPage(){
           </div>
         </section>
 
-        <section className="flex items-center px-90 py-25 bg-background border-b border-border-strong" id="features">
+        <section className="flex items-center px-90 py-25 bg-background border-b border-border-strong " id="features">
           <div className="flex flex-col">
-            <div className="my-2  max-w-250">
+            <div className="my-2  max-w-250 animate-slide-in">
               <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Features</span>
               <h2 className="font-bold w-130 text-5xl my-4">
                 Everything you need to land your next offer
