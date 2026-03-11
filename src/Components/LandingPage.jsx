@@ -67,19 +67,19 @@ export default function LandingPage(){
 
         <section className=" bg-surface flex px-5 justify-center items-center h-screen min-h-200 border-b border-border-strong">
           <div className="w-120 max-w-md mr-20">
-            <div className="my-2" >
+            <div className="my-2 animate-slide-in" >
               <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Now in Public Alpha - free to use</span>
             </div>
-            <h1 className="font-bold w-90 text-7xl my-4">
+            <h1 className="font-bold w-90 text-7xl my-4 animate-slide-in" style={{ animationDelay: "0.1s" }}>
               Track Every Step To Your  <span className="text-brand">Dream Offer</span>
             </h1>
-            <h2 className="text-text-primary">
+            <h2 className="text-text-primary animate-slide-in" style={{ animationDelay: "0.1s" }}>
               OfferPath organizes your entire job search, applications, interviews, offers. So you can focus on landing the role, not managing spreadsheets.
             </h2>
-            <button className="bg-brand text-white my-4 px-5 py-3 rounded-xl">Start for Free</button>
+            <button className="bg-brand text-white my-4 px-5 py-3 rounded-xl animate-slide-in" style={{ animationDelay: "0.5s" }}>Start for Free</button>
           </div>
-          <div className="w-150 bg-surface p-4 border border-border rounded-2xl min-h-0">
-            <div className="flex justify-between items-center mb-2"> {/* Floating window */}
+          <div className="w-150 bg-surface p-4 border border-border rounded-2xl min-h-0 animate-float animate-slide-in">
+            <div className="flex justify-between items-center mb-2 "> {/* Floating window */}
               <div className="flex gap-1 mx-3">
                 <div className="w-2.25 h-2.25 bg-[#ff5f57] rounded-full"></div>
                 <div className="w-2.25 h-2.25 bg-[#febc2e] rounded-full"></div>
