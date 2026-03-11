@@ -119,13 +119,12 @@ export default function Dashboard() {
 
   //Upcoming Interview
   const upcomingInterviews = interviewJson.filter(info=>info.interviews?.length)
-    .map(info=>info.interviews[0].status.toLowerCase()!=="rejected"
-      ? {id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]} 
-      : null)
+    .filter(info=>info.interviews[0].status.toLowerCase()==="upcoming")
+    .map(info=>({id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]}))
     .sort((a,b)=>b.date.localeCompare(a.date))
 
   console.log(upcomingInterviews)
-  console.log(upcomingInterviews.sort((a,b)=>b.date.localeCompare(a.date)))
+  console.log(upcomingInterviews)
 
 
   return (

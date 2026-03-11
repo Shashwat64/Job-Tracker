@@ -1,69 +1,119 @@
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
 @import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* ── LIGHT MODE (default) ── */
+:root {
+  --background:        #f1f5f9;
+  --background-light:  #f8fafc;
+  --surface:           #ffffff;
+  --surface-raised:    #f8fafc;
+
+  --border:            #e2e8f0;
+  --border-strong:     #cbd5e1;
+
+  --text-primary:      #0f172a;
+  --text-secondary:    #475569;
+  --text-muted:        #94a3b8;
+
+  --status-applied:        #475569;
+  --status-applied-bg:     rgba(71, 85, 105, 0.10);
+  --status-interview:      #ea580c;
+  --status-interview-bg:   rgba(249, 115, 22, 0.12);
+  --status-shortlisted:    #2563eb;
+  --status-shortlisted-bg: rgba(37, 99, 235, 0.12);
+  --status-offer:          #16a34a;
+  --status-offer-bg:       rgba(22, 163, 74, 0.12);
+  --status-rejected:       #dc2626;
+  --status-rejected-bg:    rgba(220, 38, 38, 0.12);
+}
+
+/* ── DARK MODE ── */
+:root.dark {
+  --background:        #0f172a;
+  --background-light:  #575961;
+  --surface:           #1e293b;
+  --surface-raised:    #334155;
+
+  --border:            #334155;
+  --border-strong:     #475569;
+
+  --text-primary:      #f8fafc;
+  --text-secondary:    #94a3b8;
+  --text-muted:        #64748b;
+
+  --status-applied:        #94a3b8;
+  --status-applied-bg:     rgba(148, 163, 184, 0.10);
+  --status-interview:      #fdba74;
+  --status-interview-bg:   rgba(249, 115, 22, 0.12);
+  --status-shortlisted:    #38bdf8;
+  --status-shortlisted-bg: rgba(56, 189, 248, 0.12);
+  --status-offer:          #4ade80;
+  --status-offer-bg:       rgba(74, 222, 128, 0.12);
+  --status-rejected:       #f87171;
+  --status-rejected-bg:    rgba(248, 113, 113, 0.12);
+}
+
+/* ── REGISTER IN @theme ── */
+@theme inline {
+  /* use → bg-background        | slate-100 light / slate-900 dark */
+  --color-background:        var(--background);
+
+  /* use → bg-background        | slate-50 light / slate-900 dark */
+  --color-background-light:  var(--background-light);
+
+  /* use → bg-surface           | white light / slate-800 dark */
+  --color-surface:           var(--surface);
+
+  /* use → bg-surface-raised    | slate-50 light / slate-700 dark */
+  --color-surface-raised:    var(--surface-raised);
+
+  /* use → border-border        | slate-200 light / slate-700 dark */
+  --color-border:            var(--border);
+
+  /* use → border-border-strong | slate-300 light / slate-600 dark */
+  --color-border-strong:     var(--border-strong);
+
+  /* use → text-text-primary    | slate-900 light / slate-50 dark */
+  --color-text-primary:      var(--text-primary);
+
+  /* use → text-text-secondary  | slate-600 light / slate-400 dark */
+  --color-text-secondary:    var(--text-secondary);
+
+  /* use → text-text-muted      | slate-400 light / slate-500 dark */
+  --color-text-muted:        var(--text-muted);
+
+  /* use → bg-status-applied-bg text-status-applied     | slate-400/10 */
+  --color-status-applied:        var(--status-applied);
+  --color-status-applied-bg:     var(--status-applied-bg);
+
+  /* use → bg-status-interview-bg text-status-interview | orange-500/12 */
+  --color-status-interview:      var(--status-interview);
+  --color-status-interview-bg:   var(--status-interview-bg);
+
+  /* use → bg-status-shortlisted-bg text-status-shortlisted | sky-400/12 */
+  --color-status-shortlisted:    var(--status-shortlisted);
+  --color-status-shortlisted-bg: var(--status-shortlisted-bg);
+
+  /* use → bg-status-offer-bg text-status-offer         | green-400/12 */
+  --color-status-offer:          var(--status-offer);
+  --color-status-offer-bg:       var(--status-offer-bg);
+
+  /* use → bg-status-rejected-bg text-status-rejected   | red-400/12 */
+  --color-status-rejected:       var(--status-rejected);
+  --color-status-rejected-bg:    var(--status-rejected-bg);
+
+  /* ── ORANGE — never changes between modes ── */
+
+  /* use → bg-brand text-brand  | orange-500 */
+  --color-brand:             #f97316;
+
+  /* use → hover:bg-brand-hover | orange-600 */
+  --color-brand-hover:       #ea580c;
+
+  /* use → text-brand-soft      | orange-300 */
+  --color-brand-soft:        #fdba74;
+
+  /* use → bg-brand-subtle      | orange-500/12 */
+  --color-brand-subtle:      rgba(249, 115, 22, 0.12);
+}

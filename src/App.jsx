@@ -15,6 +15,8 @@ export default function App() {
   const [interviewJson, setInterviewJson] = useState(interviewList)
   const [activeBtn, setActiveBtn] = useState('all')
 
+  const [theme, setTheme] = ("dark")
+
   console.log(interviewJson)
 
   return (
@@ -24,7 +26,9 @@ export default function App() {
         interviewJson,
         setInterviewJson,
         activeBtn, 
-        setActiveBtn
+        setActiveBtn,
+        theme, 
+        setTheme
       }}>
         <RouterProvider router={router} />
       </JobContext.Provider >

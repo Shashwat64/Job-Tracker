@@ -20,14 +20,13 @@ Main:
   1. Interview Page: Can't add new Interview with 0 round of interview
 
 Secondary:
+  1. Make the aside buttons active (click and when tab is open)
+  2. Change the Icon and all with orange accent
+  3. Make the aside collape-able
 
-UI:
+
+UI: 
+  1. Add more colour to the all of the pages use claude to make mockup
+  2. Use storyset.com to make element just below the hero page
 
 Minor UI: 
-
-
-Temp:
-latestSelectedIdInterview = undefined
-selectedIdSortedInterview = undefined
-
-interviewOnPage = list of application with interview
