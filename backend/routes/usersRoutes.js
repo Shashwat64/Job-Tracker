@@ -32,6 +32,51 @@ usersRoutes.get('/:id', async(req, res)=>{
   }
 })
 
+usersRoutes.post('/aryan', async(req, res)=>{
+
+  const data = req.body
+  console.log(data)
+
+  res.status(201).json({
+    message:"I got the data"
+  })
+ 
+  // try {
+  //   for (const app of interviewList) {
+  //     const { company, jobTitle, salaryRange, date, interviewType, stage, source, notes, resumeUsed, isDeleted } = app;
+
+  //     await pool.query(
+  //       `INSERT INTO applications 
+  //         (user_id, company_name, company_logo, company_location, company_url, job_title, salary_min, salary_max, application_date, interview_type, stage, source, notes, resume_used, is_deleted)
+  //        VALUES
+  //         ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+  //       [
+  //         userId,
+  //         company.name,
+  //         company.logoLink || null,
+  //         company.location || null,
+  //         company.url || null,
+  //         jobTitle,
+  //         salaryRange?.min || null,
+  //         salaryRange?.max || null,
+  //         date,
+  //         interviewType || null,
+  //         stage || null,
+  //         source || null,
+  //         notes || null,
+  //         resumeUsed || null,
+  //         isDeleted ?? false
+  //       ]
+  //     );
+  //   }
+
+  //   console.log('All applications inserted!');
+  // } catch (err) {
+  //   console.error('Error inserting applications:', err);
+  // }
+  
+})
+
 usersRoutes.post("/", async (req, res) => {
 
   // const { email, password } = req.body

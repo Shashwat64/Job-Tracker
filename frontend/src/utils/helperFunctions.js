@@ -69,8 +69,8 @@ export function dateInYYYYMMDD(now){
   return formatted
 }
 
-export function interviewInLast6Months(interviewJson){
-  const withInterview = interviewJson.filter(info=>info.stage.toLowerCase() === "interview" && info?.interviews?.length>0)
+export function interviewInLast6Months(applicationJson){
+  const withInterview = applicationJson.filter(info=>info.stage.toLowerCase() === "interview" && info?.interviews?.length>0)
 
   const onlyRound = withInterview.map(info=>([info.company, ...info.interviews ]))
 
@@ -105,53 +105,4 @@ export function cn(...inputs){
   return twMerge(clsx(inputs))
 }
 
-//Color Palatte
 
-const darkColorPalette = {
-  bg: {
-    page:  "bg-[#0f172a]",
-    card:  "bg-[#1e293b]",
-    raised:"bg-[#334155]",
-  },
-  text: {
-    primary:   "text-[#f8fafc]",
-    secondary: "text-[#94a3b8]",
-    muted:     "text-[#64748b]",
-  },
-  border: {
-    default: "border-[#334155]",
-    strong:  "border-[#475569]",
-  },
-  status: {
-    applied:   "bg-[#94a3b8]/10 text-[#94a3b8]",
-    interview: "bg-[#f97316]/10 text-[#fdba74]",
-    offer:     "bg-[#4ade80]/10 text-[#4ade80]",
-    rejected:  "bg-[#f87171]/10 text-[#f87171]",
-  }
-}
-
-const lightColorPalette = {
-  bg: {
-    page:  "bg-[#f1f5f9]",
-    card:  "bg-[#ffffff]",
-    raised:"bg-[#f8fafc]",
-  },
-  text: {
-    primary:   "text-[#0f172a]",
-    secondary: "text-[#475569]",
-    muted:     "text-[#94a3b8]",
-  },
-  border: {
-    default: "border-[#e2e8f0]",
-    strong:  "border-[#cbd5e1]",
-  },
-  status: {
-    applied:   "bg-[#475569]/10 text-[#475569]",
-    interview: "bg-[#f97316]/10 text-[#ea580c]",
-    offer:     "bg-[#16a34a]/10 text-[#16a34a]",
-    rejected:  "bg-[#dc2626]/10 text-[#dc2626]",
-  }
-}
-
-export const getTokens = (theme = "light") =>
-  theme === "dark" ? darkColorPalette : lightColorPalette

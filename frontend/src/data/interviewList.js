@@ -77,7 +77,7 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
           failed → interview done and candidate didn’t pass 
     */
 
-const interviewList = [
+const applicationsList = [
   {
     id: 0,
     company: { 
@@ -530,4 +530,4 @@ const interviewList = [
     isDeleted: false
   }
 ];
-export default interviewList
+export default applicationsList

@@ -4,14 +4,17 @@ import { JobContext } from '../../App'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
-  const {interviewJson, setInterviewJson, activeBtn} = useContext(JobContext)
+  const {applicationJson, setApplicationJson, activeBtn} = useContext(JobContext)
 
-  console.log(interviewJson)
+  
+  console.log(applicationJson)
   
   console.log("openModalId", openModalId)
   
   const [editId] = useState(openModalId)
   
+  console.log("editId is ", editId)
+
   console.log(editId)
 
   useEffect(()=>{
@@ -21,7 +24,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("editId " + editId)
 
 
-  const nextId = interviewJson[interviewJson.length-1].id + 1
+  const nextId = applicationJson[applicationJson.length-1].id + 1
 
   let thatData
 
@@ -37,8 +40,8 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       isDeleted:false
     }
   }else{
-    thatData = interviewJson[editId]
-    console.log(interviewJson[editId])
+    thatData = applicationJson[editId]
+    console.log(applicationJson[editId])
   }
 
 
@@ -82,13 +85,13 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     }
     
     setAddJobModal(false)
-    if(!editId){
-      setInterviewJson(prev=>([
+    if(editId===null){
+      setApplicationJson(prev=>([
         ...prev,
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
       ]))
     }else{
-      setInterviewJson(prev=>([
+      setApplicationJson(prev=>([
         ...prev.slice(0,editId),
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
         ...prev.slice(editId+1)
@@ -215,7 +218,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
               type='submit'
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              {editId ? "Edit" : "Add"} Job
+              {editId!==null ? "Edit" : "Add"} Job
             </button>
 
             <button

@@ -5,7 +5,9 @@ import { JobContext } from '../../App'
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
   const dropdownRef = useRef()
 
-  const {interviewJson, setInterviewJson} = useContext(JobContext)
+  
+
+  const {applicationJson, setApplicationJson} = useContext(JobContext)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -37,7 +39,7 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
       </button>
       <button 
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-        onClick={()=>{setInterviewJson(prev=>{
+        onClick={()=>{setApplicationJson(prev=>{
           let newArr = [...prev]
           newArr[id].isDeleted = true
 

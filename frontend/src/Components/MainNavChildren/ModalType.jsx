@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { capitalise } from "../../utils/helperFunctions"
 
-export default function ModalType({ modaltype, setModalType, interviewJson, setInterviewJson, selectedId,setSelectedId }){
+export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId }){
   
-  const jobAtInterviewStage = interviewJson.filter(interview=>interview.stage.toLowerCase() === "interview")
+  const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length)
 
   // console.log(jobAtInterviewStage)
 
@@ -19,11 +19,11 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   }, [selectedId])
 
   
-  const nextRound = interviewJson[selectedId]?.interviews?.[0]?.round+1 || 1
-  console.log(interviewJson[selectedId]?.interviews?.[0]?.round+1)
+  const nextRound = applicationJson[selectedId]?.interviews?.[0]?.round+1 || 1
+  console.log(applicationJson[selectedId]?.interviews?.[0]?.round+1)
   console.log(nextRound)
 
-  const[selectedRound, setSelectedRound] = useState(interviewJson[selectedId]?.interviews?.[0]?.round)
+  const[selectedRound, setSelectedRound] = useState(applicationJson[selectedId]?.interviews?.[0]?.round)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -57,11 +57,11 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
     e.preventDefault()
 
     console.log(newRound)
-    console.log(selectedId, interviewJson[4].id)
+    console.log(selectedId, applicationJson[4].id)
 
     
     if (modaltype === 'add') {
-      setInterviewJson(prev => {
+      setApplicationJson(prev => {
         console.log(typeof selectedId)
         // Check if the ID actually exists in our data first
         const exists = prev.some(info => info.id === Number(selectedId));
@@ -81,7 +81,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
         ));
       });
     }else if(modaltype==='edit'){
-      setInterviewJson(prev=>(
+      setApplicationJson(prev=>(
         prev.map(info=>(
           info.id===selectedId ? 
           {...info,
@@ -115,7 +115,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
   //   status: ""
   // })
 
-  console.log(interviewJson[1].interviews.map(round=>round.time.duration))
+  console.log(applicationJson[1].interviews.map(round=>round.time.duration))
   console.log(selectedRound)
 
   const [newRound, setNewRound] = useState({
@@ -137,14 +137,14 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
     if(modaltype === "edit" ){
 
       // console.log(newRound)
-      setNewRound(interviewJson[selectedId].interviews.find(
+      setNewRound(applicationJson[selectedId].interviews.find(
         round => round.round === selectedRound
       ))
     }
   },[selectedId, selectedRound])
 
   console.log(newRound)
-  console.log(interviewJson)
+  console.log(applicationJson)
   console.log(selectedId)
 
 // console.log("selectedId:", selectedId)
@@ -200,14 +200,14 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
               <select name="addInterview" id=""
                 value={selectedId}
                 onChange={(e) => {
-                  const round = interviewJson[e.target.value]?.interviews?.[0]?.round;
+                  const round = applicationJson[e.target.value]?.interviews?.[0]?.round;
                   if (round !== undefined) {
                     setSelectedRound(round);
                   }
                   setSelectedId(Number(e.target.value))
                 }}
               >
-                {jobAtInterviewStage.filter(interview=>{
+                {jobWithInterviews.filter(interview=>{
                   if(modaltype==="add")
                     return true
                   else
@@ -222,7 +222,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 ? 
                   <select name="" id="" 
                     value={
-                      interviewJson[selectedId].interviews.find(
+                      applicationJson[selectedId].interviews.find(
                         round => round.round === Number(selectedRound)
                       ).round
                     }
@@ -231,7 +231,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                       return setSelectedRound(e.target.value)
                     }}
                   >
-                    {interviewJson[selectedId].interviews.map((round,i)=>(
+                    {applicationJson[selectedId].interviews.map((round,i)=>(
                       <option value={round.round} key={i}>{`Round ${round.round}`}</option>
 
                     ))}
@@ -350,7 +350,7 @@ export default function ModalType({ modaltype, setModalType, interviewJson, setI
                 type='submit'
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
-                {modaltype=="edit" ? "Edit" : "Add"} Job
+                {modaltype=="edit" ? "Edit" : "Add"} Interview
               </button>
 
               <button

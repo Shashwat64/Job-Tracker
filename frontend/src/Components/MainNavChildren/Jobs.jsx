@@ -23,7 +23,7 @@ export default function Jobs(){
   const [searchParam, setSearchParam] = useState('')
 
 
-  const {interviewJson, setInterviewJson, activeBtn, setActiveBtn} = useContext(JobContext)
+  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn} = useContext(JobContext)
 
 
   // console.log( "In Jobs.jsx", interviewJson[20])
@@ -49,8 +49,8 @@ export default function Jobs(){
   
 
   //Filtering on the basis of stage
-  if(interviewJson.length>0){
-     filteredList = interviewJson
+  if(applicationJson.length>0){
+     filteredList = applicationJson
     .filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
         return true

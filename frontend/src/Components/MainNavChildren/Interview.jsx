@@ -16,22 +16,22 @@ import ModalType from './ModalType'
 
 export default function Interview(){
 
-  const {interviewJson, setInterviewJson} = useContext(JobContext)
+  const {applicationJson, setApplicationJson} = useContext(JobContext)
 
   const [selectedId, setSelectedId] = useState(0) /* Set to 0, so that html for the right side will not throw error */
 
-  const [activeBtn, setActiveBtn] = useState("all")
+  const [activeBtn, setActiveBtn] = useState("upcoming")
   
   const [modaltype, setModalType] = useState(null)
   
-  const latestSelectedIdInterview = interviewJson[selectedId]?.interviews?.[0]
+  const latestSelectedIdInterview = applicationJson[selectedId]?.interviews?.[0]
 
 
   // console.log(interviewJson[selectedId]?.interviews)
 
-  const withInterview = interviewJson.filter(info=>info.interviews?.length)
+  const withInterview = applicationJson.filter(info=>info.interviews?.length)
 
-  const selectedIdSortedInterview = interviewJson[selectedId]?.interviews?.sort((a,b)=>b.round-a.round)
+  const selectedIdSortedInterview = applicationJson[selectedId]?.interviews?.sort((a,b)=>b.round-a.round)
 
   const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
@@ -76,7 +76,7 @@ export default function Interview(){
     </div>)
   })
 
-  console.log(interviewJson)
+  console.log(applicationJson)
 
 
 
@@ -84,7 +84,7 @@ export default function Interview(){
   return (
     
     <>
-      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} interviewJson={interviewJson} setInterviewJson={setInterviewJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
+      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
       <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        
@@ -121,7 +121,7 @@ export default function Interview(){
             </div>
             
           </div>
-          {latestSelectedIdInterview && !interviewJson[selectedId].isDeleted &&
+          {latestSelectedIdInterview && !applicationJson[selectedId].isDeleted &&
             <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4 min-h-0'> {/* Right side of the Interview */}
               <div className='flex w-full items-center justify-between'>
 
@@ -160,7 +160,7 @@ export default function Interview(){
                   >Edit</button>
                   <button 
                     className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
-                    onClick={()=>{setInterviewJson(prev=>prev.map(job =>
+                    onClick={()=>{setApplicationJson(prev=>prev.map(job =>
                       job.id === selectedId
                         ? { ...job, isDeleted: true }
                         : job
@@ -172,25 +172,25 @@ export default function Interview(){
               {/* {selectedId && } */}
 
               <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
-                Interview {'> ' + interviewJson[selectedId].company.name}  Interview
+                Interview {'> ' + applicationJson[selectedId].company.name}  Interview
               </div>
               <div 
                 className='bg-white px-4 p-2 border border-gray-100  border-b'  
               >
                 <div className='flex items-center m-2 pb-2 '>
                   <div className='' >
-                    <img className='w-10 h-10 mr-4' src={interviewJson[selectedId].company.logoLink} alt="company logo" />
+                    <img className='w-10 h-10 mr-4' src={applicationJson[selectedId].company.logoLink} alt="company logo" />
                   </div>
                   <div>
-                    <h3>{interviewJson[selectedId].company.name}</h3>
-                    <p className='text-sm text-black/60'>{interviewJson[selectedId].jobTitle}</p>
+                    <h3>{applicationJson[selectedId].company.name}</h3>
+                    <p className='text-sm text-black/60'>{applicationJson[selectedId].jobTitle}</p>
                   </div>
                 </div>
               </div>
               <div className='flex items-center border-b border-gray-200 bg-white h-15'>{/* Interview type time of the lastest interview */}
                 <div className='flex w-1/2 m-3 h-10 border-r pl-2 items-center border-gray-200'>
                   <img src={locationPin} alt="location pin" className='w-6 mr-2'/>
-                  {interviewJson[selectedId].interviewType} Interview
+                  {applicationJson[selectedId].interviewType} Interview
                 </div>
                 <div className='flex items-center w-1/2'>
                   <img src={calender} alt="calender" className='w-6'/>

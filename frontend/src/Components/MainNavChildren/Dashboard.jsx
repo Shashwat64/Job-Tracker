@@ -10,7 +10,7 @@ import { urlToLogoLink } from '../../utils/helperFunctions'
 
 
 //Its the lower most upcomign interview
-const InterviewItem = ({ companyName, type, jobTitle, date, time, id, logoLink }) => (
+const ApplicationItem = ({ companyName, type, jobTitle, date, time, id, logoLink }) => (
   <div className="px-6 py-4 flex justify-between items-center  hover:bg-gray-100 hover:cursor-pointer
  transition">
     <div className="flex items-center gap-4">
@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   const [hovered, setHovered] = useState(null) //have to remove this
 
-  const { interviewJson, activeBtn, setActiveBtn } = useContext(JobContext)
+  const { applicationJson, activeBtn, setActiveBtn } = useContext(JobContext)
 
   const navigate = useNavigate()
 
@@ -57,7 +57,7 @@ export default function Dashboard() {
   // console.log(month)
 
   
-  const numOfInterviewInMonth = interviewInLast6Months(interviewJson)
+  const numOfInterviewInMonth = interviewInLast6Months(applicationJson)
   // console.log(numOfInterviewInMonth) 
   
   const maxInterviewInMonth = Math.max(...numOfInterviewInMonth.map(d => d))
@@ -68,10 +68,10 @@ export default function Dashboard() {
   const months = getLast6Month(month).map(name=>name.slice(0,3))
 
 
-  interviewInLast6Months(interviewJson)
+  interviewInLast6Months(applicationJson)
 
 
-  const statusCounts = interviewJson.filter(info=>!info.isDeleted)
+  const statusCounts = applicationJson.filter(info=>!info.isDeleted)
   .reduce((acc, job) => {
     acc.total = (acc.total || 0) + 1 
     acc[job.stage] = (acc[job.stage] || 0) + 1 
@@ -115,10 +115,10 @@ export default function Dashboard() {
       </div>
     </div>
   )
-  // console.log(interviewJson)
+  // console.log(applicationJson)
 
   //Upcoming Interview
-  const upcomingInterviews = interviewJson.filter(info=>info.interviews?.length)
+  const upcomingInterviews = applicationJson.filter(info=>info.interviews?.length)
     .filter(info=>info.interviews[0].status.toLowerCase()==="upcoming")
     .map(info=>({id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]}))
     .sort((a,b)=>b.date.localeCompare(a.date))
@@ -201,7 +201,7 @@ export default function Dashboard() {
             <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">View Calendar →</button>
           </div>
           <div className="divide-y divide-gray-100">
-            {upcomingInterviews.map((interview, i) => <InterviewItem key={i} {...interview} />)}
+            {upcomingInterviews.map((interview, i) => <ApplicationItem key={i} {...interview} />)}
           </div>
         </div>
 
