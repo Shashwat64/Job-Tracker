@@ -24,7 +24,7 @@ export default function LandingPage(){
 
   const now = new Date()
   const last6Month = getLast6Month(now.getMonth())
-  console.log(last6Month)
+
   const graphH = [40, 50, 70, 80, 40, 30]
 
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ export default function LandingPage(){
     <>
       <main className=" bg-background-light">
         <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-10 border-b bg-surface border-border z-10">
-          <div class="h-full w-40 flex items-center justify-center" 
+          <div className="h-full w-40 flex items-center justify-center" 
             onClick={() => {
               navigate('/');
               window.scrollTo(0, 0);
@@ -96,8 +96,8 @@ export default function LandingPage(){
               <div className="w-8.75  mx-3"></div>
             </div>
             <div className="flex gap-2">
-              {miniStats.map(info=>(
-                <div className="bg-surface-raised border border-border w-1/4 m-2 py-1 px-2 rounded-lg">
+              {miniStats.map((info, i)=>(
+                <div key={i} className="bg-surface-raised border border-border w-1/4 m-2 py-1 px-2 rounded-lg">
                   <p className="text-text-secondary text-[10px] ">{info.name.toUpperCase()}</p>
                   <span className="font-semibold">{info.value}</span>
                 </div>
@@ -107,12 +107,12 @@ export default function LandingPage(){
               <p className="text-text-secondary text-sm px-2 pt-1">Activity - Last 6 Months</p>
               <div className="h-12 items-baseline flex gap-2 px-2">
                 {last6Month.map((_,i)=>(
-                  <div className="bg-border grow border border-border rounded-md" style={{height:`${graphH[i]}%`}}></div>
+                  <div key={i} className="bg-border grow border border-border rounded-md" style={{height:`${graphH[i]}%`}}></div>
                 ))}
               </div>
               <div className="flex gap-2 px-2">
                 {last6Month.map((_,i)=>(
-                  <div className="grow text-sm text-text-muted text-center">{last6Month[i].slice(0,3)}</div>
+                  <div key={i} className="grow text-sm text-text-muted text-center">{last6Month[i].slice(0,3)}</div>
                 ))}
               </div>
               
@@ -162,8 +162,8 @@ export default function LandingPage(){
               <p className="w-120 text-text-secondary">Stop losing track of applications in your inbox. OfferPath gives you a single, organized workspace for your entire job search.</p>
             </div> 
             <div className="grid grid-cols-3 gap-5 py-8 ">
-                {featuresCard.map(info=>(
-                  <div className="border border-border-strong px-5 py-10 rounded-2xl">
+                {featuresCard.map((info, i)=>(
+                  <div key={i} className="border border-border-strong px-5 py-10 rounded-2xl">
                     <h3 className="font-semibold mb-2">{info.title}</h3>
                     <p className="text-sm">{info.subTitle}</p>
                   </div>
@@ -185,14 +185,14 @@ export default function LandingPage(){
             </div> 
             <div className="w-full items-baseline flex gap-2 px-2 mt-20">
                 {howItWorkInfo.map((_,i)=>(
-                  <div className="flex grow items-center justify-center  ">
+                  <div key={i} className="flex grow items-center justify-center  ">
                     <p className="flex items-center justify-center text-2xl font-semibold  border border-border-strong w-11 h-11 text-brand rounded-full">{i+1}</p>
                   </div>
                 ))}
               </div>
               <div className="flex gap-2 px-2 w-full mt-5">
                 {howItWorkInfo.map((info,i)=>(
-                  <div className="grow text-center">
+                  <div key={i} className="grow text-center">
                     <p className="mb-2">{info.title}</p>
                     <p className="text-sm text-text-muted">{info.subTitle}</p>
                   </div>
@@ -216,27 +216,27 @@ export default function LandingPage(){
                 <h2 className="text-3xl font-bold mb-5">Free</h2>
                 <h3 className="text-4xl font-bold mb-3">$0 <span className="text-xl font-medium text-text-secondary">/forever</span></h3>
                 <p className="mb-10">Everything you need to get started with your job search</p>
-                <ul class="space-y-2">
-                  <li class="flex items-center gap-2">
-                    <span class="text-green-500">✓</span>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
                     Unlimited applications
                   </li>
 
-                  <li class="flex items-center gap-2">
-                    <span class="text-green-500">✓</span>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
                     Open source
                   </li>
 
-                  <li class="flex items-center gap-2">
-                    <span class="text-green-500">✓</span>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
                     Status tracking
                   </li>
-                  <li class="flex items-center gap-2">
-                    <span class="text-green-500">✓</span>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
                     Interview scheduler
                   </li>
-                  <li class="flex items-center gap-2">
-                    <span class="text-green-500">✓</span>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
                     Progress dashboard
                   </li>
                 </ul>
