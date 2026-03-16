@@ -121,7 +121,7 @@ export default function Dashboard() {
   const upcomingInterviews = applicationJson.filter(info=>info.interviews?.length)
     .filter(info=>info.interviews[0].status.toLowerCase()==="upcoming")
     .map(info=>({id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]}))
-    .sort((a,b)=>b.date.localeCompare(a.date))
+    .sort((a,b)=>a.date.localeCompare(b.date))
 
   console.log(upcomingInterviews)
   console.log(upcomingInterviews)

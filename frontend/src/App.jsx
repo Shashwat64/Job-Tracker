@@ -2,11 +2,11 @@ import { RouterProvider} from "react-router-dom"
 import { useState, createContext} from "react"
 import { router } from "./router"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 import { Analytics } from "@vercel/analytics/react"
 
-import { getUserDetails, putAllData} from "./api/users"
+import { getUserDetails, getAllDataOfUser} from "./api/users"
 
 import applicationsList from './data/interviewList'
 
@@ -22,20 +22,26 @@ export default function App() {
   const [theme, setTheme] = ("dark")
 
   console.log(applicationJson)
+  const called = useRef(false);
 
   //practise for the server
   // const [users, setUsers] = useState([])
 
-  // useEffect(() => {
-  //   async function addApplications() {
-  //     const res = await fetch("http://localhost:8000/users")
-  //     const data = await res.json()
-  //     setUsers(data)
-  //   }
+  useEffect(() => {
+    // async function addApplications() {
+    //   const res = await fetch("http://localhost:8000/users")
+    //   const data = await res.json()
+    //   setUsers(data)
+    // }
 
-  //   // getUsers()
-  //   getUserDetails(1)
-  // }, [])
+    // getUsers()
+    // getUserDetails(1)
+    //  if (called.current) return;
+    //   called.current = true;
+
+    // putAllData(applicationJson)
+    getAllDataOfUser(1)
+  }, [])
 
   // console.log(users)
 
