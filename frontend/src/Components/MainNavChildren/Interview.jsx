@@ -16,7 +16,9 @@ import ModalType from './ModalType'
 
 export default function Interview(){
 
+  
   const {applicationJson, setApplicationJson} = useContext(JobContext)
+  console.log(applicationJson)
 
   const [selectedId, setSelectedId] = useState(0) /* Set to 0, so that html for the right side will not throw error */
 

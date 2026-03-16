@@ -22,7 +22,10 @@ export  async function getUserDetails(userId){
 
 //this was used to add initial data
 export  async function resetData(applicationJson){
-  const res = await fetch('http://localhost:8000/users/aryan',{
+
+  console.log("resetData ran")
+
+  const res = await fetch('http://localhost:8000/users/reset',{
   method: 'POST',
   headers:{
     "Content-Type": "application/json"
@@ -36,6 +39,8 @@ export  async function resetData(applicationJson){
 
 export async function getAllDataOfUser(userId){
 
+  console.log("getAllDataOfUser was called")
+
   const applicationRes = await fetch(`http://localhost:8000/users/${userId}/applications`,
     {
       method:"GET"
@@ -43,7 +48,7 @@ export async function getAllDataOfUser(userId){
   )
   const applicationData = await applicationRes.json()
 
-  // console.log(applicationData)
+  console.log(applicationData)
 
   const interviewRes = await fetch(`http://localhost:8000/users/${userId}/interviews`,
     {
@@ -64,4 +69,16 @@ export async function getAllDataOfUser(userId){
   })
 
   return applicationJson
+}
+
+export async function updateApplication(application){
+  const interviewRes = await fetch(`http://localhost:8000/users/${userId}/applications`,
+    {
+      method:"PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(application)
+    }
+  )
+  const reply = await interviewRes.json()
+  return reply
 }

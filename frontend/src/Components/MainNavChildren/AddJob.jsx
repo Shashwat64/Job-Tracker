@@ -2,6 +2,8 @@ import { useState,useContext, useEffect, useRef } from 'react'
 
 import { JobContext } from '../../App'
 
+import { updateApplication } from '../../api/users'
+
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
   const {applicationJson, setApplicationJson, activeBtn} = useContext(JobContext)
@@ -40,8 +42,8 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       isDeleted:false
     }
   }else{
-    thatData = applicationJson[editId]
-    console.log(applicationJson[editId])
+    thatData = applicationJson[editId-1]
+    console.log(applicationJson[editId-1])
   }
 
 
@@ -70,7 +72,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     
   }
   
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault()
     const formData = e.currentTarget
     
@@ -83,6 +85,8 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     if (cleanUrl.includes("https://")) {
       cleanUrl = newJob.company.url.split('/')[2]
     }
+    const reply = await updateApplication(newJob)
+    console.log(reply)
     
     setAddJobModal(false)
     if(editId===null){
@@ -92,9 +96,9 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       ]))
     }else{
       setApplicationJson(prev=>([
-        ...prev.slice(0,editId),
+        ...prev.slice(0,editId-1),
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
-        ...prev.slice(editId+1)
+        ...prev.slice(editId)
       ]))
     }
   }

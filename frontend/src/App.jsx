@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react"
 
 import { Analytics } from "@vercel/analytics/react"
 
-import { getUserDetails, getAllDataOfUser} from "./api/users"
+import { getUserDetails, getAllDataOfUser, resetData} from "./api/users"
 
 import applicationsList from './data/interviewList'
 
@@ -16,32 +16,31 @@ export const JobContext = createContext()
 export default function App() {
 
 
-  const [applicationJson, setApplicationJson] = useState(applicationsList)
+  const [applicationJson, setApplicationJson] = useState(null)
   const [activeBtn, setActiveBtn] = useState('all')
 
   const [theme, setTheme] = ("dark")
 
-  console.log(applicationJson)
-  const called = useRef(false);
+  // console.log(applicationJson)
+  let called = false
 
   //practise for the server
   // const [users, setUsers] = useState([])
 
   useEffect(() => {
-    // async function addApplications() {
-    //   const res = await fetch("http://localhost:8000/users")
-    //   const data = await res.json()
-    //   setUsers(data)
-    // }
+  async function loadData() {
+    if(!called){
+      called = true;
+      await resetData(applicationsList)
+    }
+    const data = await getAllDataOfUser(1);
+    setApplicationJson(data);
+  }
 
-    // getUsers()
-    // getUserDetails(1)
-    //  if (called.current) return;
-    //   called.current = true;
+  loadData();
+}, []);
 
-    // putAllData(applicationJson)
-    getAllDataOfUser(1)
-  }, [])
+  console.log(applicationJson)
 
   // console.log(users)
 
@@ -82,6 +81,7 @@ export default function App() {
   return (
     <>
       {/* Global Providers Here */}
+      {applicationJson && 
       <JobContext.Provider value={{
         applicationJson, //interviewJson
         setApplicationJson, //setInterviewJson
@@ -92,6 +92,7 @@ export default function App() {
       }}>
         <RouterProvider router={router} />
       </JobContext.Provider>
+      }
     </>
   )
 }
