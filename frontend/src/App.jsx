@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react"
 
 import { Analytics } from "@vercel/analytics/react"
 
-import { getUserDetails, getAllDataOfUser, resetData} from "./api/users"
+import { getUserDetails, getAllDataOfUser, resetData, updateInterviews} from "./api/users"
 
 import applicationsList from './data/interviewList'
 
@@ -35,6 +35,7 @@ export default function App() {
     }
     const data = await getAllDataOfUser(1);
     setApplicationJson(data);
+    // console.log(await updateInterviews({message: "this is test mock, interviews"}))
   }
 
   loadData();

@@ -82,3 +82,15 @@ export async function updateApplication(application){
   const reply = await interviewRes.json()
   return reply
 }
+
+export async function updateInterviews(interviews){
+  const interviewRes = await fetch(`http://localhost:8000/users/${userId}/interviews`,
+    {
+      method:"PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(interviews)
+    }
+  )
+  const reply = await interviewRes.json()
+  return reply
+}

@@ -35,7 +35,6 @@ usersRoutes.get('/:id', async(req, res)=>{
 usersRoutes.get('/:id/applications', async(req, res)=>{
 
   const userId = req.params.id
-  console.log(userId)
 
   try {
     const result = await pool.query('SELECT * FROM applications WHERE user_id = $1 ORDER BY id', [userId]);
@@ -44,7 +43,6 @@ usersRoutes.get('/:id/applications', async(req, res)=>{
       // User not found
       return res.status(404).json({ message: "No application with that user exist" });
     }
-    console.log(result.rows[0])
 
     // res.json({
     //   data:result
@@ -74,8 +72,6 @@ usersRoutes.get('/:id/applications', async(req, res)=>{
         resumeUsed: application.resume_used,
       })
     }
-
-    console.log(applicationJson)
 
     // Send the user object to frontend
     res.json({
@@ -107,6 +103,7 @@ usersRoutes.get('/:id/interviews', async(req, res)=>{
 
       interviewJson.push({
         applicationId: interview.application_id,
+        userId:interview.user_id,
         round: interview.round,
         type: interview.type,
         date: interview.interview_date.toISOString().slice(0, 10),
@@ -239,8 +236,6 @@ usersRoutes.post("/", async (req, res) => {
 
   const exists = data.some(info => info.email === email)
 
-  console.log("email is ",email)
-  console.log("password is ",password)
   
   try {
     const result = await pool.query('SELECT * FROM users WHERE id = $1', [1]);
@@ -261,9 +256,6 @@ usersRoutes.post("/", async (req, res) => {
 usersRoutes.patch('/:id/applications', async(req,res)=>{
   const userId = req.params.id
   const application = req.body
-
-  console.log(typeof application.id)
-  console.log(application.userID)
 
   const appliedDate = new Date(application.date)
 
@@ -306,6 +298,51 @@ usersRoutes.patch('/:id/applications', async(req,res)=>{
 );
 
   res.status(200).json({id: application.id, result})
+
+})
+
+usersRoutes.patch('/:id/interviews', async(req,res)=>{
+  const userId = req.params.id
+  const round = req.body
+
+  // res.status(200).send({message: "Short circuiting"})
+  
+  // res.status(200).json({message:"from patch/interviews", data:round})
+
+    // console.log(typeof interview.id)
+    // console.log(interview.userID)
+
+    const result = await pool.query(
+      `UPDATE interviews
+      SET interview_date = $1,
+          type = $2,
+          start_time = $3,
+          duration_minutes = $4,
+          details = $5,
+          interviewer = $6,
+          status = $7,
+          meeting_link = $8,
+          notes = $9
+      WHERE application_id = $10 AND round = $11
+      RETURNING *`,
+      [
+        round.date,          
+        round.type,                  
+        round.time.start,
+        round.time.duration,
+        round.details,
+        round.interviewer,
+        round.status,
+        round.meetingLink,
+        round.notes,
+        Number(round.applicationId), 
+        Number(round.round)
+      ]
+  );
+  
+    res.status(200).json({reply:result})
+  
+
 
 })
 

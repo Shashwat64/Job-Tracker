@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { capitalise } from "../../utils/helperFunctions"
 
+//api function
+import { updateInterviews } from "../../api/users"
+
 export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId }){
   
   const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length)
@@ -19,11 +22,15 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   }, [selectedId])
 
   
-  const nextRound = applicationJson[selectedId]?.interviews?.[0]?.round+1 || 1
-  console.log(applicationJson[selectedId]?.interviews?.[0]?.round+1)
+
+  
+
+  
+  const nextRound = applicationJson[selectedId-1]?.interviews?.[0]?.round+1 || 1
+  console.log(applicationJson[selectedId-1]?.interviews?.[0]?.round+1)
   console.log(nextRound)
 
-  const[selectedRound, setSelectedRound] = useState(applicationJson[selectedId]?.interviews?.[0]?.round)
+  const[selectedRound, setSelectedRound] = useState(applicationJson[selectedId-1]?.interviews?.[0]?.round)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -41,6 +48,8 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     }
   }
 
+
+
   /* 
   else if(name.includes('details')){
       setNewRound(prev=>({
@@ -53,12 +62,11 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     }
    */
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault()
 
-    console.log(newRound)
-    console.log(selectedId, applicationJson[4].id)
-
+    console.log("data of new round is sent")
+    console.log(await updateInterviews(newRound))
     
     if (modaltype === 'add') {
       setApplicationJson(prev => {
@@ -72,7 +80,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
         }
 
         return prev.map(info => (
-          info.id === selectedId 
+          info.id === (selectedId)
             ? {
                 ...info,
                 interviews: [newRound, ...(info.interviews ?? [])]
@@ -83,19 +91,15 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     }else if(modaltype==='edit'){
       setApplicationJson(prev=>(
         prev.map(info=>(
-          info.id===selectedId ? 
+          info.id===(selectedId) ? 
           {...info,
             interviews:info.interviews.map((round, i)=>(
-              round.round === Number(selectedRound) ? newRound : round
-            ))
+              round.round === Number(selectedRound) ? {...info.interviews[i], ...newRound} : round))
           }
           : info
         ))
       ))
     }
-
-
-
     setModalType(null)
   }
 
@@ -137,15 +141,16 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     if(modaltype === "edit" ){
 
       // console.log(newRound)
-      setNewRound(applicationJson[selectedId].interviews.find(
+      setNewRound(applicationJson[selectedId-1].interviews.find(
         round => round.round === selectedRound
       ))
     }
   },[selectedId, selectedRound])
 
-  console.log(newRound)
-  console.log(applicationJson)
-  console.log(selectedId)
+  console.log("selectedId is", selectedId)
+  console.log("nextRound is", nextRound)
+  console.log("selectedRound is", selectedRound)
+  console.log("newRound is", newRound)
 
 // console.log("selectedId:", selectedId)
 // console.log("selectedRound:", selectedRound)
@@ -202,7 +207,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 onChange={(e) => {
                   const round = applicationJson[e.target.value]?.interviews?.[0]?.round;
                   if (round !== undefined) {
-                    setSelectedRound(round);
+                    setSelectedRound(Number(round));
                   }
                   setSelectedId(Number(e.target.value))
                 }}
@@ -222,16 +227,16 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 ? 
                   <select name="" id="" 
                     value={
-                      applicationJson[selectedId].interviews.find(
+                      applicationJson[selectedId-1].interviews.find(
                         round => round.round === Number(selectedRound)
                       ).round
                     }
                     onChange={(e) => {
                       // console.log(e.target.value)
-                      return setSelectedRound(e.target.value)
+                      return setSelectedRound(Number(e.target.value))
                     }}
                   >
-                    {applicationJson[selectedId].interviews.map((round,i)=>(
+                    {applicationJson[selectedId-1].interviews.map((round,i)=>(
                       <option value={round.round} key={i}>{`Round ${round.round}`}</option>
 
                     ))}
