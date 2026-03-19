@@ -3,7 +3,9 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 //Components
 import LandingPage from './Components/LandingPage'
-import AppLayout from './Components/AppLayout'
+import AppLayout, { loader as appLayoutLoader}  from './Components/AppLayout'
+import SignIn from './Components/SignIn'
+import SignUp from './Components/SignUp'
 import Dashboard from './Components/MainNavChildren/Dashboard'
 import Jobs from './Components/MainNavChildren/Jobs'
 import Interview from './Components/MainNavChildren/Interview'
@@ -20,8 +22,17 @@ export const router = createBrowserRouter([
     element: <LandingPage />
   },
   {
+    path: '/signin',
+    element: <SignIn />
+  },
+  {
+    path: '/Register',
+    element: <SignUp />
+  },
+  {
     path:'/app',
-    element:<AppLayout/>,
+    element: <AppLayout />,
+    loader: appLayoutLoader,
     children:[
       {
         index:true,
@@ -64,5 +75,7 @@ export const router = createBrowserRouter([
         element: <Profile/>
       },
     ]
+        
+    
   }
 ])

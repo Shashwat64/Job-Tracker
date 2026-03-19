@@ -16,7 +16,7 @@ export default function LandingPage(){
   const featuresRef = useRef(null)
   const howItWorksRef = useRef(null)
   const pricingRef = useRef(null)
-  
+   
 
   const {theme} = useContext(JobContext)
 
