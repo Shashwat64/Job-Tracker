@@ -57,19 +57,28 @@ export async function getAllDataOfUser(userId){
   )
   const interviewData = await interviewRes.json()
 
-  const applicationJson = applicationData.data.map(application=>{
-    const currentInterviewData = interviewData.data?.filter(interview=>interview.applicationId === application.id)
+  if(interviewData.length>0){
+    const applicationJson = applicationData.data.map(application=>{
+      const currentInterviewData = interviewData.data?.filter(interview=>interview.applicationId === application.id)
+  
+      if(currentInterviewData.length === 0 ){
+        return application
+      }else{
+        currentInterviewData.sort((a,b)=>b.round-a.round)
+        return {...application, interviews:currentInterviewData}
+      }
+    })
+  
+    return applicationJson
+  }
+  else if(applicationData.length>0){
+    return applicationData
+  }else{
+    return []
+  }
 
-    if(currentInterviewData.length === 0 ){
-      return application
-    }else{
-      currentInterviewData.sort((a,b)=>b.round-a.round)
-      return {...application, interviews:currentInterviewData}
-    }
-  })
-
-  return applicationJson
 }
+
 
 export async function updateApplication(application){
   const interviewRes = await fetch(`http://localhost:8000/users/${userId}/applications`,
@@ -93,4 +102,47 @@ export async function updateInterviews(interviews){
   )
   const reply = await interviewRes.json()
   return reply
+}
+
+export async function isSignedIn(){
+  const authRes = await fetch("http://localhost:8000/auth/me", {
+    credentials: 'include'
+  })
+
+  const data = await authRes.json()
+
+  const userData  = await getUserData(data.id)
+
+  if(authRes.ok){
+    console.log("User Signed in")
+    return userData
+  }else{
+    console.log("User not Signed in")
+    return false 
+  }
+}
+
+export async function getUserData(id){
+  const usersRes = await fetch(`http://localhost:8000/users/${id}`, {
+    method:"GET",
+    credentials: 'include'
+  }) 
+
+  const userData = await usersRes.json()
+
+  return userData
+
+}
+
+
+export async function signOutUser(){
+  const usersRes = await fetch(`http://localhost:8000/auth/signout`, {
+    method:"POST",
+    credentials: 'include'
+  }) 
+
+  // const userData = await usersRes.json()
+
+  // return userData
+
 }

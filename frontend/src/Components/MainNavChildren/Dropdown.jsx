@@ -16,10 +16,9 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [id]);
-
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [id])
 
   if (openModalId !== id) return null
 

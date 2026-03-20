@@ -1,38 +1,108 @@
-import { Link, useSearchParams, useLocation} from 'react-router-dom'
+import { Link, useSearchParams, useLocation, useNavigate, redirect} from 'react-router-dom'
 
 import logoOrange from '../assets/logoOrange.png'
+
+export async function loader() {
+  const res = await fetch("http://localhost:8000/auth/me", {
+    credentials: 'include'
+  })
+
+  if (res.ok) {
+    console.log("inside loader of signin")
+    return redirect('/app')
+  }
+
+  return null 
+}
+
 
 export default function SignIn(){
 
   const location = useLocation()
   const state = location.state
 
+  const navigate = useNavigate()
 
-  const displayWarning = state?.loginRequired || false
+  const displayWarning = state?.signInRequired || false
+
+  async function handleSumbit(e){
+    e.preventDefault()
+
+    const formData = new FormData(e.target)
+
+    const email = formData.get("email")
+    const password = formData.get("password")
+
+
+    console.log(email)
+    console.log(password)
+
+    const res = await fetch("http://localhost:8000/auth/signin",{
+      method:"POST",
+      credentials: 'include',
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    })
+
+    const data = await res.json()
+
+    console.log(data)
+
+    if(res.ok){
+      console.log("status code is 200")
+      navigate('/app')
+
+    }
+  }
 
   return (
-    <main className='min-h-screen bg-background flex items-center justify-center'>
+    <main className='min-h-screen bg-background flex items-center justify-center select-none'>
+      <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-10 border-b bg-surface border-border z-10">
+          <div className="h-full w-40 flex items-center justify-center cursor-pointer" 
+            onClick={() => {
+              navigate('/');
+              window.scrollTo(0, 0);
+            }}
+          >
+            <img src={logoOrange} alt="logo"  className="object-cover self-center mt-2 mr-px"/>
+          </div>
+        </nav>
       <div className="bg-surface rounded-2xl border border-slate-200 p-8 w-full max-w-md">
-        <h1 className='text-text-secondary mb-5'>Login Page</h1>
+        <h1 className='text-text-secondary mb-5'>Signin Page</h1>
         <h2 className='font-semibold text-lg'>Welcome Back</h2>
         <p className='text-sm font-light mb-5'>Sign in to continue where you left off.</p>
 
-        <p className={`mb-5 text-center text-brand bg-brand-subtle py-2 ${!displayWarning && 'invisible'}`}>Login required</p>
+        <p className={`mb-5 text-center text-brand bg-brand-subtle py-2 ${!displayWarning && 'invisible'}`}>Log in required</p>
 
-        <form action="">
+        <form onSubmit={handleSumbit}>
           <label className='w-full flex flex-col'>
             Email Address
-            <input className='p-2 mt-1 mb-5 border border-border rounded-lg' type="text" placeholder='Enter your email' />
+            <input 
+              className='p-2 mt-1 mb-5 border border-border rounded-lg' 
+              type="text" 
+              placeholder='Enter your email'
+              name="email" 
+            />
           </label>
 
           <label className='w-full flex flex-col'>
             Password
-            <input className='p-2 mt-1 mb-5 border border-border rounded-lg' type="text" placeholder='Enter your password' />
+            <input 
+              className='p-2 mt-1 mb-5 border border-border rounded-lg' 
+              type="password" 
+              placeholder='Enter your password'
+              name="password"
+            />
           </label>
 
           <button className='block mx-auto mb-5 py-2 bg-brand text-surface w-11/12 self-center rounded-lg'>Sign in</button>
 
-          <p className='text-center'>Don't have an account?<Link to="../signup" className='text-brand cursor-pointer'>Sign Up</Link> </p>
+          <p className='text-center'>Don't have an account?<Link to="../signup" className='text-brand cursor-pointer ml-2'>Sign Up</Link> </p>
         </form>
       </div>
     </main>

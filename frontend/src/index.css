@@ -61,7 +61,9 @@
 
   /* use → bg-background        | slate-50 light / slate-900 dark */
   --color-background-light:  var(--background-light);
-
+  
+  --color-background-strong:  var(--background-light);
+  
   /* use → bg-surface           | white light / slate-800 dark */
   --color-surface:           var(--surface);
 

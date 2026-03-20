@@ -1,4 +1,5 @@
-import express, { application } from 'express'
+import express from 'express'
+import jwt from 'jsonwebtoken'
 
 import pool from '../config/db.js'
 
@@ -11,24 +12,27 @@ usersRoutes.get('/', async (req, res) => {
 
 usersRoutes.get('/:id', async(req, res)=>{
 
-  const userId = req.params.id
+  
+  const token = req.cookies.token
+  
+  console.log("users/me token is",token)
+  console.log("user/me ran")
+
+  if (!token) {
+    return res.status(401).json({ error: 'not logged in' })
+  }
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    const user = jwt.verify(token, process.env.JWT_SECRET)
 
-    if (result.rowCount === 0) {
-      // User not found
-      return res.status(404).json({ message: "User doesn't exist" });
-    }
+    console.log("user in users/me", user)
 
-    // Send the user object to frontend
-    res.json({
-      message: "this is the data from /:id",
-      data:result.rows[0]
-    }); // or res.send(result.rows[0])
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Database error' });
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
+    res.json(result.rows[0]) 
+    // console.log("userData in the usersRoutes", result.rows[0])
+  } catch(err) {
+    console.log("error is", err)
+    res.status(401).json({ error: 'invalid token' })
   }
 })
 
@@ -224,6 +228,7 @@ usersRoutes.post('/reset', async (req, res) => {
 
 });
 
+//this have to removed
 usersRoutes.post("/", async (req, res) => {
 
   // const { email, password } = req.body

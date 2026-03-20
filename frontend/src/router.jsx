@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 //Components
 import LandingPage from './Components/LandingPage'
 import AppLayout, { loader as appLayoutLoader}  from './Components/AppLayout'
-import SignIn from './Components/SignIn'
+import SignIn, { loader as signInLoader } from './Components/SignIn'
 import SignUp from './Components/SignUp'
 import Dashboard from './Components/MainNavChildren/Dashboard'
 import Jobs from './Components/MainNavChildren/Jobs'
@@ -23,10 +23,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/signin',
-    element: <SignIn />
+    element: <SignIn />,
+    loader: signInLoader
   },
   {
-    path: '/Register',
+    path: '/signup',
     element: <SignUp />
   },
   {

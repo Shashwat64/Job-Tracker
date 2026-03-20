@@ -23,11 +23,10 @@ export default function Jobs(){
   const [searchParam, setSearchParam] = useState('')
 
 
-  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn} = useContext(JobContext)
-
+  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn, userData} = useContext(JobContext)
 
   // console.log( "In Jobs.jsx", interviewJson[20])
-  // console.log("Jobs re-rendered")
+  console.log("userData in Jobs", userData)
 
   const [addJobModal, setAddJobModal] = useState(false)
   const [openModalId, setOpenModalId] = useState(null)
@@ -49,7 +48,7 @@ export default function Jobs(){
   
 
   //Filtering on the basis of stage
-  if(applicationJson.length>0){
+  if(applicationJson?.length>0){
      filteredList = applicationJson
     .filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)

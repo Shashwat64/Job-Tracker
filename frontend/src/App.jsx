@@ -21,6 +21,8 @@ export default function App() {
 
   const [theme, setTheme] = ("dark")
 
+  const [userData, setUserData] = useState(null)
+
   // console.log(applicationJson)
 //   let called = false
 
@@ -89,7 +91,9 @@ export default function App() {
         activeBtn, 
         setActiveBtn,
         theme, 
-        setTheme
+        setTheme,
+        userData, 
+        setUserData
       }}>
         <RouterProvider router={router} />
       </JobContext.Provider>

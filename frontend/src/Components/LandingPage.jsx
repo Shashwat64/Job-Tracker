@@ -67,7 +67,7 @@ export default function LandingPage(){
 
           <div>
             
-            <Link to="app" className=" inline-block bg-background-light text-text-primary font-medium px-4 py-2 rounded-xl border border-border-strong mr-2 hover:border-brand-hover hover:bg-brand-subtle active:scale-95">Log in</Link>
+            <Link to="signin" className=" inline-block bg-background-light text-text-primary font-medium px-4 py-2 rounded-xl border border-border-strong mr-2 hover:border-brand-hover hover:bg-brand-subtle active:scale-95">Sign in</Link>
             <Link to="app" className=" inline-block bg-brand text-white font-medium px-4 py-2 rounded-xl hover:bg-brand-hover transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 ">Get Started</Link>
           </div>
         </nav>
