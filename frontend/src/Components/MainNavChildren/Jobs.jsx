@@ -26,7 +26,7 @@ export default function Jobs(){
   const {applicationJson, setApplicationJson, activeBtn, setActiveBtn, userData} = useContext(JobContext)
 
   // console.log( "In Jobs.jsx", interviewJson[20])
-  console.log("userData in Jobs", userData)
+  // console.log("userData in Jobs", userData)
   console.log("applicationJson in Jobs", applicationJson)
 
   const [addJobModal, setAddJobModal] = useState(false)

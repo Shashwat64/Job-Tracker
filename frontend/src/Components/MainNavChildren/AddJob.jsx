@@ -86,7 +86,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     
     if (newJob.salaryRange.max < newJob.salaryRange.min) {
       alert("Max salary must be greater than min salary");
-      return;
+      return
     }
 
     console.log("newJob in handleSubmit ", newJob)
@@ -96,36 +96,48 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       cleanUrl = newJob.company.url.split('/')[2]
     }
 
-    console.log("cleanURL is", cleanUrl)
+    // console.log("cleanURL is", cleanUrl)
     // const reply = await updateApplication(newJob, userData.id)
     // console.log(reply)
 
+    const updatedJob = {
+      ...newJob, 
+      company: {
+        ...newJob.company, 
+        logoLink: `https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+      }
+    }
+
+
+    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}))
+
     console.log("applicationJson is", applicationJson)
-    console.log("newJob is", newJob)
+    console.log("newJob is", updatedJob)
     
     setAddJobModal(false)
     if(!applicationJson?.length){ //this is for adding application for the first time
-      setApplicationJson([{...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}])
-      const reply = await addApplication(newJob)
+      setApplicationJson([updatedJob])
+      
+      const reply = await addApplication(updatedJob)
     }
     else if(editId===null){ //this is for adding new applications
       setApplicationJson(prev=>([
         ...prev,
-        {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
+        updatedJob
       ]))
 
-      const reply = await addApplication(newJob)
+      const reply = await addApplication(updatedJob)
     }
     
     else{
       const index = applicationJson.findIndex(item => item.id === editId)
       console.log("else block ran and value of index is", index)
 
-      updateApplication(newJob)
+      updateApplication(updatedJob)
       
       setApplicationJson(prev=>([
         ...prev.slice(0,index),
-        {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
+        updatedJob,
         ...prev.slice(index+1)
       ]))
     }

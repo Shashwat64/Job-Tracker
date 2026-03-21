@@ -6,7 +6,7 @@ import { updateInterviews } from "../../api/users"
 
 export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId }){
   
-  const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length)
+  const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length || interview.stage.toLowerCase() === 'interview')
 
   // console.log(jobAtInterviewStage)
 
@@ -20,11 +20,6 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   useEffect(() => {
     setModalSelectedId(selectedId)
   }, [selectedId])
-
-  
-
-  
-
   
   const nextRound = applicationJson[selectedId-1]?.interviews?.[0]?.round+1 || 1
   console.log(applicationJson[selectedId-1]?.interviews?.[0]?.round+1)

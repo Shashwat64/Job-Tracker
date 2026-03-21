@@ -20,20 +20,25 @@ export default function Interview(){
   const {applicationJson, setApplicationJson} = useContext(JobContext)
   console.log(applicationJson)
 
-  const [selectedId, setSelectedId] = useState(1) /* Set to 0, so that html for the right side will not throw error */
+  const [selectedId, setSelectedId] = useState() /* Set to 0, so that html for the right side will not throw error */
 
   console.log(selectedId)
 
-  const [activeBtn, setActiveBtn] = useState("upcoming")
+  const [activeBtn, setActiveBtn] = useState("all")
   
   const [modaltype, setModalType] = useState(null)
+
+  const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
   
   const latestSelectedIdInterview = applicationJson[selectedId-1]?.interviews?.[0]
+
+  console.log("selectedId", selectedId)
 
 
   // console.log(interviewJson[selectedId]?.interviews)
 
-  const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
+
+  console.log("withInterview is", withInterview)
 
   const selectedIdSortedInterview = applicationJson[selectedId-1]?.interviews?.sort((a,b)=>b.round-a.round)
 
@@ -41,27 +46,34 @@ export default function Interview(){
       if(activeBtn==='all' && !interview.isDeleted)
         return true
       else if(!interview.isDeleted)
-        return interview?.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
+        return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
     }) || []
 
-  const interviewLeftHtml = interviewOnPage.map((info, i)=>(
-    <div 
-      className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
-      key={i}
-      onClick={()=>{setSelectedId(Number(info.id))}}
-    >
-      <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
-        <div className='' >
-          <img className='w-10 h-10 mr-4' src={info.company.logoLink} alt="company logo" />
+    console.log(interviewOnPage)
+
+    let interviewLeftHtml
+
+    if(interviewLeftHtml?.length){
+      interviewLeftHtml = interviewOnPage.map((info, i)=>(
+        <div 
+          className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
+          key={i}
+          onClick={()=>{setSelectedId(Number(info.id))}}
+        >
+          <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
+            <div className='' >
+              <img className='w-10 h-10 mr-4' src={info.company.logoLink} alt="company logo" />
+            </div>
+            <div>
+              <h3>{info.company.name}</h3>
+              <p className='text-sm text-black/60'>{info.jobTitle}</p>
+            </div>
+          </div>
+          <div className=' text-sm px-4 pb-2'>{formatLongDate(info.interviews[info.interviews.length-1].date)}</div>
         </div>
-        <div>
-          <h3>{info.company.name}</h3>
-          <p className='text-sm text-black/60'>{info.jobTitle}</p>
-        </div>
-      </div>
-      <div className=' text-sm px-4 pb-2'>{formatLongDate(info.interviews[info.interviews.length-1].date)}</div>
-    </div>
-  ))
+      ))
+    }
+
 
 
   const sortedRoundHtml = selectedIdSortedInterview?.map((round,i)=>{

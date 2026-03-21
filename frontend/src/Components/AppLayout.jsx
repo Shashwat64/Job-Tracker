@@ -19,10 +19,12 @@ let called = false
 export async function loader(){
 
   const userDataFromDB  = await isSignedIn(); 
+
   if (!userDataFromDB) {
     return redirect('/signin', { replace: true }); 
   }
-
+  
+  console.log(userDataFromDB.id)
   const applicationData = await getAllDataOfUser(userDataFromDB.id);
   return {userDataFromDB, applicationData}
   
