@@ -2,6 +2,8 @@ import { useRef, useEffect, useContext } from "react";
 
 import { JobContext } from '../../App'
 
+import { deleteApplication } from "../../api/users";
+
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
   const dropdownRef = useRef()
 
@@ -40,13 +42,15 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
       </button>
       <button 
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-        onClick={() => {
+        onClick={async() => {
+
           
-        setApplicationJson(prev => prev.map(application => 
-          application.id === id 
+          setApplicationJson(prev => prev.map(application => 
+            application.id === id 
             ? { ...application, isDeleted: true }
             : application
-        ))
+          ))
+          await deleteApplication(id)
       }}
       >
         Delete

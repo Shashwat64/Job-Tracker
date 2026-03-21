@@ -116,6 +116,20 @@ export async function updateApplication(application){
   return reply
 }
 
+export async function deleteApplication(applicationId){
+
+  const interviewRes = await fetch(`http://localhost:8000/users/delete/application`,
+    {
+      method:"DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      body: JSON.stringify({applicationId})
+    }
+  )
+  const reply = await interviewRes.json()
+  return reply
+}
+
 export async function updateInterviews(interviews){
   const interviewRes = await fetch(`http://localhost:8000/users/patch/interview`,
     {

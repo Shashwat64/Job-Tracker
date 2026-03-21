@@ -104,22 +104,25 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     console.log("newJob is", newJob)
     
     setAddJobModal(false)
-    if(editId===null){
+    if(!applicationJson?.length){ //this is for adding application for the first time
+      setApplicationJson([{...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}])
+      const reply = await addApplication(newJob)
+    }
+    else if(editId===null){ //this is for adding new applications
       setApplicationJson(prev=>([
         ...prev,
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
       ]))
 
       const reply = await addApplication(newJob)
-
-    }else if(!applicationJson?.length){
-      setApplicationJson([{...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}])
     }
     
     else{
       const index = applicationJson.findIndex(item => item.id === editId)
       console.log("else block ran and value of index is", index)
 
+      updateApplication(newJob)
+      
       setApplicationJson(prev=>([
         ...prev.slice(0,index),
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},

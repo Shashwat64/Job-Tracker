@@ -373,6 +373,31 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
 
 })
 
+usersRoutes.delete('/delete/application', async(req,res)=>{
+  const token = req.cookies.token
+  const user = jwt.verify(token, process.env.JWT_SECRET)
+  const userId = user.id
+
+  const applicationId = req.body.applicationId
+
+  const result = await pool.query(
+    `UPDATE applications
+      SET
+        is_deleted = $1
+      WHERE id = $2 AND user_id = $3
+      RETURNING *`,
+      [
+        true,
+        Number(applicationId), 
+        userId
+      ]
+    )
+
+    res.status(200).json({id: applicationId, result})
+
+  }
+)
+
 usersRoutes.patch('/patch/interview', async(req,res)=>{
   const userId = req.params.id
   const round = req.body
