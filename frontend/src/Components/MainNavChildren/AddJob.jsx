@@ -2,7 +2,7 @@ import { useState,useContext, useEffect, useRef } from 'react'
 
 import { JobContext } from '../../App'
 
-import { updateApplication } from '../../api/users'
+import { updateApplication, addApplication } from '../../api/users'
 import { data } from 'react-router-dom'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
@@ -27,13 +27,11 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("editId " + editId)
 
 
-  const nextId = applicationJson[applicationJson?.length-1]?.id + 1 || 1
 
   let thatData
 
   if(editId===null){
     thatData = {
-      id:nextId,
       company: { logoLink: "", name: "", location: "", url:"" },
       jobTitle: "",
       salaryRange: { min: "", max: "" },
@@ -111,6 +109,9 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
         ...prev,
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
       ]))
+
+      const reply = await addApplication(newJob)
+
     }else if(!applicationJson?.length){
       setApplicationJson([{...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}])
     }
@@ -126,15 +127,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       ]))
     }
 
-    const res = await fetch(`http://localhost:8000/users/${userData.id}/applications`,{
-      method:"POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({userId: userData.id, application:newJob})
-    })
-
-    const dataFromServer = await res.json()
-    console.log(dataFromServer)
+    
 
   }
 

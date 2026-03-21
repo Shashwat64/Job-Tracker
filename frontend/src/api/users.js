@@ -86,15 +86,15 @@ export async function getAllDataOfUser(userId){
 
 }
 
-export async function addApplication(application, userId){
-  console.log(userId)
+export async function addApplication(application){
+  console.log(application)
 
   const interviewRes = await fetch(`http://localhost:8000/users/post/application`,
     {
       method:"POST",
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
-      body: JSON.stringify(application, userId)
+      body: JSON.stringify({application, userId})
     }
   )
   const reply = await interviewRes.json()

@@ -35,14 +35,12 @@ usersRoutes.get('/get/user', async(req, res)=>{
 usersRoutes.get('/get/applications', async(req, res)=>{
 
   const token = req.cookies.token
-  
-  console.log("/id/application fetch ran")
+
   
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET)
     const userId = user.id
 
-    console.log(userId)
 
     const result = await pool.query('SELECT * FROM applications WHERE user_id = $1', [userId]);
 
@@ -51,7 +49,6 @@ usersRoutes.get('/get/applications', async(req, res)=>{
       return res.status(404).json({ message: "No application with that user exist" });
     }
 
-    console.log(result.rows)
 
     // res.json({
     //   data:result
@@ -271,13 +268,16 @@ usersRoutes.post("/post", async (req, res) => {
   }
 })
 
-usersRoutes.post('post/application', async(req,res)=>{
+usersRoutes.post('/post/application', async(req,res)=>{
 
   const token = req.cookies.token
   const user = jwt.verify(token, process.env.JWT_SECRET)
   const userId = user.id
 
+
   const application = req.body.application
+
+  console.log(application)
 
   const appliedDate = new Date(application.date)
 
