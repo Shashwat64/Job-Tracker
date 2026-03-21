@@ -33,7 +33,7 @@ export default function Interview(){
 
   // console.log(interviewJson[selectedId]?.interviews)
 
-  const withInterview = applicationJson.filter(info=>info.interviews?.length)
+  const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
 
   const selectedIdSortedInterview = applicationJson[selectedId-1]?.interviews?.sort((a,b)=>b.round-a.round)
 
@@ -42,7 +42,7 @@ export default function Interview(){
         return true
       else if(!interview.isDeleted)
         return interview?.interviews[0].status.toLowerCase() === activeBtn.toLowerCase()
-    })
+    }) || []
 
   const interviewLeftHtml = interviewOnPage.map((info, i)=>(
     <div 

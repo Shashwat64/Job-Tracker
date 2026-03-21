@@ -5,19 +5,16 @@ import pool from '../config/db.js'
 
 const usersRoutes = express.Router()
 
-usersRoutes.get('/', async (req, res) => {
-  const result = await pool.query("SELECT * FROM users")
-  res.json(result.rows)
-})
+// usersRoutes.get('/', async (req, res) => {
+//   const result = await pool.query("SELECT * FROM users")
+//   res.json(result.rows)
+// })
 
-usersRoutes.get('/:id', async(req, res)=>{
+usersRoutes.get('/get/user', async(req, res)=>{
 
   
   const token = req.cookies.token
   
-  console.log("users/me token is",token)
-  console.log("user/me ran")
-
   if (!token) {
     return res.status(401).json({ error: 'not logged in' })
   }
@@ -25,7 +22,6 @@ usersRoutes.get('/:id', async(req, res)=>{
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET)
 
-    console.log("user in users/me", user)
 
     const result = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
     res.json(result.rows[0]) 
@@ -36,17 +32,26 @@ usersRoutes.get('/:id', async(req, res)=>{
   }
 })
 
-usersRoutes.get('/:id/applications', async(req, res)=>{
+usersRoutes.get('/get/applications', async(req, res)=>{
 
-  const userId = req.params.id
-
+  const token = req.cookies.token
+  
+  console.log("/id/application fetch ran")
+  
   try {
-    const result = await pool.query('SELECT * FROM applications WHERE user_id = $1 ORDER BY id', [userId]);
+    const user = jwt.verify(token, process.env.JWT_SECRET)
+    const userId = user.id
+
+    console.log(userId)
+
+    const result = await pool.query('SELECT * FROM applications WHERE user_id = $1', [userId]);
 
     if (result.rowCount === 0) {
       // User not found
       return res.status(404).json({ message: "No application with that user exist" });
     }
+
+    console.log(result.rows)
 
     // res.json({
     //   data:result
@@ -88,11 +93,13 @@ usersRoutes.get('/:id/applications', async(req, res)=>{
   }
 })
 
-usersRoutes.get('/:id/interviews', async(req, res)=>{
+usersRoutes.get('/get/interviews', async(req, res)=>{
 
-  const userId = req.params.id
-
+  const token = req.cookies.token
+  
   try {
+    const user = jwt.verify(token, process.env.JWT_SECRET)
+    const userId = user.id
     const result = await pool.query('SELECT * FROM interviews WHERE user_id = $1 ORDER BY round', [userId])
 
     if (result.rowCount === 0) {
@@ -137,10 +144,12 @@ usersRoutes.get('/:id/interviews', async(req, res)=>{
 
 
 // this was used to add inital data
-usersRoutes.post('/reset', async (req, res) => {
+usersRoutes.post('/post', async (req, res) => {
 
   const data = req.body
-  const userId = 1
+  const token = req.cookies.token
+  const user = jwt.verify(token, process.env.JWT_SECRET)
+  const userId = user.id
 
   try {
 
@@ -229,11 +238,15 @@ usersRoutes.post('/reset', async (req, res) => {
 });
 
 //this have to removed
-usersRoutes.post("/", async (req, res) => {
+usersRoutes.post("/post", async (req, res) => {
 
   // const { email, password } = req.body
 
-  const getRes = await fetch("http://localhost:8000/users")
+  const token = req.cookies.token
+  const user = jwt.verify(token, process.env.JWT_SECRET)
+  const userId = user.id
+
+  const getRes = await fetch("http://localhost:8000/users/get/user")
   const data = await getRes.json()
 
   const email = req.body.email
@@ -243,7 +256,7 @@ usersRoutes.post("/", async (req, res) => {
 
   
   try {
-    const result = await pool.query('SELECT * FROM users WHERE id = $1', [1]);
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
 
     if (result.rowCount === 0) {
       // User not found
@@ -258,8 +271,62 @@ usersRoutes.post("/", async (req, res) => {
   }
 })
 
-usersRoutes.patch('/:id/applications', async(req,res)=>{
-  const userId = req.params.id
+usersRoutes.post('post/application', async(req,res)=>{
+
+  const token = req.cookies.token
+  const user = jwt.verify(token, process.env.JWT_SECRET)
+  const userId = user.id
+
+  const application = req.body.application
+
+  const appliedDate = new Date(application.date)
+
+  // return res.status(200).json({
+  //   message: "this is from post id/applications",
+  //   data: application,
+  //   userId
+  // })
+
+  const { company, jobTitle, salaryRange, date, interviewType, stage, source, notes, resumeUsed, isDeleted} = application;
+
+  const result = await pool.query(
+        `INSERT INTO applications
+        (user_id, company_name, company_logo_link, company_location, company_url,
+        job_title, salary_min, salary_max, applied_date,
+        interview_type, stage, source, resume_used, notes, is_deleted)
+        VALUES
+        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+        RETURNING *`,
+        [
+          userId,                    // user_id
+          company.name,              // company_name
+          company.logoLink || null,  // company_logo_link
+          company.location || null,  // company_location
+          company.url || null,       // company_url
+          jobTitle,                  // job_title
+          salaryRange?.min || null,  // salary_min
+          salaryRange?.max || null,  // salary_max
+          appliedDate,               // applied_date
+          interviewType || null,     // interview_type
+          stage || null,             // stage
+          source || null,            // source
+          resumeUsed || null,        // resume_used
+          notes || null,             // notes
+          isDeleted ?? false         // is_deleted
+        ]
+      );
+
+  res.status(200).json({id: application.id, result})
+
+})
+
+//add post interviews
+
+usersRoutes.patch('/patch/application', async(req,res)=>{
+  const token = req.cookies.token
+  const user = jwt.verify(token, process.env.JWT_SECRET)
+  const userId = user.id
+
   const application = req.body
 
   const appliedDate = new Date(application.date)
@@ -298,7 +365,7 @@ usersRoutes.patch('/:id/applications', async(req,res)=>{
       application.notes,
       application.isDeleted,
       Number(application.id), 
-      Number(application.userId)
+      userId
     ]
 );
 
@@ -306,7 +373,7 @@ usersRoutes.patch('/:id/applications', async(req,res)=>{
 
 })
 
-usersRoutes.patch('/:id/interviews', async(req,res)=>{
+usersRoutes.patch('/patch/interview', async(req,res)=>{
   const userId = req.params.id
   const round = req.body
 
@@ -351,7 +418,7 @@ usersRoutes.patch('/:id/interviews', async(req,res)=>{
 
 })
 
-usersRoutes.delete('delete/:id', async(req, res)=>{
+usersRoutes.delete('delete/user', async(req, res)=>{
   // res.status(201).send("delete id is", req.params.id)
 
   const userId = req.params.id 

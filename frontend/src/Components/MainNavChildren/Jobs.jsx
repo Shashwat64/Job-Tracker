@@ -27,6 +27,7 @@ export default function Jobs(){
 
   // console.log( "In Jobs.jsx", interviewJson[20])
   console.log("userData in Jobs", userData)
+  console.log("applicationJson in Jobs", applicationJson)
 
   const [addJobModal, setAddJobModal] = useState(false)
   const [openModalId, setOpenModalId] = useState(null)

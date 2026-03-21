@@ -3,10 +3,11 @@ import { useState,useContext, useEffect, useRef } from 'react'
 import { JobContext } from '../../App'
 
 import { updateApplication } from '../../api/users'
+import { data } from 'react-router-dom'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
-  const {applicationJson, setApplicationJson, activeBtn} = useContext(JobContext)
+  const {applicationJson, setApplicationJson, activeBtn, userData} = useContext(JobContext)
 
   
   console.log(applicationJson)
@@ -26,7 +27,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("editId " + editId)
 
 
-  const nextId = applicationJson[applicationJson.length-1].id + 1
+  const nextId = applicationJson[applicationJson?.length-1]?.id + 1 || 1
 
   let thatData
 
@@ -39,17 +40,23 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       date: "",
       interviewType: "Virtual",
       stage: "Pending",
-      isDeleted:false
+      isDeleted:false,
+      interview:[]
     }
   }else{
-    thatData = applicationJson[editId-1]
-    console.log(applicationJson[editId-1])
+    thatData = applicationJson.find(application=>application.id === editId)
+    // console.log(applicationJson[editId-1])
   }
 
+  console.log(editId)
+  console.log(applicationJson[0].id)
 
+  console.log(thatData)
 
 
   const [newJob, setNewJob] = useState(thatData)
+
+  console.log(newJob)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -71,22 +78,32 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     }
     
   }
+
+  console.log(newJob)
+
+  console.log(newJob.company)
   
   async function handleSubmit(e){
     e.preventDefault()
-    const formData = e.currentTarget
     
     if (newJob.salaryRange.max < newJob.salaryRange.min) {
       alert("Max salary must be greater than min salary");
       return;
     }
+
+    console.log("newJob in handleSubmit ", newJob)
     
     let cleanUrl = newJob.company.url
     if (cleanUrl.includes("https://")) {
       cleanUrl = newJob.company.url.split('/')[2]
     }
-    const reply = await updateApplication(newJob)
-    console.log(reply)
+
+    console.log("cleanURL is", cleanUrl)
+    // const reply = await updateApplication(newJob, userData.id)
+    // console.log(reply)
+
+    console.log("applicationJson is", applicationJson)
+    console.log("newJob is", newJob)
     
     setAddJobModal(false)
     if(editId===null){
@@ -94,13 +111,31 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
         ...prev,
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}
       ]))
-    }else{
+    }else if(!applicationJson?.length){
+      setApplicationJson([{...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}])
+    }
+    
+    else{
+      const index = applicationJson.findIndex(item => item.id === editId)
+      console.log("else block ran and value of index is", index)
+
       setApplicationJson(prev=>([
-        ...prev.slice(0,editId-1),
+        ...prev.slice(0,index),
         {...newJob, company:{...newJob.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}},
-        ...prev.slice(editId)
+        ...prev.slice(index+1)
       ]))
     }
+
+    const res = await fetch(`http://localhost:8000/users/${userData.id}/applications`,{
+      method:"POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({userId: userData.id, application:newJob})
+    })
+
+    const dataFromServer = await res.json()
+    console.log(dataFromServer)
+
   }
 
   return (

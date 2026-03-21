@@ -5,6 +5,8 @@ import { JobContext } from '../../App'
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
   const dropdownRef = useRef()
 
+  console.log("id in the dropdown",id)
+
   
 
   const {applicationJson, setApplicationJson} = useContext(JobContext)
@@ -38,14 +40,14 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
       </button>
       <button 
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-        onClick={()=>{setApplicationJson(prev=>{
-          let newArr = [...prev]
-          newArr[id].isDeleted = true
-
-          console.log(newArr[id])
-
-          return newArr
-        })}}
+        onClick={() => {
+          
+        setApplicationJson(prev => prev.map(application => 
+          application.id === id 
+            ? { ...application, isDeleted: true }
+            : application
+        ))
+      }}
       >
         Delete
       </button>

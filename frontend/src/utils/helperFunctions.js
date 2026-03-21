@@ -70,7 +70,7 @@ export function dateInYYYYMMDD(now){
 }
 
 export function interviewInLast6Months(applicationJson){
-  const withInterview = applicationJson?.filter(info=>info.stage.toLowerCase() === "interview" && info?.interviews?.length>0)
+  const withInterview = applicationJson?.filter(info=>info?.stage?.toLowerCase() === "interview" && info?.interviews?.length>0)
 
   const onlyRound = withInterview.map(info=>([info.company, ...info.interviews ]))
 
