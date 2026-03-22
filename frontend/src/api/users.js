@@ -172,7 +172,7 @@ export async function getUserData(id){
 }
 
 export async function isSignedIn(){
-  const authRes = await fetch(`${import.meta.env.import.meta.env.VITE_API_URL}/auth/me`, {
+  const authRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
     credentials: 'include'
   })
 
