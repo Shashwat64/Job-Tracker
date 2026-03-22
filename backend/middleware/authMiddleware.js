@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token
 
-  console.log("TOKEN:", req.cookies.token);
+  // console.log("TOKEN:", req.cookies.token)
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
@@ -14,7 +14,7 @@ const authMiddleware = (req, res, next) => {
 
   } catch (err) {
   console.log("JWT ERROR:", err.message);
-  return res.status(401).json({ message: "Unauthorized" });
+  return res.status(401).json({ message: "Unauthorized from middleware" });
 }
 }
 

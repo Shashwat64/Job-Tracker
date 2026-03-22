@@ -48,7 +48,7 @@ authRoutes.post('/signup', async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,    // JS can't access it, safer against XSS
       secure: true,      // only sent over HTTPS
-      sameSite: "strict", // protects against CSRF
+      sameSite: "none", // protects against CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
 
@@ -101,7 +101,7 @@ authRoutes.post('/signin', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
 
@@ -113,23 +113,7 @@ authRoutes.post('/signin', async (req, res) => {
 }) 
 
 authRoutes.get('/me', authMiddleware, (req, res) => {
-  const token = req.cookies.token
-
-  if (!token) {
-    return res.status(401).json({ error: 'not logged in' })
-  }
-
-  try {
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-
-    // console.log("Userdata in the /auth/me path",user)
-
-    
-    res.status(200).json(user)
-
-  } catch {
-    res.status(401).json({ error: 'invalid token' })
-  }
+  res.status(200).json(req.user)
 })
 
 authRoutes.post('/signout', (req, res) => {

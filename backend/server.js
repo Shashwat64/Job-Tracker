@@ -11,6 +11,8 @@ import authMiddleware from './middleware/authMiddleware.js'
 
 const app = express()
 
+const PORT = process.env.PORT || 8000
+
 
 app.use(cors({
   origin: true, // reflects whatever origin the request comes from
@@ -24,6 +26,6 @@ app.use("/job",  jobRoutes)
 app.use("/users",  authMiddleware, usersRoutes)
 
 
-app.listen(8000, () => console.log('Server running on port 8000'))
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 
