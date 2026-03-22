@@ -2,34 +2,33 @@ import { useEffect, useState } from "react"
 import { capitalise } from "../../utils/helperFunctions"
 
 //api function
-import { updateInterviews } from "../../api/users"
+import { addInterview, updateInterviews, deleteInterviews } from "../../api/users"
 
-export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, seletedApplication }){
+export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, selectedApplication }){
   
   const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length || interview.stage.toLowerCase() === 'interview')
 
-  // console.log(jobAtInterviewStage)
+  // useEffect(() => {
+  //   setModalSelectedId(selectedId)
+  // }, [selectedId])
 
-  // const [modalSelectedId, setModalSelectedId] = useState(selectedId)
-
-  console.log(selectedId)
-
-
-  useEffect(() => {
-    setModalSelectedId(selectedId)
-  }, [selectedId])
-  
-  const nextRound = Math.max(...seletedApplication?.interviews?.map(interview => interview.round))+1 || 1
 
   
+  const nextRound =
+  Math.max(
+    ...(selectedApplication?.interviews?.map(i => i.round) || []),
+    0
+  ) + 1;
 
-  console.log(seletedApplication?.interviews?.[0]?.round+1)
+
+
+  console.log(selectedApplication?.interviews?.[0]?.round+1)
   console.log(nextRound)
 
 
   const[selectedRound, setSelectedRound] = useState(nextRound-1)
 
-  function handleChange(e){
+  async function handleChange(e){
     const {name, value} = e.currentTarget
 
     // console.log("Inside handleChange "+name, value)
@@ -49,9 +48,13 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     e.preventDefault()
 
     console.log("data of new round is sent")
-    console.log(await updateInterviews(newRound))
+    // console.log(await updateInterviews(newRound))
     
     if (modaltype === 'add') {
+
+      const res = await addInterview(newRound, selectedId)
+      console.log(res)
+
       setApplicationJson(prev => {
         console.log(typeof selectedId)
         // Check if the ID actually exists in our data first
@@ -69,7 +72,8 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 interviews: [newRound, ...(info.interviews ?? [])]
               }
             : info
-        ));
+        ))
+
       });
     }else if(modaltype==='edit'){
       setApplicationJson(prev=>(
@@ -108,7 +112,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     if(modaltype === "edit" ){
 
       // console.log(newRound)
-      setNewRound(seletedApplication.interviews.find(
+      setNewRound(selectedApplication.interviews.find(
         round => round.round === selectedRound
       ))
     }
@@ -119,34 +123,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   console.log("selectedRound is", selectedRound)
   console.log("newRound is", newRound)
 
-// console.log("selectedId:", selectedId)
-// console.log("selectedRound:", selectedRound)
-// console.log("interviews:", interviewJson[selectedId]?.interviews)
 
-
-  // if(modaltype === "add"){
-  //   newRound = {
-  //     round: nextRound,
-  //     type: "",
-  //     date: "",
-  //     time:{
-  //       start: '',
-  //       duration: null
-  //     },
-  //     details:[],
-  //     interviewer: "",
-  //     meetingLink: "",
-  //     notes: "",
-  //     outcome: null,
-  //     status: ""
-  //     }
-  // }else{
-  //   newRound = interviewJson[selectedId].interviews[0]
-  //   console.log(interviewJson[selectedId])
-  // }
-  
-  // console.log(interviewJson[selectedId].interviews)
-  // console.log(newRound)
   
   return (
     <div 
@@ -360,11 +337,3 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     </div>
   )
 }
-
-/* for edit page
-  <select name="" id="">
-    <option value="pending">Pending</option>
-    <option value="shortlisted">Shortlisted</option>
-    <option value="rejected">Rejected</option>
-  </select>
-*/

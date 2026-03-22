@@ -30,13 +30,13 @@ export default function Interview(){
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
 
-  let seletedApplication
+  let selectedApplication
   if(selectedId!==null){
-    seletedApplication = withInterview.find(application=>application.id === selectedId)
+    selectedApplication = withInterview.find(application=>application.id === selectedId)
   }
 
   
-  const latestSelectedIdInterview = seletedApplication?.interviews?.[0]
+  const latestSelectedIdInterview = selectedApplication?.interviews?.[0]
 
   console.log("selectedId", selectedId)
 
@@ -46,7 +46,7 @@ export default function Interview(){
 
   console.log("withInterview is", withInterview)
 
-  const selectedIdSortedInterview = seletedApplication?.interviews?.sort((a,b)=>b.round-a.round)
+  const selectedIdSortedInterview = selectedApplication?.interviews?.sort((a,b)=>b.round-a.round)
 
   const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
@@ -125,7 +125,7 @@ export default function Interview(){
   return (
     
     <>
-      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} seletedApplication={seletedApplication}/>}
+      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} selectedApplication={selectedApplication}/>}
       <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        
@@ -191,7 +191,7 @@ export default function Interview(){
                         : null
                     }`} value="failed" onClick={(e)=>setActiveBtn(e.currentTarget.value)}>Failed</button>
                 </div>
-
+                  {selectedId!==null && 
                 <div className='flex w-full justify-end gap-2'>
                   <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                     onClick={()=>(setModalType('add'))}
@@ -202,37 +202,37 @@ export default function Interview(){
                   <button 
                     className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
                     onClick={()=>{setApplicationJson(prev=>prev.map(job =>
-                      job.id === selectedId-1
+                      job.id === selectedId
                         ? { ...job, isDeleted: true }
                         : job
                     ))}}
                   >Delete</button>
-                </div>
+                </div>}
               </div>
 
               {/* {selectedId && } */}
-              {latestSelectedIdInterview && !seletedApplication.isDeleted &&
+              {latestSelectedIdInterview && !selectedApplication.isDeleted &&
               <>
                 <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
-                  Interview {'> ' + seletedApplication.company.name}  Interview
+                  Interview {'> ' + selectedApplication.company.name}  Interview
                 </div>
                 <div 
                   className='bg-white px-4 p-2 border border-gray-100  border-b'  
                 >
                   <div className='flex items-center m-2 pb-2 '>
                     <div className='' >
-                      <img className='w-10 h-10 mr-4' src={seletedApplication.company.logoLink} alt="company logo" />
+                      <img className='w-10 h-10 mr-4' src={selectedApplication.company.logoLink} alt="company logo" />
                     </div>
                     <div>
-                      <h3>{seletedApplication.company.name}</h3>
-                      <p className='text-sm text-black/60'>{seletedApplication.jobTitle}</p>
+                      <h3>{selectedApplication.company.name}</h3>
+                      <p className='text-sm text-black/60'>{selectedApplication.jobTitle}</p>
                     </div>
                   </div>
                 </div>
                 <div className='flex items-center border-b border-gray-200 bg-white h-15'>{/* Interview type time of the lastest interview */}
                   <div className='flex w-1/2 m-3 h-10 border-r pl-2 items-center border-gray-200'>
                     <img src={locationPin} alt="location pin" className='w-6 mr-2'/>
-                    {seletedApplication.interviewType} Interview
+                    {selectedApplication.interviewType} Interview
                   </div>
                   <div className='flex items-center w-1/2'>
                     <img src={calender} alt="calender" className='w-6'/>

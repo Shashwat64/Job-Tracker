@@ -1,5 +1,4 @@
 
-const userId = localStorage.getItem('userId') || 1
 
 export  async function getUserDetails(userId){
 
@@ -16,11 +15,6 @@ export  async function getUserDetails(userId){
   }
 }
 
-
-
-  // const interviewList = interviewList;
-
-//this was used to add initial data
 export  async function resetData(applicationJson){
 
   console.log("resetData ran")
@@ -89,15 +83,15 @@ export async function getAllDataOfUser(userId){
 export async function addApplication(application){
   console.log(application)
 
-  const interviewRes = await fetch(`http://localhost:8000/users/post/application`,
+  const applicationRes = await fetch(`http://localhost:8000/users/post/application`,
     {
       method:"POST",
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
-      body: JSON.stringify({application, userId})
+      body: JSON.stringify({application})
     }
   )
-  const reply = await interviewRes.json()
+  const reply = await applicationRes.json()
   return reply
 }
 
@@ -118,7 +112,7 @@ export async function updateApplication(application){
 
 export async function deleteApplication(applicationId){
 
-  const interviewRes = await fetch(`http://localhost:8000/users/delete/application`,
+  const applicationRes = await fetch(`http://localhost:8000/users/delete/application`,
     {
       method:"DELETE",
       headers: { "Content-Type": "application/json" },
@@ -126,7 +120,24 @@ export async function deleteApplication(applicationId){
       body: JSON.stringify({applicationId})
     }
   )
+  const reply = await applicationRes.json()
+  return reply
+}
+
+export async function addInterview(interview, applicationId){
+  console.log(interview)
+  console.log(applicationId)
+
+  const interviewRes = await fetch(`http://localhost:8000/users/post/interview`,
+    {
+      method:"POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      body: JSON.stringify({interview, applicationId})
+    }
+  )
   const reply = await interviewRes.json()
+  console.log(reply)
   return reply
 }
 
@@ -137,6 +148,20 @@ export async function updateInterviews(interviews){
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
       body: JSON.stringify(interviews)
+    }
+  )
+  const reply = await interviewRes.json()
+  return reply
+}
+
+export async function deleteInterviews(interviewsId){
+
+  const interviewRes = await fetch(`http://localhost:8000/users/delete/application`,
+    {
+      method:"DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      body: JSON.stringify({interviewsId})
     }
   )
   const reply = await interviewRes.json()

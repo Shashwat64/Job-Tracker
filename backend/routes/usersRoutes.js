@@ -52,7 +52,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
     const userId = user.id
 
 
-    const result = await pool.query('SELECT * FROM applications WHERE user_id = $1', [userId]);
+    const result = await pool.query('SELECT * FROM applications WHERE user_id = $1 AND NOT is_deleted', [userId]);
 
     if (result.rowCount === 0) {
       // User not found
@@ -151,132 +151,7 @@ usersRoutes.get('/get/interviews', async(req, res)=>{
 
 
 // // this was used to add inital data
-// usersRoutes.post('/post', async (req, res) => {
 
-//   const data = req.body
-//   const token = req.cookies.token
-//   const user = jwt.verify(token, process.env.JWT_SECRET)
-//   const userId = user.id
-
-//   try {
-
-//     // Clear applications and all dependent interviews, reset serial numbers
-//     await pool.query('TRUNCATE TABLE applications RESTART IDENTITY CASCADE;')
-
-//     // Optional: if you want to explicitly reset interviews too (not needed with CASCADE)
-//     await pool.query('TRUNCATE TABLE interviews RESTART IDENTITY;')
-
-//     for (const app of data) {
-
-//       const { company, jobTitle, salaryRange, date, interviewType, stage, source, notes, resumeUsed, isDeleted, interviews } = app;
-
-//       const result = await pool.query(
-//         `INSERT INTO applications
-//         (user_id, company_name, company_logo_link, company_location, company_url,
-//         job_title, salary_min, salary_max, applied_date,
-//         interview_type, stage, source, resume_used, notes, is_deleted)
-//         VALUES
-//         ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
-//         RETURNING id`,
-//         [
-//           userId,                    // user_id
-//           company.name,              // company_name
-//           company.logoLink || null,  // company_logo_link
-//           company.location || null,  // company_location
-//           company.url || null,       // company_url
-//           jobTitle,                  // job_title
-//           salaryRange?.min || null,  // salary_min
-//           salaryRange?.max || null,  // salary_max
-//           date,                      // applied_date
-//           interviewType || null,     // interview_type
-//           stage || null,             // stage
-//           source || null,            // source
-//           resumeUsed || null,        // resume_used
-//           notes || null,             // notes
-//           isDeleted ?? false         // is_deleted
-//         ]
-//       );
-
-//       const applicationId = result.rows[0].id;
-
-//       if (interviews?.length > 0) {
-
-//         interviews.sort((a,b)=>a.round - b.round);
-
-//         for (const interview of interviews) {
-
-//           await pool.query(
-//             `INSERT INTO interviews
-//             (user_id, application_id, round, type, interview_date, start_time, duration_minutes, details, interviewer, meeting_link, notes, status)
-//             VALUES
-//             ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
-//             [
-//               userId,
-//               applicationId,
-//               interview.round,
-//               interview.type,
-//               interview.date,
-//               interview.time?.start || null,
-//               interview.time?.duration || null,
-//               interview.details || null,
-//               interview.interviewer || null,
-//               interview.meetingLink || null,
-//               interview.notes || null,
-//               interview.status || 'Upcoming'
-//             ]
-//           )
-
-//         }
-
-//       }
-
-//     }
-
-//     console.log('All applications inserted!');
-//     res.json({message:'Data inserted successfully'});
-
-//   } catch (err) {
-//      console.error(err);
-//     res.status(500).json({
-//       error: err.message
-//     });
-//   }
-
-// });
-
-// //this have to removed
-// usersRoutes.post("/post", async (req, res) => {
-
-//   // const { email, password } = req.body
-
-//   const token = req.cookies.token
-//   const user = jwt.verify(token, process.env.JWT_SECRET)
-//   const userId = user.id
-
-//   const getRes = await fetch("http://localhost:8000/users/get/user")
-//   const data = await getRes.json()
-
-//   const email = req.body.email
-//   const password = req.body.password
-
-//   const exists = data.some(info => info.email === email)
-
-  
-//   try {
-//     const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
-
-//     if (result.rowCount === 0) {
-//       // User not found
-//       return res.status(404).json({ message: "User doesn't exist" });
-//     }
-
-//     // Send the user object to frontend
-//     res.json(result.rows[0]); // or res.send(result.rows[0])
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Database error' });
-//   }
-// })
 
 
 
@@ -430,6 +305,68 @@ usersRoutes.delete('/delete/application', async(req,res)=>{
   }
 )
 
+usersRoutes.post('/post/interview', async(req,res)=>{
+
+  const token = req.cookies.token
+
+  try{
+    const interview = req.body.interview
+    const applicationId = req.body.applicationId
+    console.log(interview)
+    console.log(applicationId)
+
+    const user = jwt.verify(token, process.env.JWT_SECRET)
+    const userId = user.id
+
+    // return res.status(200).json({message: "this is from post/interview", interview})
+  
+  
+  
+    console.log("application in post/interview",interview)
+  
+    const appliedDate = new Date(interview.date)
+  
+    // return res.status(200).json({
+    //   message: "this is from post id/applications",
+    //   data: application,
+    //   userId
+    // })
+  
+    const { round, type, time, details, interviewer, meetingLink, notes, status} = interview
+
+  
+    const result = await pool.query(
+          `INSERT INTO interviews
+          (user_id, application_id, round, type, interview_date,
+          start_time, duration_minutes, details, interviewer,
+          meeting_link, notes, status)
+          VALUES
+          ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+          RETURNING *`,
+          [
+            userId,           
+            applicationId,      
+            round,
+            type,         
+            appliedDate ,  
+            time.start ,     
+            time.duration,     
+            details,                  
+            interviewer,
+            meetingLink,             
+            notes, 
+            status, 
+          ]
+        );
+  
+    res.status(200).json({id: applicationId, result})
+  }catch(err){
+    console.error(err);
+    res.status(500).json({ message: 'Database error' });
+  }
+
+})
+
 usersRoutes.patch('/patch/interview', async(req,res)=>{
   const userId = req.params.id
   const round = req.body
@@ -499,3 +436,133 @@ usersRoutes.delete('/delete/user', async(req, res)=>{
 })
 
 export default usersRoutes
+
+
+
+
+// usersRoutes.post('/post', async (req, res) => {
+
+//   const data = req.body
+//   const token = req.cookies.token
+//   const user = jwt.verify(token, process.env.JWT_SECRET)
+//   const userId = user.id
+
+//   try {
+
+//     // Clear applications and all dependent interviews, reset serial numbers
+//     await pool.query('TRUNCATE TABLE applications RESTART IDENTITY CASCADE;')
+
+//     // Optional: if you want to explicitly reset interviews too (not needed with CASCADE)
+//     await pool.query('TRUNCATE TABLE interviews RESTART IDENTITY;')
+
+//     for (const app of data) {
+
+//       const { company, jobTitle, salaryRange, date, interviewType, stage, source, notes, resumeUsed, isDeleted, interviews } = app;
+
+//       const result = await pool.query(
+//         `INSERT INTO applications
+//         (user_id, company_name, company_logo_link, company_location, company_url,
+//         job_title, salary_min, salary_max, applied_date,
+//         interview_type, stage, source, resume_used, notes, is_deleted)
+//         VALUES
+//         ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+//         RETURNING id`,
+//         [
+//           userId,                    // user_id
+//           company.name,              // company_name
+//           company.logoLink || null,  // company_logo_link
+//           company.location || null,  // company_location
+//           company.url || null,       // company_url
+//           jobTitle,                  // job_title
+//           salaryRange?.min || null,  // salary_min
+//           salaryRange?.max || null,  // salary_max
+//           date,                      // applied_date
+//           interviewType || null,     // interview_type
+//           stage || null,             // stage
+//           source || null,            // source
+//           resumeUsed || null,        // resume_used
+//           notes || null,             // notes
+//           isDeleted ?? false         // is_deleted
+//         ]
+//       );
+
+//       const applicationId = result.rows[0].id;
+
+//       if (interviews?.length > 0) {
+
+//         interviews.sort((a,b)=>a.round - b.round);
+
+//         for (const interview of interviews) {
+
+//           await pool.query(
+//             `INSERT INTO interviews
+//             (user_id, application_id, round, type, interview_date, start_time, duration_minutes, details, interviewer, meeting_link, notes, status)
+//             VALUES
+//             ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+//             [
+//               userId,
+//               applicationId,
+//               interview.round,
+//               interview.type,
+//               interview.date,
+//               interview.time?.start || null,
+//               interview.time?.duration || null,
+//               interview.details || null,
+//               interview.interviewer || null,
+//               interview.meetingLink || null,
+//               interview.notes || null,
+//               interview.status || 'Upcoming'
+//             ]
+//           )
+
+//         }
+
+//       }
+
+//     }
+
+//     console.log('All applications inserted!');
+//     res.json({message:'Data inserted successfully'});
+
+//   } catch (err) {
+//      console.error(err);
+//     res.status(500).json({
+//       error: err.message
+//     });
+//   }
+
+// });
+
+// //this have to removed
+// usersRoutes.post("/post", async (req, res) => {
+
+//   // const { email, password } = req.body
+
+//   const token = req.cookies.token
+//   const user = jwt.verify(token, process.env.JWT_SECRET)
+//   const userId = user.id
+
+//   const getRes = await fetch("http://localhost:8000/users/get/user")
+//   const data = await getRes.json()
+
+//   const email = req.body.email
+//   const password = req.body.password
+
+//   const exists = data.some(info => info.email === email)
+
+  
+//   try {
+//     const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+
+//     if (result.rowCount === 0) {
+//       // User not found
+//       return res.status(404).json({ message: "User doesn't exist" });
+//     }
+
+//     // Send the user object to frontend
+//     res.json(result.rows[0]); // or res.send(result.rows[0])
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Database error' });
+//   }
+// })
