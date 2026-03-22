@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react"
 
 import { Analytics } from "@vercel/analytics/react"
 
-import { getUserDetails, getAllDataOfUser, resetData, updateInterviews} from './api/users'
+import { getUserDetails, getAllDataOfUser, resetData, updateInterview} from './api/users'
 
 import applicationsList from './data/interviewList'
 

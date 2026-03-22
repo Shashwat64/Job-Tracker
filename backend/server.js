@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import authRoutes from './routes/authRoutes.js'
 import jobRoutes from './routes/jobRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
+import authMiddleware from './middleware/authMiddleware.js'
 
 const app = express()
 
@@ -19,8 +20,8 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use("/auth", authRoutes)
-app.use("/job", jobRoutes)
-app.use("/users", usersRoutes)
+app.use("/job",  jobRoutes)
+app.use("/users",  authMiddleware, usersRoutes)
 
 
 app.listen(8000, () => console.log('Server running on port 8000'))

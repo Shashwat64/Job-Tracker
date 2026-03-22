@@ -368,8 +368,12 @@ usersRoutes.post('/post/interview', async(req,res)=>{
 })
 
 usersRoutes.patch('/patch/interview', async(req,res)=>{
-  const userId = req.params.id
+
+  const userId = req.userId
   const round = req.body
+  const applicationId = req.body.applicationId
+
+  // return res.status(200).json({message:"from patch/interview", userId})
 
   // res.status(200).send({message: "Short circuiting"})
    
@@ -378,35 +382,44 @@ usersRoutes.patch('/patch/interview', async(req,res)=>{
     // console.log(typeof interview.id)
     // console.log(interview.userID)
 
-    const result = await pool.query(
-      `UPDATE interviews
-      SET interview_date = $1,
-          type = $2,
-          start_time = $3,
-          duration_minutes = $4,
-          details = $5,
-          interviewer = $6,
-          status = $7,
-          meeting_link = $8,
-          notes = $9
-      WHERE application_id = $10 AND round = $11
-      RETURNING *`,
-      [
-        round.date,          
-        round.type,                  
-        round.time.start,
-        round.time.duration,
-        round.details,
-        round.interviewer,
-        round.status,
-        round.meetingLink,
-        round.notes,
-        Number(round.applicationId), 
-        Number(round.round)
-      ]
-  );
-  
-    res.status(200).json({reply:result})
+    try{
+      const result = await pool.query(
+        `UPDATE interviews
+        SET interview_date = $1,
+            type = $2,
+            start_time = $3,
+            duration_minutes = $4,
+            details = $5,
+            interviewer = $6,
+            status = $7,
+            meeting_link = $8,
+            notes = $9
+        WHERE application_id = $10 AND round = $11 AND user_id = $12
+        RETURNING *`,
+        [
+          round.date,          
+          round.type,                  
+          round.time.start,
+          round.time.duration,
+          round.details,
+          round.interviewer,
+          round.status,
+          round.meetingLink,
+          round.notes,
+          Number(round.applicationId), 
+          Number(round.round),
+          userId
+        ]
+    );
+    
+      res.status(200).json({reply:result})
+  } catch(err){
+    console.log(err)
+      return res.status(500).json({
+      success: false,
+      message: err.message // ✅ safe enough
+    })
+  }
   
 
 

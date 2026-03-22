@@ -141,32 +141,32 @@ export async function addInterview(interview, applicationId){
   return reply
 }
 
-export async function updateInterviews(interviews){
+export async function updateInterview(round){
   const interviewRes = await fetch(`http://localhost:8000/users/patch/interview`,
     {
       method:"PATCH",
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
-      body: JSON.stringify(interviews)
+      body: JSON.stringify(round)
     }
   )
   const reply = await interviewRes.json()
   return reply
 }
 
-export async function deleteInterviews(interviewsId){
+// export async function deleteInterviews(interviewsId){
 
-  const interviewRes = await fetch(`http://localhost:8000/users/delete/application`,
-    {
-      method:"DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: 'include',
-      body: JSON.stringify({interviewsId})
-    }
-  )
-  const reply = await interviewRes.json()
-  return reply
-}
+//   const interviewRes = await fetch(`http://localhost:8000/users/delete/application`,
+//     {
+//       method:"DELETE",
+//       headers: { "Content-Type": "application/json" },
+//       credentials: 'include',
+//       body: JSON.stringify({interviewsId})
+//     }
+//   )
+//   const reply = await interviewRes.json()
+//   return reply
+// }
 
 export async function isSignedIn(){
   const authRes = await fetch("http://localhost:8000/auth/me", {

@@ -13,6 +13,8 @@ import calender from '../../assets/calendar-date-schedule-svgrepo-com.svg'
 //components
 import ModalType from './ModalType'
 
+//api
+import { deleteApplication } from '../../api/users'
 
 export default function Interview(){
 
@@ -201,11 +203,16 @@ export default function Interview(){
                   >Edit</button>
                   <button 
                     className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
-                    onClick={()=>{setApplicationJson(prev=>prev.map(job =>
+                    onClick={async()=>{
+                      await deleteApplication(selectedId)
+
+                      setApplicationJson(prev=>prev.map(job =>
                       job.id === selectedId
                         ? { ...job, isDeleted: true }
                         : job
-                    ))}}
+                    ))
+
+                  }}
                   >Delete</button>
                 </div>}
               </div>

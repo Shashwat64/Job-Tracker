@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { capitalise } from "../../utils/helperFunctions"
 
 //api function
-import { addInterview, updateInterviews, deleteInterviews } from "../../api/users"
+import { addInterview, updateInterview} from "../../api/users"
 
 export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, selectedApplication }){
   
@@ -11,7 +11,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   // useEffect(() => {
   //   setModalSelectedId(selectedId)
   // }, [selectedId])
-
+  console.log(modaltype)
 
   
   const nextRound =
@@ -76,6 +76,10 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
 
       });
     }else if(modaltype==='edit'){
+     
+      const res = await updateInterview(newRound)
+      console.log(res)
+
       setApplicationJson(prev=>(
         prev.map(info=>(
           info.id===(selectedId) ? 
@@ -171,7 +175,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 ? 
                   <select name="" id="" 
                     value={
-                      applicationJson[selectedId-1].interviews.find(
+                      selectedApplication.interviews.find(
                         round => round.round === Number(selectedRound)
                       ).round
                     }
@@ -180,7 +184,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                       return setSelectedRound(Number(e.target.value))
                     }}
                   >
-                    {applicationJson[selectedId-1].interviews.map((round,i)=>(
+                    {selectedApplication.interviews.map((round,i)=>(
                       <option value={round.round} key={i}>{`Round ${round.round}`}</option>
 
                     ))}

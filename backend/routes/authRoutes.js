@@ -3,6 +3,8 @@ import pool from '../config/db.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
+import authMiddleware from '../middleware/authMiddleware.js'
+
 const authRoutes = express.Router()
 
 authRoutes.post('/signup', async (req, res) => {
@@ -110,7 +112,7 @@ authRoutes.post('/signin', async (req, res) => {
   }
 }) 
 
-authRoutes.get('/me', (req, res) => {
+authRoutes.get('/me', authMiddleware, (req, res) => {
   const token = req.cookies.token
 
   if (!token) {
