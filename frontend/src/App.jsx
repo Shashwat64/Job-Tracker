@@ -15,6 +15,18 @@ export const JobContext = createContext()
 
 export default function App() {
 
+  useEffect(() => {
+    const isSafari = 
+      /Safari/.test(navigator.userAgent) &&
+      !/Chrome/.test(navigator.userAgent) &&
+      !/CriOS/.test(navigator.userAgent) &&
+      !/FxiOS/.test(navigator.userAgent)
+
+    if (isSafari) {
+      alert("Safari may block login due to strict privacy settings. For best experience, use Chrome or Edge.");
+    }
+  }, [])
+
 
   const [applicationJson, setApplicationJson] = useState(null)
   const [activeBtn, setActiveBtn] = useState('all')
