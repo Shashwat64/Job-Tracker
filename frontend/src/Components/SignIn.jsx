@@ -38,6 +38,9 @@ export default function SignIn(){
     console.log(password)
 
     const res = await signIn({email, password})
+    if(res){
+      navigate('/app')
+    }
   }
 
   return (

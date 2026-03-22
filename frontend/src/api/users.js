@@ -74,7 +74,7 @@ export async function getAllDataOfUser(userId){
   
     return applicationJson
   }
-  else if(applicationData.data.length>0){
+  else if(applicationData?.data?.length>0){
     console.log("applicationData.data is", applicationData.data)
     return applicationData.data
   }else{
@@ -176,17 +176,15 @@ export async function isSignedIn(){
     credentials: 'include'
   })
 
-  const data = await authRes.json()
-
-  const userData  = await getUserData(data.id)
-
-  if(authRes.ok){
-    console.log("User Signed in")
-    return userData
-  }else{
+  if(!authRes.ok){
     console.log("User not Signed in")
     return false 
   }
+
+  const data = await authRes.json()
+  const userData = await getUserData(data.id)
+  console.log("User Signed in")
+  return userData
 }
 
 export async function signIn(details){
@@ -213,6 +211,7 @@ export async function signIn(details){
 export async function signUp(details){
   const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`,{
     method:"POST",
+    credentials: 'include',
     headers:{
       "Content-Type": "application/json"
     },
@@ -222,7 +221,7 @@ export async function signUp(details){
   const reply = await res.json()
   console.log(reply)
 
-  if(reply.ok){
+  if(reply.success){
     return true
   }
 }

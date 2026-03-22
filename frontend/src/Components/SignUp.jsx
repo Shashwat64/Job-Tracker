@@ -44,9 +44,10 @@ export default function SignUp(){
     }
 
     const res = await signUp(details)
+    console.log("res:", res)
 
     if(res){
-      redirect("/app")
+      navigate("/app")
     }
   }
 
