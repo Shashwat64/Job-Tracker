@@ -2,7 +2,9 @@
 
 export  async function getUserDetails(userId){
 
-  const res = await fetch(`http://localhost:8000/users/get/user`)
+  const res = await fetch(`http://localhost:8000/users/get/user`,{
+    credentials: 'include'
+  })
   const data = await res.json()
 
   const exists = data.data
@@ -21,6 +23,7 @@ export  async function resetData(applicationJson){
 
   const res = await fetch('http://localhost:8000/users/reset',{
   method: 'POST',
+  credentials: 'include',
   headers:{
     "Content-Type": "application/json"
   },
@@ -167,6 +170,9 @@ export async function updateInterview(round){
 //   const reply = await interviewRes.json()
 //   return reply
 // }
+
+//const authRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+//const authRes = await fetch('http://localhost:8000/auth/me', {
 
 export async function isSignedIn(){
   const authRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {

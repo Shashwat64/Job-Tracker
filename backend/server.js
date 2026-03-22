@@ -14,16 +14,16 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 
+app.use(cookieParser())
 app.use(cors({
   origin: true, // reflects whatever origin the request comes from
   credentials: true
 }))
 app.use(express.json())
-app.use(cookieParser())
 
 app.use("/auth", authRoutes)
 app.use("/job",  jobRoutes)
-app.use("/users",  authMiddleware, usersRoutes)
+app.use("/users", usersRoutes)
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
