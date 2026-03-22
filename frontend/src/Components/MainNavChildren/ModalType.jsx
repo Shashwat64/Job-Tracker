@@ -4,15 +4,13 @@ import { capitalise } from "../../utils/helperFunctions"
 //api function
 import { updateInterviews } from "../../api/users"
 
-export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId }){
+export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, seletedApplication }){
   
   const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length || interview.stage.toLowerCase() === 'interview')
 
   // console.log(jobAtInterviewStage)
 
-  const [selectedJob, setSelectedJob] = useState("")
-
-  const [modalSelectedId, setModalSelectedId] = useState(selectedId)
+  // const [modalSelectedId, setModalSelectedId] = useState(selectedId)
 
   console.log(selectedId)
 
@@ -21,11 +19,15 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     setModalSelectedId(selectedId)
   }, [selectedId])
   
-  const nextRound = applicationJson[selectedId-1]?.interviews?.[0]?.round+1 || 1
-  console.log(applicationJson[selectedId-1]?.interviews?.[0]?.round+1)
+  const nextRound = Math.max(...seletedApplication?.interviews?.map(interview => interview.round))+1 || 1
+
+  
+
+  console.log(seletedApplication?.interviews?.[0]?.round+1)
   console.log(nextRound)
 
-  const[selectedRound, setSelectedRound] = useState(applicationJson[selectedId-1]?.interviews?.[0]?.round)
+
+  const[selectedRound, setSelectedRound] = useState(nextRound-1)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -42,20 +44,6 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
       setNewRound((prev) => ({ ...prev, [name]: value }))
     }
   }
-
-
-
-  /* 
-  else if(name.includes('details')){
-      setNewRound(prev=>({
-        ...prev,
-        details: value
-          .split(/[.\n]/)
-          .map(item => item.trim())
-          .filter(Boolean)
-      }))
-    }
-   */
 
   async function handleSubmit(e){
     e.preventDefault()
@@ -98,23 +86,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     setModalType(null)
   }
 
-  // const [newRound, setNewRound] = useState({
-  //   round: nextRound,
-  //   type: "",
-  //   date: "",
-  //   time:{
-  //     start: '',
-  //     duration: null
-  //   },
-  //   details:[],
-  //   interviewer: "",
-  //   meetingLink: "",
-  //   notes: "",
-  //   outcome: null,
-  //   status: ""
-  // })
 
-  console.log(applicationJson[1].interviews.map(round=>round.time.duration))
   console.log(selectedRound)
 
   const [newRound, setNewRound] = useState({
@@ -136,7 +108,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
     if(modaltype === "edit" ){
 
       // console.log(newRound)
-      setNewRound(applicationJson[selectedId-1].interviews.find(
+      setNewRound(seletedApplication.interviews.find(
         round => round.round === selectedRound
       ))
     }

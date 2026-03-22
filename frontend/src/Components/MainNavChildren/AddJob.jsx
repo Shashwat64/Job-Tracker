@@ -104,12 +104,12 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       ...newJob, 
       company: {
         ...newJob.company, 
-        logoLink: `https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`
+        logoLink: `https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
       }
     }
 
 
-    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&retina=true`}}))
+    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`}}))
 
     console.log("applicationJson is", applicationJson)
     console.log("newJob is", updatedJob)

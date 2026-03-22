@@ -20,7 +20,7 @@ export default function Interview(){
   const {applicationJson, setApplicationJson} = useContext(JobContext)
   console.log(applicationJson)
 
-  const [selectedId, setSelectedId] = useState() /* Set to 0, so that html for the right side will not throw error */
+  const [selectedId, setSelectedId] = useState(null) /* Set to 0, so that html for the right side will not throw error */
 
   console.log(selectedId)
 
@@ -29,8 +29,14 @@ export default function Interview(){
   const [modaltype, setModalType] = useState(null)
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
+
+  let seletedApplication
+  if(selectedId!==null){
+    seletedApplication = withInterview.find(application=>application.id === selectedId)
+  }
+
   
-  const latestSelectedIdInterview = applicationJson[selectedId-1]?.interviews?.[0]
+  const latestSelectedIdInterview = seletedApplication?.interviews?.[0]
 
   console.log("selectedId", selectedId)
 
@@ -40,7 +46,7 @@ export default function Interview(){
 
   console.log("withInterview is", withInterview)
 
-  const selectedIdSortedInterview = applicationJson[selectedId-1]?.interviews?.sort((a,b)=>b.round-a.round)
+  const selectedIdSortedInterview = seletedApplication?.interviews?.sort((a,b)=>b.round-a.round)
 
   const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
@@ -49,7 +55,6 @@ export default function Interview(){
         return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
     }) || []
 
-    console.log(interviewOnPage)
 
     let interviewLeftHtml
 
@@ -72,8 +77,28 @@ export default function Interview(){
           <div className=' text-sm px-4 pb-2'>{formatLongDate(info.interviews[info.interviews.length-1].date)}</div>
         </div>
       ))
+    }else{
+      interviewLeftHtml = interviewOnPage.map((info, i)=>(
+        <div 
+          className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
+          key={i}
+          onClick={()=>{setSelectedId(Number(info.id))}}
+        >
+          <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
+            <div className='' >
+              <img className='w-10 h-10 mr-4' src={info.company.logoLink} alt="company logo" />
+            </div>
+            <div>
+              <h3>{info.company.name}</h3>
+              <p className='text-sm text-black/60'>{info.jobTitle}</p>
+            </div>
+          </div> 
+        </div>
+      ))
+
     }
 
+    console.log("selectedIdSortedInterview is", selectedIdSortedInterview)
 
 
   const sortedRoundHtml = selectedIdSortedInterview?.map((round,i)=>{
@@ -100,7 +125,7 @@ export default function Interview(){
   return (
     
     <>
-      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId}/>}
+      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} seletedApplication={seletedApplication}/>}
       <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        
@@ -137,7 +162,7 @@ export default function Interview(){
             </div>
             
           </div>
-          {latestSelectedIdInterview && !applicationJson[selectedId-1].isDeleted &&
+          
             <div className='flex flex-col bg-gray-100 h-full w-3/5 p-2 py-4 min-h-0'> {/* Right side of the Interview */}
               <div className='flex w-full items-center justify-between'>
 
@@ -186,43 +211,45 @@ export default function Interview(){
               </div>
 
               {/* {selectedId && } */}
-
-              <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
-                Interview {'> ' + applicationJson[selectedId-1].company.name}  Interview
-              </div>
-              <div 
-                className='bg-white px-4 p-2 border border-gray-100  border-b'  
-              >
-                <div className='flex items-center m-2 pb-2 '>
-                  <div className='' >
-                    <img className='w-10 h-10 mr-4' src={applicationJson[selectedId-1].company.logoLink} alt="company logo" />
+              {latestSelectedIdInterview && !seletedApplication.isDeleted &&
+              <>
+                <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
+                  Interview {'> ' + seletedApplication.company.name}  Interview
+                </div>
+                <div 
+                  className='bg-white px-4 p-2 border border-gray-100  border-b'  
+                >
+                  <div className='flex items-center m-2 pb-2 '>
+                    <div className='' >
+                      <img className='w-10 h-10 mr-4' src={seletedApplication.company.logoLink} alt="company logo" />
+                    </div>
+                    <div>
+                      <h3>{seletedApplication.company.name}</h3>
+                      <p className='text-sm text-black/60'>{seletedApplication.jobTitle}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3>{applicationJson[selectedId-1].company.name}</h3>
-                    <p className='text-sm text-black/60'>{applicationJson[selectedId-1].jobTitle}</p>
+                </div>
+                <div className='flex items-center border-b border-gray-200 bg-white h-15'>{/* Interview type time of the lastest interview */}
+                  <div className='flex w-1/2 m-3 h-10 border-r pl-2 items-center border-gray-200'>
+                    <img src={locationPin} alt="location pin" className='w-6 mr-2'/>
+                    {seletedApplication.interviewType} Interview
+                  </div>
+                  <div className='flex items-center w-1/2'>
+                    <img src={calender} alt="calender" className='w-6'/>
+                    <div className=' text-sm px-4'>{formatLongDate(latestSelectedIdInterview.date)} at {addingAmPm(latestSelectedIdInterview.time.start)}</div>
+
                   </div>
                 </div>
-              </div>
-              <div className='flex items-center border-b border-gray-200 bg-white h-15'>{/* Interview type time of the lastest interview */}
-                <div className='flex w-1/2 m-3 h-10 border-r pl-2 items-center border-gray-200'>
-                  <img src={locationPin} alt="location pin" className='w-6 mr-2'/>
-                  {applicationJson[selectedId-1].interviewType} Interview
-                </div>
-                <div className='flex items-center w-1/2'>
-                  <img src={calender} alt="calender" className='w-6'/>
-                  <div className=' text-sm px-4'>{formatLongDate(latestSelectedIdInterview.date)} at {addingAmPm(latestSelectedIdInterview.time.start)}</div>
-
-                </div>
-              </div>
-              <div className='bg-white px-6 py-4 font-semibold border-b border-gray-200'>Interview Process</div>
+                <div className='bg-white px-6 py-4 font-semibold border-b border-gray-200'>Interview Process</div>
 
                 <div className='p-6 flex flex-1 shrink flex-col gap-8 bg-white border-b border-gray-200 overflow-x-auto'> {/* add h-100 to this */}
                   {sortedRoundHtml}
                 </div>
                 <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-linear-to-l from-white to-transparent"></div>
-                </div>
+              </>}
+            </div>
             
-            }
+            
           </div>
         </main>
     </>
