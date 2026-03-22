@@ -2,7 +2,7 @@
 
 export  async function getUserDetails(userId){
 
-  const res = await fetch(`${VITE_API_URL}/users/get/user`,{
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/users/get/user`,{
     credentials: 'include'
   })
   const data = await res.json()
@@ -21,7 +21,7 @@ export  async function resetData(applicationJson){
 
   console.log("resetData ran")
 
-  const res = await fetch(`${VITE_API_URL}/users/reset`,{
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/users/reset`,{
   method: 'POST',
   credentials: 'include',
   headers:{
@@ -38,7 +38,7 @@ export async function getAllDataOfUser(userId){
 
   console.log("getAllDataOfUser was called")
 
-  const applicationRes = await fetch(`${VITE_API_URL}/users/get/applications`,
+  const applicationRes = await fetch(`${import.meta.env.VITE_API_URL}/users/get/applications`,
     {
       method:"GET",
       credentials: 'include'
@@ -46,7 +46,7 @@ export async function getAllDataOfUser(userId){
   )
   const applicationData = await applicationRes.json()
 
-  const interviewRes = await fetch(`${VITE_API_URL}/users/get/interviews`,
+  const interviewRes = await fetch(`${import.meta.env.VITE_API_URL}/users/get/interviews`,
     {
       method:"GET",
       credentials: 'include'
@@ -86,7 +86,7 @@ export async function getAllDataOfUser(userId){
 export async function addApplication(application){
   console.log(application)
 
-  const applicationRes = await fetch(`${VITE_API_URL}/users/post/application`,
+  const applicationRes = await fetch(`${import.meta.env.VITE_API_URL}/users/post/application`,
     {
       method:"POST",
       headers: { "Content-Type": "application/json" },
@@ -101,7 +101,7 @@ export async function addApplication(application){
 export async function updateApplication(application){
   console.log(userId)
 
-  const interviewRes = await fetch(`${VITE_API_URL}/users/patch/application`,
+  const interviewRes = await fetch(`${import.meta.env.VITE_API_URL}/users/patch/application`,
     {
       method:"PATCH",
       headers: { "Content-Type": "application/json" },
@@ -115,7 +115,7 @@ export async function updateApplication(application){
 
 export async function deleteApplication(applicationId){
 
-  const applicationRes = await fetch(`${VITE_API_URL}/users/delete/application`,
+  const applicationRes = await fetch(`${import.meta.env.VITE_API_URL}/users/delete/application`,
     {
       method:"DELETE",
       headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ export async function addInterview(interview, applicationId){
   console.log(interview)
   console.log(applicationId)
 
-  const interviewRes = await fetch(`${VITE_API_URL}/users/post/interview`,
+  const interviewRes = await fetch(`${import.meta.env.VITE_API_URL}/users/post/interview`,
     {
       method:"POST",
       headers: { "Content-Type": "application/json" },
@@ -145,7 +145,7 @@ export async function addInterview(interview, applicationId){
 }
 
 export async function updateInterview(round){
-  const interviewRes = await fetch(`${VITE_API_URL}/users/patch/interview`,
+  const interviewRes = await fetch(`${import.meta.env.VITE_API_URL}/users/patch/interview`,
     {
       method:"PATCH",
       headers: { "Content-Type": "application/json" },
@@ -160,7 +160,7 @@ export async function updateInterview(round){
 
 
 export async function getUserData(id){
-  const usersRes = await fetch(`${VITE_API_URL}/users/get/user`, {
+  const usersRes = await fetch(`${import.meta.env.VITE_API_URL}/users/get/user`, {
     method:"GET",
     credentials: 'include'
   }) 
@@ -172,7 +172,7 @@ export async function getUserData(id){
 }
 
 export async function isSignedIn(){
-  const authRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+  const authRes = await fetch(`${import.meta.env.import.meta.env.VITE_API_URL}/auth/me`, {
     credentials: 'include'
   })
 
@@ -190,7 +190,7 @@ export async function isSignedIn(){
 }
 
 export async function signIn(details){
-  const res = await fetch(`${VITE_API_URL}/auth/signin`,{
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signin`,{
     method:"POST",
     credentials: 'include',
     headers:{
@@ -211,7 +211,7 @@ export async function signIn(details){
 }
 
 export async function signUp(details){
-  const res = await fetch(`${VITE_API_URL}/auth/signup`,{
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`,{
     method:"POST",
     headers:{
       "Content-Type": "application/json"
@@ -231,7 +231,7 @@ export async function signUp(details){
 
 
 export async function signOutUser(){
-  const usersRes = await fetch(`${VITE_API_URL}/auth/signout`, {
+  const usersRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`, {
     method:"POST",
     credentials: 'include'
   }) 
