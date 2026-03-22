@@ -23,63 +23,8 @@ export default function App() {
 
   const [userData, setUserData] = useState(null)
 
-  // console.log(applicationJson)
-//   let called = false
-
-//   //practise for the server
-//   // const [users, setUsers] = useState([])
-
-//   useEffect(() => {
-//   async function loadData() {
-//     if(!called){
-//       called = true;
-//       await resetData(applicationsList)
-//     }
-//     const data = await getAllDataOfUser(1);
-//     setApplicationJson(data);
-//     // console.log(await updateInterviews({message: "this is test mock, interviews"}))
-//   }
-
-//   loadData();
-// }, []);
 
   console.log(applicationJson)
-
-  // console.log(users)
-
- 
-
-  // async function createUser() {
-  //   const res = await fetch("http://localhost:8000/users", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({
-  //       email: "aryan@example.com",
-  //       password: "hello"
-  //     })
-  //   })
-
-  //   const data = await res.json()
-  //   console.log(data)
-  // }
-
-  // createUser()
-
-  // async function deleteUser() {
-  //   const res = await fetch("http://localhost:8000/users/1", {
-  //     method: "DELETE"
-  //   })
-
-  //   const data = await res.json()
-  //   console.log(data)
-  // }
-
-  // deleteUser()
-
-
-
 
   return (
     <>

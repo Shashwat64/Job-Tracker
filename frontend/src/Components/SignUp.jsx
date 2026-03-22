@@ -2,16 +2,18 @@ import { Link, useSearchParams, useLocation, useNavigate, redirect} from 'react-
 
 import logoOrange from '../assets/logoOrange.png'
 
-export async function loader() {
-  const res = await fetch("http://localhost:8000/auth/me", {
-    credentials: 'include'
-  })
+import { isSignedIn, signUp } from '../api/users'
 
-  if (res.ok) {
-    return redirect('/app') // ✅ already logged in → kick to app
+
+export async function loader() {
+  const res = await isSignedIn()
+
+  if (res) {
+    console.log("inside loader of signin")
+    return redirect('/app')
   }
 
-  return null // not logged in → show signin page
+  return null 
 }
  
 
@@ -32,24 +34,18 @@ export default function SignUp(){
     const email = formData.get("email")
     const password= formData.get("password")
 
-    const res = await fetch("http://localhost:8000/auth/signup",{
-      method:"POST",
-      headers:{
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        username,
-        email,
-        password
-      })
-    })
+  
+    const details = {
+      firstName,
+      lastName,
+      username,
+      email,
+      password
+    }
 
-    const reply = await res.json()
-    console.log(reply)
+    const res = await signUp(details)
 
-    if(reply.ok){
+    if(res){
       redirect("/app")
     }
   }

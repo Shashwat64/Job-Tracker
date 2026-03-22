@@ -23,7 +23,7 @@ app.use(express.json())
 
 app.use("/auth", authRoutes)
 app.use("/job",  jobRoutes)
-app.use("/users", usersRoutes)
+app.use("/users", authMiddleware, usersRoutes)
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
