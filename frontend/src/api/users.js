@@ -57,7 +57,7 @@ export async function getAllDataOfUser(userId){
   console.log("interviewData in getAllDataOfUser is ", interviewData)
   console.log("applicationData in getAllDataOfUser is ", applicationData)
 
-  if(interviewData?.data?.length>=1){
+  if(interviewData?.data?.length>=1 && applicationData?.data?.length>=1){
 
     console.log("this should not run")
 

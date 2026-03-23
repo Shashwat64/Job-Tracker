@@ -11,16 +11,18 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
 
   
   console.log(applicationJson)
+  // console.log(applicationJson[0].id)
   
   console.log("openModalId", openModalId)
   
-  const [editId] = useState(openModalId)
+  const [editId, setEditID] = useState(null)
   
   console.log("editId is ", editId)
 
   console.log(editId)
 
   useEffect(()=>{
+    setEditID(openModalId)
     setOpenModalId(null)
   },[])
 
@@ -46,8 +48,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     // console.log(applicationJson[editId-1])
   }
 
-  console.log(editId)
-  console.log(applicationJson[0].id)
 
   console.log(thatData)
 
