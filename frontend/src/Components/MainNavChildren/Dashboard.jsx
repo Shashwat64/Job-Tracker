@@ -28,13 +28,7 @@ const ApplicationItem = ({ companyName, type, jobTitle, date, time, id, logoLink
     </div>
   </div>
 )
-// id:info.id, jobTitle:info.jobTitle, companyName: info.company.name
 
-
-/* const upcomingInterviews = [
-  { company: "Cisco", round: "Technical Round 1", position: "Network Software Engineer", date: "Apr 15, 2026", time: "10:00 AM - 11:00 AM" },
-  { company: "Oracle", round: "HR Screening", position: "Cloud Engineer", date: "Apr 18, 2026", time: "02:30 PM - 03:00 PM" },
-]  */
 
 
 
@@ -123,7 +117,6 @@ export default function Dashboard() {
     .map(info=>({id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]}))
     .sort((a,b)=>a.date.localeCompare(b.date))
 
-  console.log(upcomingInterviews)
   console.log(upcomingInterviews)
 
 

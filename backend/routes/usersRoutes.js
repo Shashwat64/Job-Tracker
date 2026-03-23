@@ -169,7 +169,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
   
     const application = req.body.application
   
-    console.log("application in post/application",application)
+    // console.log("application in post/application",application)
   
     const appliedDate = new Date(application.date)
   

@@ -99,8 +99,8 @@ export async function addApplication(application){
 }
 
 export async function updateApplication(application){
-  console.log(userId)
 
+  console.log(application)
   const interviewRes = await fetch(`${import.meta.env.VITE_API_URL}/users/patch/application`,
     {
       method:"PATCH",

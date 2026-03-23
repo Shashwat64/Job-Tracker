@@ -55,7 +55,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
 
   const [newJob, setNewJob] = useState(thatData)
 
-  console.log(newJob)
 
   function handleChange(e){
     const {name, value} = e.currentTarget
@@ -78,10 +77,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     
   }
 
-  console.log(newJob)
-
-  console.log(newJob.company)
-  
   async function handleSubmit(e){
     e.preventDefault()
     
@@ -89,6 +84,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       alert("Max salary must be greater than min salary");
       return
     }
+    console.log(newJob)
 
     console.log("newJob in handleSubmit ", newJob)
     
@@ -105,12 +101,12 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       ...newJob, 
       company: {
         ...newJob.company, 
-        logoLink: `https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`
+        logoLink: `https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`
       }
     }
 
 
-    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&size=60&format=png&retina=true`}}))
+    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`}}))
 
     console.log("applicationJson is", applicationJson)
     console.log("newJob is", updatedJob)
@@ -141,6 +137,9 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
         updatedJob,
         ...prev.slice(index+1)
       ]))
+      
+      const reply = await updateApplication(updatedJob)
+      
     }
 
     

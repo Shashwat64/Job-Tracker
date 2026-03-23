@@ -83,7 +83,7 @@ export default function LandingPage(){
             <h2 className="text-text-primary animate-slide-in" style={{ animationDelay: "0.1s" }}>
               OfferPath organizes your entire job search, applications, interviews, offers. So you can focus on landing the role, not managing spreadsheets.
             </h2>
-            <Link to="/signin" className="bg-brand text-white my-4 px-5 py-3 rounded-xl animate-slide-in" style={{ animationDelay: "0.5s" }}>Start for Free</Link>
+            <Link to="/signin" className="bg-brand inline-block text-white my-4 px-5 py-3 rounded-xl animate-slide-in" style={{ animationDelay: "0.5s" }}>Start for Free</Link>
           </div>
           <div className="w-150 bg-surface p-4 border border-border rounded-2xl min-h-0 animate-float animate-slide-in">
             <div className="flex justify-between items-center mb-2 "> {/* Floating window */}
