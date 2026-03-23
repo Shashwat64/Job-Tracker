@@ -7,9 +7,7 @@ import { deleteApplication } from "../../api/users";
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
   const dropdownRef = useRef()
 
-  // console.log("id in the dropdown",id)
-
-  
+  console.log("id in the dropdown",id)
 
   const {applicationJson, setApplicationJson} = useContext(JobContext)
 

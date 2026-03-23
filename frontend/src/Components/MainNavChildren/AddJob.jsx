@@ -15,7 +15,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
   console.log("openModalId", openModalId)
   
-  const [editId, setEditID] = useState(null)
+  const [editId, setEditID] = useState(openModalId)
   
   console.log("editId is ", editId)
 
@@ -27,6 +27,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   },[])
 
   console.log("editId " + editId)
+  console.log("openModalId " + openModalId)
 
 
 

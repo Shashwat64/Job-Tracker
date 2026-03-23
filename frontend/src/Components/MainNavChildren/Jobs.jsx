@@ -33,6 +33,7 @@ export default function Jobs(){
   const [openModalId, setOpenModalId] = useState(null)
 
 
+
   // useEffect(()=>{
   //   setInterviewJson([])
   // },[])
