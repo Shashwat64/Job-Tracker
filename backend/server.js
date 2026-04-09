@@ -27,5 +27,3 @@ app.use("/users", authMiddleware, usersRoutes)
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-
-

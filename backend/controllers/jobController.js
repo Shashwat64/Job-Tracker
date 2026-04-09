@@ -10,10 +10,12 @@ export const uploadResume = async (req, res) => {
       return new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
           { folder: 'resumes', resource_type: 'raw' },
+
           (error, result) => {
             if (error) reject(error)
             else resolve(result)
           }
+          
         ).end(req.file.buffer)
       })
     }

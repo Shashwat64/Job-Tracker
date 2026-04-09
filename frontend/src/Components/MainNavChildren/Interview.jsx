@@ -22,9 +22,8 @@ export default function Interview(){
   const {applicationJson, setApplicationJson} = useContext(JobContext)
   console.log(applicationJson)
 
-  const [selectedId, setSelectedId] = useState(null) /* Set to 0, so that html for the right side will not throw error */
+   /* Set to 0, so that html for the right side will not throw error */
 
-  console.log(selectedId)
 
   const [activeBtn, setActiveBtn] = useState("all")
   
@@ -32,9 +31,24 @@ export default function Interview(){
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
 
+   const interviewOnPage = withInterview.filter((interview)=>{
+      if(activeBtn==='all' && !interview.isDeleted)
+        return true
+      else if(!interview.isDeleted)
+        return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
+    }) || []
+  
+  console.log(interviewOnPage) 
+  console.log(interviewOnPage)
+  console.log(interviewOnPage?.[0]?.id)
+
+  const [selectedId, setSelectedId] = useState(interviewOnPage?.[0]?.id ?? null)
+
+  console.log(selectedId)
+
   let selectedApplication
-  if(selectedId!==null){
-    selectedApplication = withInterview.find(application=>application.id === selectedId)
+  if(selectedId>=0){
+    selectedApplication = interviewOnPage.find(application=>application.id === selectedId)
   }
 
   
@@ -50,17 +64,12 @@ export default function Interview(){
 
   const selectedIdSortedInterview = selectedApplication?.interviews?.sort((a,b)=>b.round-a.round)
 
-  const interviewOnPage = withInterview.filter((interview)=>{
-      if(activeBtn==='all' && !interview.isDeleted)
-        return true
-      else if(!interview.isDeleted)
-        return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
-    }) || []
+ 
 
 
     let interviewLeftHtml
 
-    if(interviewLeftHtml?.length){
+    if(interviewOnPage?.interviews?.length > 0){
       interviewLeftHtml = interviewOnPage.map((info, i)=>(
         <div 
           className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
