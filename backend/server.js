@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 
 //routes
 import authRoutes from './routes/authRoutes.js'
-import jobRoutes from './routes/jobRoutes.js'
+import resumeRoutes from './routes/resumeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 import authMiddleware from './middleware/authMiddleware.js'
 
@@ -22,7 +22,7 @@ app.use(cors({
 app.use(express.json())
 
 app.use("/auth", authRoutes)
-app.use("/job",  jobRoutes)
+app.use("/resume", resumeRoutes)
 app.use("/users", authMiddleware, usersRoutes)
 
 
