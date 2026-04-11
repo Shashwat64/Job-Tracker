@@ -29,7 +29,7 @@ export default function Jobs(){
   // console.log("userData in Jobs", userData)
   console.log("applicationJson in Jobs", applicationJson)
 
-  const [addJobModal, setAddJobModal] = useState(false)
+  const [addJobModal, setAddJobModal] = useState(true)
   const [openModalId, setOpenModalId] = useState(null)
 
 
@@ -65,7 +65,6 @@ export default function Jobs(){
           info.company.name,
           info.company.location,
           info.jobTitle,
-          info.interviewType,
           info.date,
           info.stage
         ]

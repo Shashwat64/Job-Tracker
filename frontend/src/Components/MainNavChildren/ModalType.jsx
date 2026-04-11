@@ -100,6 +100,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   const [newRound, setNewRound] = useState({
     round: nextRound,
     type: "",
+    mode: "virtual",
     date: "",
     time:{
       start: '',
@@ -131,7 +132,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   
   return (
     <div 
-      className="fixed inset-0 z-50 flex justify-center items-center overflow-y-auto pt-10  bg-black/40"
+      className="fixed inset-0 z-50 flex justify-center items-center overflow-y-auto bg-black/40"
       onClick={() => setModalType(null)}
     >
       <div 
@@ -201,6 +202,18 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 className="w-full border p-2 rounded mb-2"
                 required
               />
+              <label htmlFor="mode">Round Mode</label>
+              <select
+                name="mode"
+                id="mode"
+                value={newRound.mode}
+                onChange={handleChange}
+                className="w-full border p-2 rounded mb-4"
+                required
+              >
+                <option value="virtual">Virtual</option>
+                <option value="in-person">In-Person</option>
+              </select>
 
               {/* Date */}
               <label htmlFor="date">Interview Date</label>

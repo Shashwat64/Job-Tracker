@@ -38,7 +38,7 @@ const uberLogo = `https://img.logo.dev/uber.com?token=${import.meta.env.VITE_LOG
   dateApplied: "2026-03-12",
   source: "LinkedIn",
   notes: "Referral from John",
-  resumeUsed: "Frontend_Resume.pdf",
+  resumeId: "Frontend_Resume.pdf",
   jobUrl, {have to do this}
   interviews: [
     {
@@ -95,7 +95,7 @@ const applicationsList = [
     isDeleted: false,
     source: "LinkedIn",
     notes: "Referral from John",
-    resumeUsed: "Frontend_Resume.pdf",
+    resumeId: null,
     interviews: [
       {
         round: 1,

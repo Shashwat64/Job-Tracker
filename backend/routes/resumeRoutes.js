@@ -1,8 +1,7 @@
 import express from 'express'
-import pool from '../config/db.js'
 import authMiddleware from '../middleware/authMiddleware.js'
 import upload from '../middleware/uploadMiddleware.js'
-import { uploadResume, getResumes, deleteResume} from '../controllers/resumeController.js'
+import { uploadResume, getResumes, deleteResume } from '../controllers/resumeController.js'
 
 const resumeRoutes = express.Router()
 

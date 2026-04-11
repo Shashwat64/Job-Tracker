@@ -80,12 +80,10 @@ usersRoutes.get('/get/applications', async(req, res)=>{
         jobTitle: application.job_title,
         salaryRange: { min: application.salary_min, max: application.salary_max },
         date: application.applied_date.toISOString().slice(0, 10),
-        interviewType: application.interview_type,
         stage: application.stage,
         isDeleted: application.is_deleted,
         source: application.source,
         notes: application.notes,
-        resumeUsed: application.resume_used,
       })
     }
 
@@ -179,7 +177,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
     //   userId
     // })
   
-    const { company, jobTitle, salaryRange, date, interviewType, stage, source, notes, resumeUsed, isDeleted} = application;
+    const { company, jobTitle, salaryRange, date, stage, source, notes, resumeId, isDeleted} = application;
   
     console.log(company)
   
@@ -187,7 +185,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
           `INSERT INTO applications
           (user_id, company_name, company_logo_link, company_location, company_url,
           job_title, salary_min, salary_max, applied_date,
-          interview_type, stage, source, resume_used, notes, is_deleted)
+          stage, source, resume_id, notes, is_deleted)
           VALUES
           ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
           RETURNING *`,
@@ -201,10 +199,9 @@ usersRoutes.post('/post/application', async(req,res)=>{
             salaryRange?.min || null,  // salary_min
             salaryRange?.max || null,  // salary_max
             appliedDate,               // applied_date
-            interviewType || null,     // interview_type
             stage || null,             // stage
             source || null,            // source
-            resumeUsed || null,        // resume_used
+            resumeId || null,        // resume_id
             notes || null,             // notes
             isDeleted ?? false         // is_deleted
           ]
@@ -245,13 +242,12 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
           salary_min = $6,
           salary_max = $7,
           applied_date = $8,
-          interview_type = $9,
-          stage = $10,
-          source = $11,
-          resume_used = $12,
-          notes = $13,
-          is_deleted = $14
-      WHERE id = $15
+          stage = $9,
+          source = $10,
+          resume_id = $11,
+          notes = $12,
+          is_deleted = $13
+      WHERE id = $14
       RETURNING *`,
       [
         application.company.name,          
@@ -262,10 +258,9 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
         application.salaryRange.min,
         application.salaryRange.max,
         appliedDate,
-        application.interviewType,
         application.stage,
         application.source,
-        application.resumeUsed,
+        application.resumeId,
         application.notes,
         application.isDeleted,
         application.id

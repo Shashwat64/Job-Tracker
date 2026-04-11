@@ -248,7 +248,7 @@ export default function Interview(){
                 <div className='flex items-center border-b border-gray-200 bg-white h-15'>{/* Interview type time of the lastest interview */}
                   <div className='flex w-1/2 m-3 h-10 border-r pl-2 items-center border-gray-200'>
                     <img src={locationPin} alt="location pin" className='w-6 mr-2'/>
-                    {selectedApplication.interviewType} Interview
+                     Interview
                   </div>
                   <div className='flex items-center w-1/2'>
                     <img src={calender} alt="calender" className='w-6'/>

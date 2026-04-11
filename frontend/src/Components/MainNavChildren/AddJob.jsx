@@ -39,7 +39,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       jobTitle: "",
       salaryRange: { min: "", max: "" },
       date: "",
-      interviewType: "Virtual",
       stage: "Pending",
       isDeleted:false,
       interview:[]
@@ -148,118 +147,133 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex justify-center items-center overflow-y-auto bg-black/40"
       onClick={() => setAddJobModal(false)}
     >
       <div 
-        className="min-w-100 min-h-150 w-1/3 h-2/3 bg-white rounded-xl shadow-xl p-6 relative "
+        className="min-w-100 min-h-150 w-1/3 h-2/3  bg-white rounded-xl shadow-xl p-6 relative overflow-y-auto "
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <div 
-          className="absolute flex top-8 left-6 w-7 h-7  justify-center items-center rounded-full hover:bg-gray-200"
+          className="absolute flex top-8  left-6 w-7 h-7  justify-center items-center rounded-full hover:bg-gray-200"
           onClick={()=>{setAddJobModal(false)}}
         >
           <button className="text-xl leading-none">&times;</button>
         </div>
 
-        <div className=" flex justify-center items-center w-full h-full p-8 gap-4">
+        <div className=" flex justify-center items-center w-full h-full p-8 gap-4 overflow-y-auto">
           <form 
-            className=" gap-8 items-center "
+            className=" gap-8 items-center py-10"
             onSubmit={handleSubmit}>
-            <input
-              name="company.name"
-              value={newJob.company.name}
-              onChange={handleChange}
-              placeholder="Company Name"
-              className="w-full border p-2 rounded mb-2"
-              required
-            />
-            <input
-              name="company.url"
-              value={newJob.company.url}
-              onChange={handleChange}
-              placeholder="Company Website"
-              className="w-full border p-2 rounded mb-2"
-              type="text"
-              required
-            />
-            <input
-              name="company.location"
-              value={newJob.company.location}
-              onChange={handleChange}
-              placeholder="Location"
-              className="w-full border p-2 rounded mb-2"
-              required
-            />
+            <label>
+              Company Name
+              <input
+                name="company.name"
+                value={newJob.company.name}
+                onChange={handleChange}
+                placeholder="Google"
+                className="w-full border p-2 rounded mb-2"
+                required
+              />
+            </label>
 
-            {/* Job Title */}
-            <input
-              name="jobTitle"
-              value={newJob.jobTitle}
-              onChange={handleChange}
-              placeholder="Job Title"
-              className="w-full border p-2 rounded mb-2"
-              required
-            />
+            <label>
+              Company Website
+              <input
+                name="company.url"
+                value={newJob.company.url}
+                onChange={handleChange}
+                placeholder="google.com"
+                className="w-full border p-2 rounded mb-2"
+                type="text"
+                required
+              />
+            </label>
 
-            {/* Salary */}
+            <label>
+              Location
+              <input
+                name="company.location"
+                value={newJob.company.location}
+                onChange={handleChange}
+                placeholder="Delhi, India"
+                className="w-full border p-2 rounded mb-2"
+                required
+              />
+            </label>
+
+            <label>
+              Job Title
+              <input
+                name="jobTitle"
+                value={newJob.jobTitle}
+                onChange={handleChange}
+                placeholder="Frontend Developer"
+                className="w-full border p-2 rounded mb-2"
+                required
+              />
+            </label>
+
+
+
             <div className="flex gap-2 mb-2">
-              <input
-                name="salaryRange.min"
-                value={newJob.salaryRange.min}
-                onChange={handleChange}
-                placeholder="Min Salary"
-                type="number"
-                className="w-1/2 border p-2 rounded"
-                required
-              />
-              <input
-                name="salaryRange.max"
-                value={newJob.salaryRange.max}
-                onChange={handleChange}
-                placeholder="Max Salary"
-                type="number"
-                className="w-1/2 border p-2 rounded"
-                required
-              />
+              <label className='flex flex-col'>
+                Minimum Salary
+                <input
+                  name="salaryRange.min"
+                  value={newJob.salaryRange.min}
+                  onChange={handleChange}
+                  placeholder=""
+                  type="number"
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </label>
+
+              <label className='flex flex-col'>
+                Maximum Salary
+                <input
+                  name="salaryRange.max"
+                  value={newJob.salaryRange.max}
+                  onChange={handleChange}
+                  placeholder=""
+                  type="number"
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </label>
             </div>
 
             {/* Date */}
-            <input
-              name="date"
-              value={newJob.date}
-              onChange={handleChange}
-              type="date"
-              className="w-full border p-2 rounded mb-2"
-              required
-            />
+            <label>
+              Date
+              <input
+                name="date"
+                value={newJob.date}
+                onChange={handleChange}
+                type="date"
+                className="w-full border p-2 rounded mb-2"
+                required
+              />
+            </label>
 
-            {/* Interview Type */}
-            <select
-              name="interviewType"
-              value={newJob.interviewType}
-              onChange={handleChange}
-              className="w-full border p-2 rounded mb-2"
-            >
-              <option value="Virtual">Virtual</option>
-              <option value="In-person">In-person</option>
-            </select>
-
-            {/* Stage */}
-            <select
-              name="stage"
-              value={newJob.stage}
-              onChange={handleChange}
-              className="w-full border p-2 rounded mb-4"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Shortlisted">Shortlisted</option>
-              <option value="Interview">Interview</option>
-              <option value="Offer">Offer</option>
-              <option value="Rejected">Rejected</option>
-            </select>
+            <label>
+              Stage
+              <select
+                name="stage"
+                value={newJob.stage}
+                onChange={handleChange}
+                className="w-full border p-2 rounded mb-4"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Shortlisted">Shortlisted</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </label>
 
             <button
               type='submit'
@@ -275,7 +289,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
                 jobTitle: "",
                 salaryRange: { min: "", max: "" },
                 date: "",
-                interviewType: "Virtual",
                 stage: "Pending",
               })
             }}
@@ -302,7 +315,6 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     jobTitle: "Frontend Developer", //Simple
     salaryRange: { min: 1800000, max: 2800000 }, //Simple and add the condition that max should be more than min
     date: "2026-03-12", //add input type data
-    interviewType: "Virtual", //add options
     stage: "Pending", //options
     isDeleted:false //default
 
