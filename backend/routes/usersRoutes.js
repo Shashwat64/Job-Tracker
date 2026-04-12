@@ -66,6 +66,8 @@ usersRoutes.get('/get/applications', async(req, res)=>{
 
     const applicationJson = []
 
+    // console.log(typeof result.rows[0].resume_id)
+
     for(const application of result.rows){
 
       applicationJson.push({
@@ -81,6 +83,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
         salaryRange: { min: application.salary_min, max: application.salary_max },
         date: application.applied_date.toISOString().slice(0, 10),
         stage: application.stage,
+        resumeId: application.resume_id, 
         isDeleted: application.is_deleted,
         source: application.source,
         notes: application.notes,
@@ -91,7 +94,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
     res.json({
       message: "this is the data from /:id/applications",
       data:applicationJson,
-    }); // or res.send(result.rows[0])
+    }); // or res.send(result.rows[0]) 
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Database error' });

@@ -3,7 +3,6 @@ import { useState,useContext, useEffect, useRef } from 'react'
 import { JobContext } from '../../App'
 
 import { updateApplication, addApplication } from '../../api/users'
-import { data } from 'react-router-dom'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   
@@ -16,6 +15,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("openModalId", openModalId)
   
   const [editId, setEditID] = useState(openModalId)
+  const [resumes, setResumes] = useState([])
   
   console.log("editId is ", editId)
 
@@ -29,6 +29,20 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("editId " + editId)
   console.log("openModalId " + openModalId)
 
+  //getting resume
+  useEffect(() => {
+    const fetchResumes = async () => {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/resume`, {
+        credentials: 'include'
+      })
+      const data = await res.json()
+      setResumes(data.resumes)
+    }
+    fetchResumes()
+  }, [])
+
+  console.log(resumes)
+
 
 
   let thatData
@@ -41,6 +55,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
       date: "",
       stage: "Pending",
       isDeleted:false,
+      resumeId:null,
       interview:[]
     }
   }else{
@@ -257,6 +272,20 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
                 className="w-full border p-2 rounded mb-2"
                 required
               />
+            </label>
+
+            <label>
+              <select
+                name="resumeId" 
+                value={newJob.resumeId}
+                onChange={handleChange}
+                className="w-full border p-2 rounded mb-2"
+              >
+                <option value="">No resume</option>
+                {resumes.map(resume => (
+                  <option key={resume.id} value={resume.id}>{resume.name}</option>
+                ))}
+              </select>
             </label>
 
             <label>

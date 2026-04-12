@@ -124,10 +124,6 @@ export default function Jobs(){
           <div className=''>
             {interview.date}
           </div>
-          {/* Interview Type */}
-          {/* <div className=''>
-            {interview.interviewType}
-          </div> */}
           {/* Stage */}
           <div className=''>
             {interview.stage}
