@@ -24,12 +24,21 @@ export default function Interview(){
 
    /* Set to 0, so that html for the right side will not throw error */
 
-
+  const [search, setSearch] = useState("");
   const [activeBtn, setActiveBtn] = useState("all")
   
   const [modaltype, setModalType] = useState(null)
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
+    .filter(info=>{
+      if(search === ""){
+        return true
+      }else{
+        return info.company.name.toLowerCase().includes(search.toLowerCase()) ||
+          info.jobTitle.toLowerCase().includes(search.toLowerCase())
+        
+      }
+    })
 
    const interviewOnPage = withInterview.filter((interview)=>{
       if(activeBtn==='all' && !interview.isDeleted)
@@ -37,10 +46,8 @@ export default function Interview(){
       else if(!interview.isDeleted)
         return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
     }) || []
-  
-  console.log(interviewOnPage) 
-  console.log(interviewOnPage)
-  console.log(interviewOnPage?.[0]?.id)
+
+
 
   const [selectedId, setSelectedId] = useState(interviewOnPage?.[0]?.id ?? null)
 
@@ -61,6 +68,7 @@ export default function Interview(){
 
 
   console.log("withInterview is", withInterview)
+  console.log("interviewOnPage is", interviewOnPage)
 
   const selectedIdSortedInterview = selectedApplication?.interviews?.sort((a,b)=>b.round-a.round)
 
@@ -165,7 +173,8 @@ export default function Interview(){
             <input className='bg-white w-full self-center px-6 py-3 rounded-lg ' 
                type="text" 
                placeholder="Search Interviews..."
-               onChange={e=>console.log(e.target.value)}
+               value={search}
+               onChange={e=>setSearch(e.target.value)}
             />
             <h2 className='w-full bg-white mt-4 p-3 px-6 text-xl font-semibold rounded-lg'>Interviews</h2>
             <div className='p-2 bg-gray-50 shadow '>
@@ -207,22 +216,27 @@ export default function Interview(){
                   <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                     onClick={()=>(setModalType('add'))}
                     >Add</button>
-                  <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
-                    onClick={()=>(setModalType('edit'))}
-                  >Edit</button>
-                  <button 
-                    className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
-                    onClick={async()=>{
-                      await deleteApplication(selectedId)
 
-                      setApplicationJson(prev=>prev.map(job =>
-                      job.id === selectedId
-                        ? { ...job, isDeleted: true }
-                        : job
-                    ))
+                  {selectedIdSortedInterview?.length > 0 &&
+                    <>
+                      <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
+                        onClick={()=>(setModalType('edit'))}
+                      >Edit</button>
+                      <button 
+                        className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
+                        onClick={async()=>{
+                          await deleteApplication(selectedId)
 
-                  }}
-                  >Delete</button>
+                          setApplicationJson(prev=>prev.map(job =>
+                          job.id === selectedId
+                            ? { ...job, interviews:selectedIdSortedInterview.slice(1) }
+                            : job
+                        ))
+
+                      }}
+                      >Delete</button>
+                    </>
+                  }
                 </div>}
               </div>
 

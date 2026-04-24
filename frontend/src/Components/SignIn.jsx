@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useSearchParams, useLocation, useNavigate, redirect} from 'react-router-dom'
 
 import logoOrange from '../assets/logoOrange.png'
@@ -18,6 +19,7 @@ export async function loader() {
 
 export default function SignIn(){
 
+  let [signInFailed, setSignInFailed] = useState(false);
   const location = useLocation()
   const state = location.state
 
@@ -37,10 +39,16 @@ export default function SignIn(){
     console.log(email)
     console.log(password)
 
+
     const res = await signIn({email, password})
+
     if(res){
       navigate('/app')
+    }else{
+      setSignInFailed(true);
     }
+    console.log("signInFailed:", typeof signInFailed);
+    console.log(displayWarning || signInFailed);
   }
 
   return (
@@ -55,12 +63,19 @@ export default function SignIn(){
             <img src={logoOrange} alt="logo"  className="object-cover self-center mt-2 mr-px"/>
           </div>
         </nav>
-      <div className="bg-surface rounded-2xl border border-slate-200 p-8 w-full max-w-md">
-        <h1 className='text-text-secondary mb-5'>Signin Page</h1>
-        <h2 className='font-semibold text-lg'>Welcome Back</h2>
-        <p className='text-sm font-light mb-5'>Sign in to continue where you left off.</p>
 
-        <p className={`mb-5 text-center text-brand bg-brand-subtle py-2 ${!displayWarning && 'invisible'}`}>Log in required</p>
+      <div className="bg-surface flex flex-col h-130 justify-between rounded-2xl border border-slate-200 p-8 w-full max-w-md">
+        <div>
+          <h1 className='text-text-secondary mb-5'>Signin Page</h1>
+          <h2 className='font-semibold text-lg'>Welcome Back</h2>
+          <p className='text-sm font-light mb-5'>Sign in to continue where you left off.</p>
+        </div>
+
+        {(displayWarning || signInFailed) && (
+          <p className="mb-5 text-center text-brand bg-brand-subtle py-2">
+            {signInFailed ? "Email or password invaild" : "Log in required"}
+          </p>
+        )}
 
         <form onSubmit={handleSumbit}>
           <label className='w-full flex flex-col'>

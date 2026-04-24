@@ -220,10 +220,8 @@ export async function signUp(details){
 
   const reply = await res.json()
   console.log(reply)
+  return reply  
 
-  if(reply.success){
-    return true
-  }
 }
 
 

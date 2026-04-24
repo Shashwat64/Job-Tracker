@@ -69,7 +69,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
     // console.log(typeof result.rows[0].resume_id)
 
     for(const application of result.rows){
-
+ 
       applicationJson.push({
         id: application.id,
         userId: application.user_id,
@@ -190,7 +190,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
           job_title, salary_min, salary_max, applied_date,
           stage, source, resume_id, notes, is_deleted)
           VALUES
-          ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+          ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
           RETURNING *`,
           [
             userId,                    // user_id
@@ -232,10 +232,12 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
     console.log("application in /patch/application",application)
   
     const appliedDate = new Date(application.date)
+
+    const resumeId = application.resumeId === "" ? null : Number(application.resumeId);
   
     // console.log("logoLink in /patch/application",application.company.logoLink)
   
-    const result = await pool.query(
+    const result = await pool.query( 
       `UPDATE applications
       SET company_name = $1,
           company_logo_link = $2,
@@ -263,7 +265,7 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
         appliedDate,
         application.stage,
         application.source,
-        application.resumeId,
+        resumeId,
         application.notes,
         application.isDeleted,
         application.id

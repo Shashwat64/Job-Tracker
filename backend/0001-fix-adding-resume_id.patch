@@ -1,0 +1,129 @@
+From 4750385e51c15cccfe42cc7b6fd76194a0efef94 Mon Sep 17 00:00:00 2001
+From: Shashwat Rawat <shashwatrrawat@gmail.com>
+Date: Sun, 12 Apr 2026 16:15:16 +0530
+Subject: [PATCH] fix: adding resume_id
+
+---
+ backend/routes/usersRoutes.js                 |  5 ++-
+ .../src/Components/MainNavChildren/AddJob.jsx | 31 ++++++++++++++++++-
+ .../src/Components/MainNavChildren/Jobs.jsx   |  4 ---
+ 3 files changed, 34 insertions(+), 6 deletions(-)
+
+diff --git a/backend/routes/usersRoutes.js b/backend/routes/usersRoutes.js
+index c682832..f38f568 100644
+--- a/backend/routes/usersRoutes.js
++++ b/backend/routes/usersRoutes.js
+@@ -66,6 +66,8 @@ usersRoutes.get('/get/applications', async(req, res)=>{
+ 
+     const applicationJson = []
+ 
++    // console.log(typeof result.rows[0].resume_id)
++
+     for(const application of result.rows){
+ 
+       applicationJson.push({
+@@ -81,6 +83,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
+         salaryRange: { min: application.salary_min, max: application.salary_max },
+         date: application.applied_date.toISOString().slice(0, 10),
+         stage: application.stage,
++        resumeId: application.resume_id, 
+         isDeleted: application.is_deleted,
+         source: application.source,
+         notes: application.notes,
+@@ -91,7 +94,7 @@ usersRoutes.get('/get/applications', async(req, res)=>{
+     res.json({
+       message: "this is the data from /:id/applications",
+       data:applicationJson,
+-    }); // or res.send(result.rows[0])
++    }); // or res.send(result.rows[0]) 
+   } catch (err) {
+     console.error(err)
+     res.status(500).json({ message: 'Database error' });
+diff --git a/frontend/src/Components/MainNavChildren/AddJob.jsx b/frontend/src/Components/MainNavChildren/AddJob.jsx
+index 1805088..36994d4 100644
+--- a/frontend/src/Components/MainNavChildren/AddJob.jsx
++++ b/frontend/src/Components/MainNavChildren/AddJob.jsx
+@@ -3,7 +3,6 @@ import { useState,useContext, useEffect, useRef } from 'react'
+ import { JobContext } from '../../App'
+ 
+ import { updateApplication, addApplication } from '../../api/users'
+-import { data } from 'react-router-dom'
+ 
+ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+   
+@@ -16,6 +15,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+   console.log("openModalId", openModalId)
+   
+   const [editId, setEditID] = useState(openModalId)
++  const [resumes, setResumes] = useState([])
+   
+   console.log("editId is ", editId)
+ 
+@@ -29,6 +29,20 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+   console.log("editId " + editId)
+   console.log("openModalId " + openModalId)
+ 
++  //getting resume
++  useEffect(() => {
++    const fetchResumes = async () => {
++      const res = await fetch(`${import.meta.env.VITE_API_URL}/resume`, {
++        credentials: 'include'
++      })
++      const data = await res.json()
++      setResumes(data.resumes)
++    }
++    fetchResumes()
++  }, [])
++
++  console.log(resumes)
++
+ 
+ 
+   let thatData
+@@ -41,6 +55,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+       date: "",
+       stage: "Pending",
+       isDeleted:false,
++      resumeId:null,
+       interview:[]
+     }
+   }else{
+@@ -259,6 +274,20 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+               />
+             </label>
+ 
++            <label>
++              <select
++                name="resumeId" 
++                value={newJob.resumeId}
++                onChange={handleChange}
++                className="w-full border p-2 rounded mb-2"
++              >
++                <option value="">No resume</option>
++                {resumes.map(resume => (
++                  <option key={resume.id} value={resume.id}>{resume.name}</option>
++                ))}
++              </select>
++            </label>
++
+             <label>
+               Stage
+               <select
+diff --git a/frontend/src/Components/MainNavChildren/Jobs.jsx b/frontend/src/Components/MainNavChildren/Jobs.jsx
+index 2a4b126..8b5b8a4 100644
+--- a/frontend/src/Components/MainNavChildren/Jobs.jsx
++++ b/frontend/src/Components/MainNavChildren/Jobs.jsx
+@@ -124,10 +124,6 @@ export default function Jobs(){
+           <div className=''>
+             {interview.date}
+           </div>
+-          {/* Interview Type */}
+-          {/* <div className=''>
+-            {interview.interviewType}
+-          </div> */}
+           {/* Stage */}
+           <div className=''>
+             {interview.stage}
+-- 
+2.48.1
+

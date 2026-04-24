@@ -127,17 +127,24 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     
     setAddJobModal(false)
     if(!applicationJson?.length){ //this is for adding application for the first time
-      setApplicationJson([updatedJob])
       
       const reply = await addApplication(updatedJob)
+
+      const row = reply.result.rows[0];
+
+
+      setApplicationJson([{id: row.id, userId: row.user_id, ...updatedJob}])
     }
     else if(editId===null){ //this is for adding new applications
+      const reply = await addApplication(updatedJob)
+
+      const row = reply.result.rows[0];
+
       setApplicationJson(prev=>([
         ...prev,
-        updatedJob
+        {id: row.id, userId: row.user_id, ...updatedJob}
       ]))
 
-      const reply = await addApplication(updatedJob)
     }
     
     else{
@@ -281,7 +288,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
                 onChange={handleChange}
                 className="w-full border p-2 rounded mb-2"
               >
-                <option value="">No resume</option>
+                <option value=''>No resume</option>
                 {resumes.map(resume => (
                   <option key={resume.id} value={resume.id}>{resume.name}</option>
                 ))}

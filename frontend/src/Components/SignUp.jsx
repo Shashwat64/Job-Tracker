@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useSearchParams, useLocation, useNavigate, redirect} from 'react-router-dom'
 
 import logoOrange from '../assets/logoOrange.png'
@@ -21,6 +22,7 @@ export default function SignUp(){
 
   const location = useLocation()
   const state = location.state
+  let [signUpIssue, setSignUpIssue] = useState(null)
 
   const navigate = useNavigate()
 
@@ -44,10 +46,22 @@ export default function SignUp(){
     }
 
     const res = await signUp(details)
-    console.log("res:", res)
 
-    if(res){
-      navigate("/app")
+    if (res.success) {
+      navigate("/app");
+    } else if (res.error.includes("email already exists")) {
+      setSignUpIssue("Email already registered");
+
+      setTimeout(() => {
+        setSignUpIssue(null);
+      }, 6000);
+
+    } else if (res.error.includes("username already exists")) {
+      setSignUpIssue("Username already registered");
+
+      setTimeout(() => {
+        setSignUpIssue(null);
+      }, 6000);
     }
   }
 
@@ -63,28 +77,38 @@ export default function SignUp(){
           <img src={logoOrange} alt="logo"  className="object-cover self-center mt-2 mr-px"/>
         </div>
       </nav>
-      <div className="bg-surface rounded-2xl border border-slate-200 p-8 w-full max-w-md">
-        <h1 className='text-text-secondary mb-5'>Signup Page</h1>
-        <h2 className='font-semibold text-lg'>Create your account</h2>
-        <p className='text-sm font-light mb-5'>Start tracking your job applications today!</p>
-
+      <div className="bg-surface rounded-2xl border h-172 flex flex-col justify-between border-slate-200 p-8 w-full max-w-md">
+        <div>
+          <h1 className='text-text-secondary mb-5'>Signup Page</h1>
+          <h2 className='font-semibold text-lg'>Create your account</h2>
+          <p className='text-sm font-light mb-5'>Start tracking your job applications today!</p>
+        </div>
+          
+        {signUpIssue && ( 
+          <p className="mb-5 text-center text-brand bg-brand-subtle py-2">
+            {signUpIssue}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit}>
- 
-          <label className='w-full flex flex-col'>
-            First Name
-            <input className='p-2 mt-1 mb-5 border border-border rounded-lg' 
-              type="text" 
-              placeholder='Enter your first name' 
-              name="firstName"
-              required
-            />
-          </label>
+          
+          <div className='w-full flex gap-2 min-w-0'>
+            <label className='flex-1 flex flex-col'>
+              First Name
+              <input className='p-2 mt-1 mb-5 border border-border rounded-lg' 
+                type="text" 
+                placeholder='Enter your first name' 
+                name="firstName"
+                required
+              />
+            </label>
 
-          <label className='w-full flex flex-col'>
-            Last Name
-            <input className='p-2 mt-1 mb-5 border border-border rounded-lg' type="text" placeholder='Enter your last name'  name="lastName" required/>
-          </label>
+            <label className='flex-1 flex flex-col min-w-0'>
+              Last Name
+              <input className='p-2 mt-1 mb-5 border border-border rounded-lg' type="text" placeholder='Enter your last name'  name="lastName" required/>
+            </label>
+
+          </div>
 
           <label className='w-full flex flex-col'>
             Username
