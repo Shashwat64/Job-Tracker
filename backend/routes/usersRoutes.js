@@ -233,7 +233,9 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
   
     const appliedDate = new Date(application.date)
 
-    const resumeId = application.resumeId === "" ? null : Number(application.resumeId);
+    const resumeId = application.resumeId === "" || application.resumeId === null
+      ? null
+      : Number(application.resumeId)
   
     // console.log("logoLink in /patch/application",application.company.logoLink)
   

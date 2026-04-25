@@ -119,7 +119,7 @@ authRoutes.get('/me', authMiddleware, (req, res) => {
 authRoutes.post('/signout', (req, res) => {
   res.clearCookie('token')
 
-  res.json({ success: true })
+  res.json({ success: true })  
 })
 
 
