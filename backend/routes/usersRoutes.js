@@ -24,8 +24,8 @@ usersRoutes.get('/get/user', async(req, res)=>{
 
 
     const result = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
+    console.log("userData in the usersRoutes", result.rows[0])
     res.json(result.rows[0]) 
-    // console.log("userData in the usersRoutes", result.rows[0])
   } catch(err) {
     console.log("error is", err)
     res.status(401).json({ error: 'invalid token' })
@@ -121,11 +121,13 @@ usersRoutes.get('/get/interviews', async(req, res)=>{
       
 
       interviewJson.push({
+        id:interview.id,
         applicationId: interview.application_id,
         userId:interview.user_id,
         round: interview.round,
         type: interview.type,
         date: interview.interview_date.toISOString().slice(0, 10),
+        mode: interview.mode,
         time:{
           start: interview.start_time.slice(0,5),
           duration: interview.duration_minutes
@@ -395,8 +397,9 @@ usersRoutes.patch('/patch/interview', async(req,res)=>{
             interviewer = $6,
             status = $7,
             meeting_link = $8,
-            notes = $9
-        WHERE application_id = $10 AND round = $11 AND user_id = $12
+            notes = $9,
+            mode = $10
+        WHERE application_id = $11 AND round = $12 AND user_id = $13
         RETURNING *`,
         [
           round.date,          
@@ -408,12 +411,12 @@ usersRoutes.patch('/patch/interview', async(req,res)=>{
           round.status,
           round.meetingLink,
           round.notes,
+          round.mode,
           Number(round.applicationId), 
           Number(round.round),
           userId
         ]
-    );
-    
+    )
       res.status(200).json({reply:result})
   } catch(err){
     console.log(err)

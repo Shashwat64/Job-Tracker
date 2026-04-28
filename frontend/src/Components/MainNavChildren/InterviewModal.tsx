@@ -4,58 +4,75 @@ import { capitalise } from "../../utils/helperFunctions"
 //api function
 import { addInterview, updateInterview} from "../../api/users"
 
-export default function ModalType({ modaltype, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, selectedApplication }){
+//types
+import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../types"
+
+
+
+export default function InterviewModal({ modalType, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, selectedApplication }: InterviewModalProps){
   
-  const jobWithInterviews = applicationJson.filter(interview=>interview?.interviews?.length || interview.stage.toLowerCase() === 'interview')
+  const jobWithInterviews = applicationJson.filter((application: Application)=>application?.interviews?.length || application.stage.toLowerCase() === 'interview')
 
   // useEffect(() => {
   //   setModalSelectedId(selectedId)
   // }, [selectedId])
-  console.log(modaltype)
+  console.log(modalType)
 
   
   const nextRound =
   Math.max(
-    ...(selectedApplication?.interviews?.map(i => i.round) || []),
+    ...(selectedApplication?.interviews?.map((i:Interview) => i.round) || []),
     0
   ) + 1;
 
 
 
-  console.log(selectedApplication?.interviews?.[0]?.round+1)
+  // console.log(selectedApplication?.interviews?.[0]?.round+1)
   console.log(nextRound)
 
 
   const[selectedRound, setSelectedRound] = useState(nextRound-1)
 
-  async function handleChange(e){
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
+
+    type Time = {
+      start: string;
+      duration: number;
+    }
+
     const {name, value} = e.currentTarget
 
     // console.log("Inside handleChange "+name, value)
 
-    if(name.includes('time.')){
-      const key = name.split('.')[1]
-      setNewRound(prev=>({
+    if (name.startsWith("time.")) {
+      const key = name.split(".")[1] as keyof Time;
+
+      setNewRound(prev => ({
         ...prev,
-        time:{...prev.time, [key]:Number(value)||value}
-      }))
+        time: {
+          ...prev.time,
+          [key]: key === "duration" ? Number(value) : value
+        }
+      }));
     }else{
       setNewRound((prev) => ({ ...prev, [name]: value }))
     }
   }
 
-  async function handleSubmit(e){
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>){
     e.preventDefault()
 
     console.log("data of new round is sent")
     // console.log(await updateInterviews(newRound))
     
-    if (modaltype === 'add') {
-
-      const res = await addInterview(newRound, selectedId)
+    if (modalType === 'add') {
+      let res
+      if (selectedId !== null){
+        res = await addInterview(newRound, selectedId)
+      }
       console.log(res)
 
-      setApplicationJson(prev => {
+      setApplicationJson((prev: Application[]) => {
         console.log(typeof selectedId)
         // Check if the ID actually exists in our data first
         const exists = prev.some(info => info.id === Number(selectedId));
@@ -75,17 +92,39 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
         ))
 
       });
-    }else if(modaltype==='edit'){
+    }else if(modalType==='edit'){
      
       const res = await updateInterview(newRound)
-      console.log(res)
+      console.log(newRound)
+      console.log(res.reply.rows[0])
+      const serverRes = res.reply.rows[0]
 
-      setApplicationJson(prev=>(
+      const updatedRound:Interview = {
+        id:serverRes.id,
+        applicationId: serverRes.application_id,
+        date: serverRes.date,
+        details: serverRes.details,
+        interviewer: serverRes.interviewer,
+        meetingLink: serverRes.meeting_link,
+        mode: serverRes.mode,
+        notes: serverRes.notes,
+        round: serverRes.round,
+        status: serverRes.status,
+        time: {
+          start: serverRes.start_time,
+          duration: serverRes.duration_minutes,
+        },
+        type: serverRes.type,
+        userId: serverRes.user_id,
+      }
+
+
+      setApplicationJson((prev: Application[])=>(
         prev.map(info=>(
           info.id===(selectedId) ? 
           {...info,
             interviews:info.interviews.map((round, i)=>(
-              round.round === Number(selectedRound) ? {...info.interviews[i], ...newRound} : round))
+              round.round === Number(selectedRound) ? {...info.interviews[i], ...updatedRound} : round))
           }
           : info
         ))
@@ -97,14 +136,14 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
 
   console.log(selectedRound)
 
-  const [newRound, setNewRound] = useState({
+  const [newRound, setNewRound] = useState <InterviewInFrontend>({
     round: nextRound,
     type: "",
     mode: "virtual",
     date: "",
     time:{
       start: '',
-      duration: ""
+      duration: 0
     },
     details:"",
     interviewer: "",
@@ -114,11 +153,11 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
   })
 
   useEffect(()=>{
-    if(modaltype === "edit" ){
+    if(modalType === "edit" ){
 
       // console.log(newRound)
       setNewRound(selectedApplication.interviews.find(
-        round => round.round === selectedRound
+        (round: InterviewInFrontend) => round.round === selectedRound
       ))
     }
   },[selectedId, selectedRound])
@@ -148,7 +187,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
         </div>
 
         <div className=" flex flex-col justify-start items-center w-full h-full p-8 gap-4 overflow-auto">
-          <p>{capitalise(modaltype)} Interview</p>
+          <p>{capitalise(modalType)} Interview</p>
           <div>
             <form onSubmit={handleSubmit} className="overflow-auto">
               <select name="addInterview" id=""
@@ -161,23 +200,23 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                   setSelectedId(Number(e.target.value))
                 }}
               >
-                {jobWithInterviews.filter(interview=>{
-                  if(modaltype==="add")
+                {jobWithInterviews.filter((application: Application)=>{
+                  if(modalType==="add")
                     return true
                   else
-                    return interview.interviews?.length>0
+                    return application.interviews?.length>0
                 })
-                .map((interview,i)=>(
-                  <option  value={interview.id} key={i}>{interview.company.name} - {interview.jobTitle} </option>
+                .map((application: Application,i:number)=>(
+                  <option  value={application.id} key={i}>{application.company.name} - {application.jobTitle} </option>
                 ))}
               </select>
 
-              {modaltype==='edit'
+              {modalType==='edit'
                 ? 
                   <select name="" id="" 
                     value={
                       selectedApplication.interviews.find(
-                        round => round.round === Number(selectedRound)
+                        (round:Interview) => round.round === Number(selectedRound)
                       ).round
                     }
                     onChange={(e) => {
@@ -185,7 +224,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                       return setSelectedRound(Number(e.target.value))
                     }}
                   >
-                    {selectedApplication.interviews.map((round,i)=>(
+                    {selectedApplication.interviews.map((round:Interview,i:number)=>(
                       <option value={round.round} key={i}>{`Round ${round.round}`}</option>
 
                     ))}
@@ -245,7 +284,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                   <label htmlFor="time.duration">Duration</label>
                   <input
                     name="time.duration"
-                    value={newRound.time.duration}
+                    value={newRound.time.duration === 0 ? "" : Number(newRound.time.duration)}
                     onChange={handleChange}
                     placeholder="Duration in minutes"
                     type="number"
@@ -316,7 +355,7 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                 type='submit'
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
-                {modaltype=="edit" ? "Edit" : "Add"} Interview
+                {modalType=="edit" ? "Edit" : "Add"} Interview
               </button>
 
               <button
@@ -325,16 +364,16 @@ export default function ModalType({ modaltype, setModalType, applicationJson,  s
                     round: nextRound,
                     type: "",
                     date: "",
+                    mode: "virtual",
                     time:{
                       start: '',
-                      duration: null
+                      duration: 0
                     },
-                    details:[],
+                    details:"",
                     interviewer: "",
                     meetingLink: "",
                     notes: "",
-                    outcome: null,
-                    status: ""
+                    status: "upcoming"
                   })
               }}
                 className="bg-gray-400 text-white px-4 py-2 ml-4 rounded hover:bg-gray-600"

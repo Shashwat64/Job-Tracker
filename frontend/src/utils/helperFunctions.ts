@@ -1,6 +1,8 @@
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+import type { Application, Interview } from "../types"
+
 
 // export function mainSearch( setInterviewJson, value){
 //   setInterviewJson(prev=>({
@@ -12,7 +14,7 @@ import { twMerge } from "tailwind-merge"
 //   }))
 // i}
 
-export function formatLongDate(date){
+export function formatLongDate(date: string): string{
   return new Date(date).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
@@ -20,37 +22,37 @@ export function formatLongDate(date){
   })
 }
 
-export function urlToLogoLink(url){
+export function urlToLogoLink(url: string): string{
   let cleanUrl = url
 
   if (cleanUrl.includes("https://")) {
-      cleanUrl = url.split('/')[2]
+      cleanUrl = url.split('/')[2] || ""
   }
 
   return `https://img.logo.dev/${url}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`
 }
 
-export function addingAmPm(time){
+export function addingAmPm(time: string) {
+  const [hrStr, min] = time.split(':')
+  const hr = Number(hrStr);
 
-  let [hr, min] = time.split(':')
-  hr = Number(hr)
-
-  if(hr>12){
-    return `${hr-12}:${min} PM`
-  }else{
+  if (hr > 12) {
+    return `${hr - 12}:${min} PM`
+  } else {
     return `${time} AM`
   }
 }
 
-export function capitalise(string){
-  return string[0].toUpperCase() + string.slice(1)
+export function capitalise(str: string): string {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 const allMonths = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
 ]
-export function getLast6Month(month){
+export function getLast6Month(month: number){
 
   const months = []
   
@@ -62,7 +64,7 @@ export function getLast6Month(month){
   return months
 }
 
-export function dateInYYYYMMDD(now){
+/* export function dateInYYYYMMDD(now:string){
   const date = new Date(now);
 
   const formatted =
@@ -73,12 +75,12 @@ export function dateInYYYYMMDD(now){
     String(date.getDate()).padStart(2, "0");
 
   return formatted
-}
+} */
 
-export function interviewInLast6Months(applicationJson){
+export function interviewInLast6Months(applicationJson: Application[]){
   const withInterview = applicationJson?.filter(info=>info?.stage?.toLowerCase() === "interview" && info?.interviews?.length>0)
 
-  const onlyRound = withInterview.map(info=>([info.company, ...info.interviews ]))
+  const onlyRound:[Application["company"], ...Interview[]][] = withInterview.map(info=>([info.company, ...info.interviews ]))
 
   
   let last6Month = []
@@ -94,7 +96,7 @@ export function interviewInLast6Months(applicationJson){
 
   last6Month.forEach(month=>{
     onlyRound.map(interview=>{
-      interview.slice(1).map(round=>{
+      (interview.slice(1) as Interview[]).map(round=>{
         if(round.date.includes(month.value)){
           month.count+=1
         }
@@ -107,8 +109,36 @@ export function interviewInLast6Months(applicationJson){
   return bars
 }
 
-export function cn(...inputs){
+export function cn(...inputs:string[]){
   return twMerge(clsx(inputs))
 }
 
+//This function is used to convert data from the server after updated interview round to get 
+// data in type Interview
 
+export function refactorInterview(res:any):Interview{
+
+  const serverRes = res.reply.rows[0]
+
+  const updatedRound:Interview = {
+    id:serverRes.id,
+    applicationId: serverRes.application_id,
+    date: serverRes.date,
+    details: serverRes.details,
+    interviewer: serverRes.interviewer,
+    meetingLink: serverRes.meeting_link,
+    mode: serverRes.mode,
+    notes: serverRes.notes,
+    round: serverRes.round,
+    status: serverRes.status,
+    time: {
+      start: serverRes.start_time,
+      duration: serverRes.duration_minutes,
+    },
+    type: serverRes.type,
+    userId: serverRes.user_id,
+  }
+  return updatedRound
+  // const updatedRound:Interview = refactorInterview(res)
+
+}

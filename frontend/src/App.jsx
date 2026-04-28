@@ -4,9 +4,8 @@ import { router } from "./router"
 
 import { useEffect, useRef } from "react"
 
-import { Analytics } from "@vercel/analytics/react"
 
-import { getUserDetails, getAllDataOfUser, resetData, updateInterview} from './api/users'
+import { getAllDataOfUser, updateInterview} from './api/users'
 
 import applicationsList from './data/interviewList'
 

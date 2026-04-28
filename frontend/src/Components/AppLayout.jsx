@@ -5,7 +5,7 @@ import { useContext } from 'react'
 import applicationsList from '../data/interviewList'
 
 //api
-import { getAllDataOfUser, resetData, isSignedIn} from '../api/users'
+import { getAllDataOfUser, /* resetData */ isSignedIn} from '../api/users'
 
 //components
 import MainNav from './MainNav'
@@ -39,18 +39,18 @@ export default function AppLayout(){
   // console.log("data signedIn from loader is", signedIn)
   
   useEffect(() => {
-  async function initData() {
-    setUserData(userDataFromDB)
+    async function initData() {
+      setUserData(userDataFromDB)
 
-    setApplicationJson(applicationData)
-    if(!called && userDataFromDB.id===1){
-      called = true;
-      await resetData(applicationsList)
+      setApplicationJson(applicationData)
+      /* if(!called && userDataFromDB.id===1){
+        called = true;
+        await resetData(applicationsList)
+      } */
     }
-  }
 
-  initData()
-}, [])
+    initData()
+  }, [])
 
 
   return (

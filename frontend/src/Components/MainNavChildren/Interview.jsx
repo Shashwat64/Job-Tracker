@@ -11,7 +11,7 @@ import locationPin from '../../assets/location-pin-alt-1-svgrepo-com.svg'
 import calender from '../../assets/calendar-date-schedule-svgrepo-com.svg'
 
 //components
-import ModalType from './ModalType'
+import InterviewModal from './InterviewModal'
 
 //api
 import { deleteApplication } from '../../api/users'
@@ -27,7 +27,7 @@ export default function Interview(){
   const [search, setSearch] = useState("");
   const [activeBtn, setActiveBtn] = useState("all")
   
-  const [modaltype, setModalType] = useState(null)
+  const [modalType, setModalType] = useState(null)
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
     .filter(info=>{
@@ -144,7 +144,7 @@ export default function Interview(){
   return (
     
     <>
-      {modaltype && <ModalType modaltype={modaltype} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} selectedApplication={selectedApplication}/>}
+      {modalType && <InterviewModal modalType={modalType} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} selectedApplication={selectedApplication}/>}
       <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        

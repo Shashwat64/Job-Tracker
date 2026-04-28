@@ -6,8 +6,7 @@ export default function SavedResume() {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
 
-// add this function inside your component
-  const openPdf = async (fileUrl) => {
+  const openPdf = async (fileUrl:string) => {
     const viewableUrl = fileUrl
       .replace('/raw/upload/', '/image/upload/')
       + '.pdf'

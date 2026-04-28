@@ -12,4 +12,4 @@ resumeRoutes.post('/upload', authMiddleware, upload.single('resume'), uploadResu
 resumeRoutes.get('/', authMiddleware, getResumes)
 resumeRoutes.delete('/:resumeId', authMiddleware, deleteResume)
 
-export default resumeRoutes
+export default resumeRoutes 

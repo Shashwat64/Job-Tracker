@@ -11,7 +11,7 @@ import { urlToLogoLink } from '../../utils/helperFunctions';
 import { JobContext } from '../../App'
 
 //component
-import AddJob from './AddJob'
+import AddJob from './JobModal'
 import Interview from './Interview'
 import Dropdown from './Dropdown' 
 
