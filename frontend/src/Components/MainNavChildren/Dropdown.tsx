@@ -1,11 +1,13 @@
 import { useRef, useEffect, useContext } from "react";
 
+import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../types";
+
 import { JobContext } from '../../App'
 
 import { deleteApplication } from "../../api/users";
 
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
-  const dropdownRef = useRef()
+  const dropdownRef = useRef(null)
 
   console.log("id in the dropdown",id)
 

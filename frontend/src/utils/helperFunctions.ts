@@ -117,7 +117,7 @@ export function cn(...inputs:string[]){
 // data in type Interview
 
 export function refactorInterview(res:any):Interview{
-
+  console.log(res)
   const serverRes = res.reply.rows[0]
 
   const updatedRound:Interview = {
@@ -139,6 +139,4 @@ export function refactorInterview(res:any):Interview{
     userId: serverRes.user_id,
   }
   return updatedRound
-  // const updatedRound:Interview = refactorInterview(res)
-
 }

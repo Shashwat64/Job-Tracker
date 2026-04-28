@@ -24,7 +24,7 @@ usersRoutes.get('/get/user', async(req, res)=>{
 
 
     const result = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
-    console.log("userData in the usersRoutes", result.rows[0])
+    // console.log("userData in the usersRoutes", result.rows[0])
     res.json(result.rows[0]) 
   } catch(err) {
     console.log("error is", err)
@@ -340,28 +340,32 @@ usersRoutes.post('/post/interview', async(req,res)=>{
 
   
     const result = await pool.query(
-          `INSERT INTO interviews
-          (user_id, application_id, round, type, interview_date,
-          start_time, duration_minutes, details, interviewer,
-          meeting_link, notes, status)
-          VALUES
-          ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
-          RETURNING *`,
-          [
-            userId,           
-            applicationId,      
-            round,
-            type,         
-            appliedDate ,  
-            time.start ,     
-            time.duration,     
-            details,                  
-            interviewer,
-            meetingLink,             
-            notes, 
-            status, 
-          ]
-        );
+      `INSERT INTO interviews
+      (user_id, application_id, round, type, interview_date,
+      start_time, duration_minutes, details, interviewer,
+      meeting_link, notes, status)
+      VALUES
+      ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+      RETURNING *`,
+      [
+        userId,           
+        applicationId,      
+        round,
+        type,         
+        appliedDate ,  
+        time.start ,     
+        time.duration,     
+        details,                  
+        interviewer,
+        meetingLink,             
+        notes, 
+        status, 
+      ]
+    )
+
+    console.log("Post/Interview", result)
+
+
   
     res.status(200).json({id: applicationId, result})
   }catch(err){
@@ -417,7 +421,8 @@ usersRoutes.patch('/patch/interview', async(req,res)=>{
           userId
         ]
     )
-      res.status(200).json({reply:result})
+    console.log("Patch/Interview", result)
+    res.status(200).json({reply:result})
   } catch(err){
     console.log(err)
       return res.status(500).json({

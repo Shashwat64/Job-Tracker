@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { capitalise } from "../../utils/helperFunctions"
+import { capitalise, refactorInterview } from "../../utils/helperFunctions"
 
 //api function
 import { addInterview, updateInterview} from "../../api/users"
@@ -70,11 +70,11 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
       if (selectedId !== null){
         res = await addInterview(newRound, selectedId)
       }
-      console.log(res)
+      const updatedRound:Interview = refactorInterview(res)
 
       setApplicationJson((prev: Application[]) => {
         console.log(typeof selectedId)
-        // Check if the ID actually exists in our data first
+
         const exists = prev.some(info => info.id === Number(selectedId));
         
         if (!exists) {
@@ -86,7 +86,7 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
           info.id === (selectedId)
             ? {
                 ...info,
-                interviews: [newRound, ...(info.interviews ?? [])]
+                interviews: [updatedRound, ...(info.interviews ?? [])]
               }
             : info
         ))
@@ -95,28 +95,7 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
     }else if(modalType==='edit'){
      
       const res = await updateInterview(newRound)
-      console.log(newRound)
-      console.log(res.reply.rows[0])
-      const serverRes = res.reply.rows[0]
-
-      const updatedRound:Interview = {
-        id:serverRes.id,
-        applicationId: serverRes.application_id,
-        date: serverRes.date,
-        details: serverRes.details,
-        interviewer: serverRes.interviewer,
-        meetingLink: serverRes.meeting_link,
-        mode: serverRes.mode,
-        notes: serverRes.notes,
-        round: serverRes.round,
-        status: serverRes.status,
-        time: {
-          start: serverRes.start_time,
-          duration: serverRes.duration_minutes,
-        },
-        type: serverRes.type,
-        userId: serverRes.user_id,
-      }
+      const updatedRound:Interview = refactorInterview(res)
 
 
       setApplicationJson((prev: Application[])=>(
@@ -154,20 +133,25 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
 
   useEffect(()=>{
     if(modalType === "edit" ){
-
-      // console.log(newRound)
-      setNewRound(selectedApplication.interviews.find(
+      const tempRound = selectedApplication.interviews.find(
         (round: InterviewInFrontend) => round.round === selectedRound
-      ))
+      )
+
+      if (!tempRound) {
+        throw new Error("Interview round not found");
+      }
+
+      const {id, userId, applicationId, ...curentRound} = tempRound
+    setNewRound(curentRound)
     }
   },[selectedId, selectedRound])
+  const selectedRoundObj = selectedApplication.interviews.find(
+    (round: Interview) => round.round === Number(selectedRound)
+  )
 
-  console.log("selectedId is", selectedId)
-  console.log("nextRound is", nextRound)
-  console.log("selectedRound is", selectedRound)
-  console.log("newRound is", newRound)
-
-
+  if (!selectedRoundObj) {
+    throw new Error("Interview round not found");
+  }
   
   return (
     <div 
@@ -187,13 +171,13 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
         </div>
 
         <div className=" flex flex-col justify-start items-center w-full h-full p-8 gap-4 overflow-auto">
-          <p>{capitalise(modalType)} Interview</p>
+          <p>{modalType && capitalise(modalType)} Interview</p>
           <div>
             <form onSubmit={handleSubmit} className="overflow-auto">
               <select name="addInterview" id=""
-                value={selectedId}
+                value={Number(selectedId)}
                 onChange={(e) => {
-                  const round = applicationJson[e.target.value]?.interviews?.[0]?.round;
+                  const round = applicationJson[Number(e.target.value)]?.interviews?.[0]?.round;
                   if (round !== undefined) {
                     setSelectedRound(Number(round));
                   }
@@ -214,15 +198,8 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
               {modalType==='edit'
                 ? 
                   <select name="" id="" 
-                    value={
-                      selectedApplication.interviews.find(
-                        (round:Interview) => round.round === Number(selectedRound)
-                      ).round
-                    }
-                    onChange={(e) => {
-                      // console.log(e.target.value)
-                      return setSelectedRound(Number(e.target.value))
-                    }}
+                    value={selectedRoundObj.round}
+                    onChange={(e) => setSelectedRound(Number(e.target.value))}
                   >
                     {selectedApplication.interviews.map((round:Interview,i:number)=>(
                       <option value={round.round} key={i}>{`Round ${round.round}`}</option>

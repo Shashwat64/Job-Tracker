@@ -70,3 +70,10 @@ export type InterviewModalProps = {
   setSelectedId: React.Dispatch<React.SetStateAction<number | null>>
   selectedApplication: Application
 }
+
+/* export type DropdownProps = {
+  openModalId: string | null
+  setOpenModalId: React.Dispatch<React.SetStateAction<>>
+  id: 
+  setAddJobModal: React.Dispatch<React.SetStateAction<>>
+} */
