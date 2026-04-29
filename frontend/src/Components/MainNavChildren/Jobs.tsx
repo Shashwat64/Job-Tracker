@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import type { JSX } from "react";
 
 //Icons
 import { Bell, ChevronsRightLeft } from 'lucide-react';
@@ -16,6 +17,9 @@ import Interview from './Interview'
 import Dropdown from './Dropdown' 
 import type { Application } from '../../types';
 
+//type
+import type { JobContextType } from '../../types';
+
 
 export default function Jobs(){
 
@@ -24,14 +28,14 @@ export default function Jobs(){
   const [searchParam, setSearchParam] = useState('')
 
 
-  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn, userData} = useContext(JobContext)
+  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn, userData}:JobContextType = useContext(JobContext)!
 
   // console.log( "In Jobs.jsx", interviewJson[20])
   // console.log("userData in Jobs", userData)
   console.log("applicationJson in Jobs", applicationJson)
 
   const [addJobModal, setAddJobModal] = useState(false)
-  const [openModalId, setOpenModalId] = useState(null)
+  const [openModalId, setOpenModalId] = useState<null|number>(null)
 
 
 
@@ -40,14 +44,14 @@ export default function Jobs(){
   // },[])
 
 
-  function handleClick(e){
+  function handleClick(e: React.MouseEvent<HTMLButtonElement>){
     setActivePage(1)
     setActiveBtn(e.currentTarget.value)
   }
 
   const checkBox = <input className='appearance-none size-5 border border-gray-300 rounded mr-3 checked:bg-gray-400 checked:border-transparent' type="checkbox" name="delete-all-checkbox" />
   
-  let filteredList = []
+  let filteredList:Application[] = []
   
 
   //Filtering on the basis of stage
@@ -56,7 +60,7 @@ export default function Jobs(){
     .filter((application:Application)=>{
       if(activeBtn==='all' && !application.isDeleted)
         return true
-      else if(!application.isDeleted)
+      else if(!application.isDeleted && activeBtn)
         return application.stage.toLowerCase() === activeBtn.toLowerCase()
     }).filter((info:Application)=>{
       if(!searchParam){
@@ -69,7 +73,7 @@ export default function Jobs(){
           info.date,
           info.stage
         ]
-        const normalize = (str) => str?.toLowerCase().replace(/[\s-_]/g, "")
+        const normalize = (str:string) => str?.toLowerCase().replace(/[\s-_]/g, "")
     
     return searchFields.some(field => 
       normalize(field).includes(normalize(searchParam))
@@ -92,46 +96,47 @@ export default function Jobs(){
     // console.log("lastIndex", lastIndex)
     // console.log("activePage", activePage)
 
-    let interviewHtml = ''
+    let interviewHtml: JSX.Element[] = []
+    
   
     //Making Html of the interview detail
     if(filteredListLen>0){
-      interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview:Application, i:number)=>(
-        <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white h-15 shadow-sm p-3 box-border w-full`} key={i}>
+      interviewHtml = filteredList.slice(startIndex, lastIndex).map((application:Application, i:number)=>(
+      <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white h-15 shadow-sm p-3 box-border w-full`} key={i}>
     
           {checkBox}
 
           {/* Company Name */}
           <div className='flex ' >
             <div className='w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-gray-600/30'>
-              <img src={ urlToLogoLink(interview.company.url)} className='w-6' alt={`${interview.company.name} logo`}/>
+              <img src={urlToLogoLink(application.company.url)} className='w-6' alt={`${application.company.name} logo`}/>
             </div>
 
             <div className='ml-2'>
-              <p className='text-xs'>{interview.company.name}</p>
-              <p className='text-xs text-gray-400'>{interview.company.location}</p>
+              <p className='text-xs'>{application.company.name}</p>
+              <p className='text-xs text-gray-400'>{application.company.location}</p>
             </div>
           </div>
 
           {/* Job Title */}   
           <div className=''>
-            {interview.jobTitle}
+            {application.jobTitle}
           </div>
           {/* Salary */}
           <div className=''>
-            {`₹${interview.salaryRange.min} - ₹${interview.salaryRange.max}`}
+            {`₹${application.salaryRange.min} - ₹${application.salaryRange.max}`}
           </div>
           {/* Interview Data */}
           <div className=''>
-            {interview.date}
+            {application.date}
           </div>
           {/* Stage */}
           <div className=''>
-            {interview.stage}
+            {application.stage}
           </div>
           <button 
             className="absolute right-5 text-xl px-2 py-1 hover:bg-gray-200 rounded"
-            onClick={()=>{setOpenModalId(interview.id)}}
+            onClick={()=>{setOpenModalId(application.id)}}
           >
             &#8942;
           </button>
@@ -149,9 +154,9 @@ export default function Jobs(){
             )
           } */}
 
-          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={interview.id} setAddJobModal={setAddJobModal}/>
-        </div>
-      ))
+          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={application.id} setAddJobModal={setAddJobModal}/>
+        </div>)
+    )
     }
 
 

@@ -5,7 +5,7 @@ import { router } from "./router"
 import { useEffect, useRef } from "react"
 import React from "react"
 
-import type { JobContextType } from "./types"
+import type { JobContextType, Application, UserData } from "./types"
 
 
 import { getAllDataOfUser, updateInterview} from './api/users'
@@ -29,13 +29,10 @@ export default function App() {
     }
   }, [])
 
+const [applicationJson, setApplicationJson] = useState<Application[]>([]);
+  const [activeBtn, setActiveBtn] = useState<string | null>('all')
 
-  const [applicationJson, setApplicationJson] = useState(null)
-  const [activeBtn, setActiveBtn] = useState('all')
-
-  const [theme, setTheme] = ("dark")
-
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState<UserData | null>(null)
 
 
   console.log(applicationJson)
@@ -49,8 +46,6 @@ export default function App() {
         setApplicationJson, //setInterviewJson
         activeBtn, 
         setActiveBtn,
-        theme, 
-        setTheme,
         userData, 
         setUserData
       }}>

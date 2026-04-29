@@ -22,11 +22,12 @@ export function formatLongDate(date: string): string{
   })
 }
 
-export function urlToLogoLink(url: string): string{
+export function urlToLogoLink(url: string | undefined): string{
+  if (!url) return "";
   let cleanUrl = url
 
   if (cleanUrl.includes("https://")) {
-      cleanUrl = url.split('/')[2] || ""
+    cleanUrl = url.split('/')[2] || ""
   }
 
   return `https://img.logo.dev/${url}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`

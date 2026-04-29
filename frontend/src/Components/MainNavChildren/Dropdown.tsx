@@ -4,19 +4,25 @@ import type { Application, Interview, InterviewInFrontend, InterviewModalProps }
 
 import { JobContext } from '../../App'
 
-import { deleteApplication } from "../../api/users";
+import { deleteApplication } from "../../api/users"
 
-export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }) {
-  const dropdownRef = useRef(null)
+import type { DropdownProps, JobContextType } from "../../types";
+import type { JSX } from "react";
+
+export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }:DropdownProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   console.log("id in the dropdown",id)
 
-  const {applicationJson, setApplicationJson} = useContext(JobContext)
+  const { applicationJson, setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenModalId(null)
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenModalId(null);
       }
     }
 

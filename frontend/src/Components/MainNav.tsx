@@ -4,6 +4,10 @@ import { useContext, useState, useRef, useEffect } from 'react'
 //context
 import { JobContext } from '../App'
 
+//types
+import type { JobContextType } from '../types'
+import type { LucideIcon } from "lucide-react";
+
 //logo and icon
 import logoOrange from '../assets/logoOrange.png'
 import { ChevronUpIcon } from '@heroicons/react/24/outline'
@@ -13,13 +17,18 @@ import ProfileDropdown from './MainNavChildren/ProfileDropdown'
 
 
 export default function MainNav(){
-  const {userData} = useContext(JobContext)
-
+    const { applicationJson, setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
   console.log("userData in Main nav", userData)
 
   const [isProfileOpen, setIsProfileOpen]= useState(false)
 
-  function NavItem({ to, icon: Icon, label }) {
+  type NavItem = {
+    to: string;
+    label: string;
+    icon: LucideIcon;
+  }
+
+  function NavItem({ to, icon: Icon, label }:NavItem) {
     return (
       <NavLink to={to} draggable="false">
         {({ isActive }) => (
@@ -40,19 +49,25 @@ export default function MainNav(){
     )
   }
 
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsProfileOpen(false)
-      }
+useEffect(() => {
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      setIsProfileOpen(false);
     }
+  };
 
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => document.removeEventListener('mousedown', handleOutsideClick)
-  }, [])
+  document.addEventListener("mousedown", handleOutsideClick);
 
+  return () =>
+    document.removeEventListener("mousedown", handleOutsideClick);
+}, []);
+
+  if(!userData) return
 
 
   return (

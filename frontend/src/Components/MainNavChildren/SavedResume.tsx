@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 
-export default function SavedResume() {
-  const [resumes, setResumes] = useState([])
-  const [file, setFile] = useState(null)
-  const [name, setName] = useState('')
-  const [loading, setLoading] = useState(false)
+import type { Resume } from '../../types'
 
-  const openPdf = async (fileUrl:string) => {
+export default function SavedResume() {
+  const [resumes, setResumes] = useState<Resume[]>([])
+  const [file, setFile] = useState<File | null>(null)
+  const [name, setName] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const openPdf = async (fileUrl: string): Promise<void> => {
     const viewableUrl = fileUrl
       .replace('/raw/upload/', '/image/upload/')
       + '.pdf'
@@ -19,7 +21,7 @@ export default function SavedResume() {
 
   // fetch all resumes when page loads
   useEffect(() => {
-    const fetchResumes = async () => {
+    const fetchResumes = async (): Promise<void> => {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/resume`, {
         credentials: 'include'
       })
@@ -29,7 +31,7 @@ export default function SavedResume() {
     fetchResumes()
   }, [])
 
-  const handleUpload = async () => {
+  const handleUpload = async (): Promise<void> => {
     if (!file || !name) return alert('Please provide a name and a file')
 
     const formData = new FormData()
@@ -46,27 +48,27 @@ export default function SavedResume() {
     setLoading(false)
 
     if (res.ok) {
-      setResumes([data.resume, ...resumes])  // add new resume to the list
+      setResumes([data.resume, ...resumes])
       setFile(null)
       setName('')
     }
   }
 
-  const handleDelete = async (resumeId) => {
+  const handleDelete = async (resumeId: number | null): Promise<void> => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/resume/${resumeId}`, {
       method: 'DELETE',
       credentials: 'include'
     })
 
     if (res.ok) {
-      setResumes(resumes.filter(r => r.id !== resumeId))  // remove from list
+      setResumes(resumes.filter(r => r.id !== resumeId))
     }
   }
 
   return (
     <main className='ml-60 p-8'>
       <h2 className='text-2xl font-bold mb-6'>Saved Resumes</h2>
-
+      
       {/* upload section */}
       <div className='mb-8'>
         <input
@@ -79,7 +81,7 @@ export default function SavedResume() {
         <input
           type='file'
           accept='.pdf,.doc,.docx'
-          onChange={(e) => setFile(e.target.files[0])}
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
           className='mr-4'
         />
         <button
@@ -92,14 +94,8 @@ export default function SavedResume() {
       </div>
 
       {/* resumes list */}
-      {/* <iframe 
-        src={`https://docs.google.com/viewer?url=${encodeURIComponent(resume.file_url)}&embedded=true`}
-        width='100%'
-        height='500px'
-      /> */}
       {resumes.map(resume => {
-        const viewableUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(resume.file_url)}`
-
+        const viewableUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(resume.fileUrl)}`
         return (
           <div key={resume.id} className='border p-4 rounded mb-3'>
             <div className='flex items-center justify-between mb-3'>
@@ -111,7 +107,7 @@ export default function SavedResume() {
                 Delete
               </button>
             </div>
-            <a href={viewableUrl} target='_blank' className='text-blue-500 text-sm'>
+            <a href={viewableUrl} target='_blank' rel='noreferrer' className='text-blue-500 text-sm'>
               View Resume
             </a>
           </div>

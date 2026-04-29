@@ -188,7 +188,6 @@ export async function isSignedIn(): Promise<UserData | Error | boolean>{
   const data = await authRes.json()
 
   const userData:UserData | Error = await getUserData(data.id)
-  console.log("User Signed in")
   return userData
 }
 

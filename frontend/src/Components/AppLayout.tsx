@@ -1,9 +1,6 @@
 import { Link, Outlet, useLoaderData, redirect } from 'react-router-dom'
 import { useContext } from 'react'
 
-//data
-import applicationsList from '../data/interviewList'
-
 //api
 import { getAllDataOfUser, /* resetData */ isSignedIn} from '../api/users'
 
@@ -13,25 +10,32 @@ import MainNav from './MainNav'
 //context
 import { JobContext } from '../App'
 import { useEffect } from 'react'
+import type { JobContextType } from '../types'
+
+//types
+import type { UserData } from '../types'
 
 let called = false
 
 export async function loader(){
 
-  const userDataFromDB  = await isSignedIn(); 
+  const userDataFromDB = await isSignedIn()
 
-  if (!userDataFromDB) {
-    return redirect('/signin', { replace: true }); 
-  }
-  
-  console.log(userDataFromDB.id)
-  const applicationData = await getAllDataOfUser(userDataFromDB.id);
-  return {userDataFromDB, applicationData}
+if (
+  !userDataFromDB ||
+  typeof userDataFromDB !== "object" ||
+  !("id" in userDataFromDB)
+) {
+  return
+}
+
+const applicationData = await getAllDataOfUser(userDataFromDB.id);
+return { userDataFromDB, applicationData }
   
 }
 
 export default function AppLayout(){
-  const { applicationJson, setApplicationJson, userData, setUserData } = useContext(JobContext)
+  const { applicationJson, setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
   
   const {userDataFromDB, applicationData} = useLoaderData()
 

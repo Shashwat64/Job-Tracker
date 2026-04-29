@@ -59,6 +59,12 @@ export type ResumeDetailsFromServer = {
   user_id:number
 }
 
+export type Resume = {
+  id: number | null
+  name: string
+  fileUrl: string
+}
+
 export type UserData = {
   id: number,
   email: string
@@ -73,14 +79,16 @@ export type Error = {
   error: string
 }
 
-type ModalType = null | "edit" | "add"
+export type ModalType = null | "edit" | "add"
 
 export type JobContextType = {
-  applicationJson: Application[];
-  setApplicationJson: React.Dispatch<React.SetStateAction<Application[]>>;
-  activeBtn: string | null;
-  userData: UserData;
-};
+  applicationJson: Application[]
+  setApplicationJson: React.Dispatch<React.SetStateAction<Application[]>>
+  activeBtn: string | null
+  userData: UserData | null
+  setActiveBtn: React.Dispatch<React.SetStateAction<string | null>>
+  setUserData: React.Dispatch<React.SetStateAction<UserData | null>>
+}
 
 
 
@@ -105,5 +113,12 @@ export type JobModalProps = {
   setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
   openModalId: number | null
   setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
+}
+
+export type DropdownProps = {
+  openModalId: number | null
+  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
+  id: number
+  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 

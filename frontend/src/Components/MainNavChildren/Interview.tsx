@@ -16,10 +16,14 @@ import InterviewModal from './InterviewModal'
 //api
 import { deleteApplication } from '../../api/users'
 
+//types
+import type { JobContextType, Application, ModalType } from '../../types'
+
+
 export default function Interview(){
 
   
-  const {applicationJson, setApplicationJson} = useContext(JobContext)
+  const { applicationJson, setApplicationJson, userData, /* activeBtn, setActiveBtn, */ setUserData }:JobContextType = useContext(JobContext)!
   console.log(applicationJson)
 
    /* Set to 0, so that html for the right side will not throw error */
@@ -27,7 +31,7 @@ export default function Interview(){
   const [search, setSearch] = useState("");
   const [activeBtn, setActiveBtn] = useState("all")
   
-  const [modalType, setModalType] = useState(null)
+  const [modalType, setModalType] = useState<ModalType>(null)
 
   const withInterview = applicationJson.filter(info=>info?.stage?.toLowerCase() === 'interview')
     .filter(info=>{
@@ -40,22 +44,28 @@ export default function Interview(){
       }
     })
 
-   const interviewOnPage = withInterview.filter((interview)=>{
-      if(activeBtn==='all' && !interview.isDeleted)
+   const applicationOnPage = withInterview.filter((application)=>{
+      if(activeBtn==='all' && !application.isDeleted)
         return true
-      else if(!interview.isDeleted)
-        return interview?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
+      else if(!application.isDeleted)
+        return application?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
     }) || []
 
 
 
-  const [selectedId, setSelectedId] = useState(interviewOnPage?.[0]?.id ?? null)
+  const [selectedId, setSelectedId] = useState(applicationOnPage?.[0]?.id ?? null)
 
   console.log(selectedId)
 
-  let selectedApplication
-  if(selectedId>=0){
-    selectedApplication = interviewOnPage.find(application=>application.id === selectedId)
+  let selectedApplication: Application | undefined
+  if(typeof selectedId === "number"){
+    const found = applicationOnPage.find(
+      (application) => application.id === selectedId
+    )
+
+    if (!found) return
+
+    selectedApplication = found
   }
 
   
@@ -68,54 +78,53 @@ export default function Interview(){
 
 
   console.log("withInterview is", withInterview)
-  console.log("interviewOnPage is", interviewOnPage)
+  console.log("interviewOnPage is", applicationOnPage)
 
   const selectedIdSortedInterview = selectedApplication?.interviews?.sort((a,b)=>b.round-a.round)
 
- 
+    console.log("applicationOnPage is ", applicationOnPage)
 
 
-    let interviewLeftHtml
-
-    if(interviewOnPage?.interviews?.length > 0){
-      interviewLeftHtml = interviewOnPage.map((info, i)=>(
+    let interviewLeftHtml = applicationOnPage.map((application, i)=>{
+      if(application?.interviews?.length > 0){
+        return(
         <div 
           className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
           key={i}
-          onClick={()=>{setSelectedId(Number(info.id))}}
+          onClick={()=>{setSelectedId(Number(application.id))}}
         >
           <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
             <div className='' >
-              <img className='w-10 h-10 mr-4' src={info.company.logoLink} alt="company logo" />
+              <img className='w-10 h-10 mr-4' src={application.company.logoLink} alt="company logo" />
             </div>
             <div>
-              <h3>{info.company.name}</h3>
-              <p className='text-sm text-black/60'>{info.jobTitle}</p>
+              <h3>{application.company.name}</h3>
+              <p className='text-sm text-black/60'>{application.jobTitle}</p>
             </div>
           </div>
-          <div className=' text-sm px-4 pb-2'>{formatLongDate(info.interviews[info.interviews.length-1].date)}</div>
+          <div className=' text-sm px-4 pb-2'>{application.interviews.at(-1)?.date &&
+            formatLongDate(application.interviews.at(-1)!.date)}</div>
         </div>
-      ))
+      )
     }else{
-      interviewLeftHtml = interviewOnPage.map((info, i)=>(
+        return(
         <div 
           className='bg-white rounded-lg px-4 p-2 mb-2 border border-gray-100 hover:bg-gray-100' 
           key={i}
-          onClick={()=>{setSelectedId(Number(info.id))}}
+          onClick={()=>{setSelectedId(Number(application.id))}}
         >
           <div className='flex items-center m-2 border-b border-gray-300/30 pb-2'>
             <div className='' >
-              <img className='w-10 h-10 mr-4' src={info.company.logoLink} alt="company logo" />
+              <img className='w-10 h-10 mr-4' src={application.company.logoLink} alt="company logo" />
             </div>
             <div>
-              <h3>{info.company.name}</h3>
-              <p className='text-sm text-black/60'>{info.jobTitle}</p>
+              <h3>{application.company.name}</h3>
+              <p className='text-sm text-black/60'>{application.jobTitle}</p>
             </div>
           </div> 
         </div>
-      ))
-
-    }
+      )
+    }})
 
     console.log("selectedIdSortedInterview is", selectedIdSortedInterview)
 
@@ -136,10 +145,7 @@ export default function Interview(){
     </div>)
   })
 
-  console.log(applicationJson)
-
-
-
+  if (!selectedApplication) return null;
 
   return (
     
@@ -164,7 +170,7 @@ export default function Interview(){
           </div>
           <section className='flex bg-white p-4 rounded-lg justify-between shadow-sm'>
             <p className='ml-2'>Total Interview</p>
-            <p className='mr-2'>{interviewOnPage.length>1 ? `${interviewOnPage.length} Interviews` : `${interviewOnPage.length} Interview`}</p>
+            <p className='mr-2'>{applicationOnPage.length>1 ? `${applicationOnPage.length} Interviews` : `${applicationOnPage.length} Interview`}</p>
           </section>
         </div>
 
@@ -217,7 +223,7 @@ export default function Interview(){
                     onClick={()=>(setModalType('add'))}
                     >Add</button>
 
-                  {selectedIdSortedInterview?.length > 0 &&
+                  {(selectedIdSortedInterview?.length ?? 0) &&
                     <>
                       <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                         onClick={()=>(setModalType('edit'))}
@@ -226,7 +232,7 @@ export default function Interview(){
                         className='bg-red-100 text-red-600 hover:bg-red-100 border  border-gray-300 px-4 py-1 rounded-sm  active:scale-95'
                         onClick={async()=>{
                           await deleteApplication(selectedId)
-
+                          if (!selectedIdSortedInterview) return
                           setApplicationJson(prev=>prev.map(job =>
                           job.id === selectedId
                             ? { ...job, interviews:selectedIdSortedInterview.slice(1) }
