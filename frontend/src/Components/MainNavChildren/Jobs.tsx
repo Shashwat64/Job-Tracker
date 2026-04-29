@@ -14,6 +14,7 @@ import { JobContext } from '../../App'
 import AddJob from './JobModal'
 import Interview from './Interview'
 import Dropdown from './Dropdown' 
+import type { Application } from '../../types';
 
 
 export default function Jobs(){
@@ -52,12 +53,12 @@ export default function Jobs(){
   //Filtering on the basis of stage
   if(applicationJson?.length>0){
      filteredList = applicationJson
-    .filter((interview)=>{
-      if(activeBtn==='all' && !interview.isDeleted)
+    .filter((application:Application)=>{
+      if(activeBtn==='all' && !application.isDeleted)
         return true
-      else if(!interview.isDeleted)
-        return interview.stage.toLowerCase() === activeBtn.toLowerCase()
-    }).filter(info=>{
+      else if(!application.isDeleted)
+        return application.stage.toLowerCase() === activeBtn.toLowerCase()
+    }).filter((info:Application)=>{
       if(!searchParam){
         return true
       }else{
@@ -95,7 +96,7 @@ export default function Jobs(){
   
     //Making Html of the interview detail
     if(filteredListLen>0){
-      interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview, i)=>(
+      interviewHtml = filteredList.slice(startIndex, lastIndex).map((interview:Application, i:number)=>(
         <div className={`grid relative grid-cols-[auto_2fr_3fr_1.8fr_1fr_1fr] items-center bg-white h-15 shadow-sm p-3 box-border w-full`} key={i}>
     
           {checkBox}

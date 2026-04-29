@@ -3,13 +3,16 @@ import { useState, createContext} from "react"
 import { router } from "./router"
 
 import { useEffect, useRef } from "react"
+import React from "react"
+
+import type { JobContextType } from "./types"
 
 
 import { getAllDataOfUser, updateInterview} from './api/users'
 
 import applicationsList from './data/interviewList'
 
-export const JobContext = createContext()
+export const JobContext = React.createContext<JobContextType | null>(null);
 
 
 export default function App() {

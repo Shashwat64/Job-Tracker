@@ -2,11 +2,17 @@ import { useState,useContext, useEffect, useRef } from 'react'
 
 import { JobContext } from '../../App'
 
+import { refactorApplication } from '../../utils/helperFunctions'
+
 import { updateApplication, addApplication } from '../../api/users'
 
-export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
+import type { Application, ApplicationInFrontend, Interview, JobModalProps, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../types'
+
+export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:JobModalProps){
   
-  const {applicationJson, setApplicationJson, activeBtn, userData} = useContext(JobContext)
+  const context = useContext(JobContext);
+  if (!context) throw new Error("Missing provider");
+  const {applicationJson, setApplicationJson, activeBtn, userData} = context
 
   
   console.log(applicationJson)
@@ -15,7 +21,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
   console.log("openModalId", openModalId)
   
   const [editId, setEditID] = useState(openModalId)
-  const [resumes, setResumes] = useState([])
+  const [resumes, setResumes] = useState<ResumeDetails[]>([]);
   
   console.log("editId is ", editId)
 
@@ -36,7 +42,24 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
         credentials: 'include'
       })
       const data = await res.json()
-      setResumes(data.resumes)
+      console.log("Data is ",data)
+      const resumesDetails: ResumeDetails[] = data.resumes.map((resume:ResumeDetailsFromServer)=>({
+        createdAt: resume.created_at,
+        fileUrl: resume.file_url,
+        id: resume.id,
+        name: resume.name,
+        userId: resume.user_id
+      }))
+
+
+      /* const resumeDetails: ResumeDetails = {
+        createdAt: data.created_at,
+        fileUrl: data.file_url,
+        id: data.id,
+        name: data.name,
+        userId: data.user_id
+      } */
+      setResumes(resumesDetails)
     }
     fetchResumes()
   }, [])
@@ -45,73 +68,80 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
 
 
 
-  let thatData
+  let thatData: Application | ApplicationInFrontend
 
   if(editId===null){
     thatData = {
       company: { logoLink: "", name: "", location: "", url:"" },
       jobTitle: "",
-      salaryRange: { min: "", max: "" },
+      salaryRange: { min:0, max:0 },
       date: "",
       stage: "Pending",
       isDeleted:false,
       resumeId:null,
-      interview:[]
+      interviews:[],
+      notes: "",
+      source:''
     }
   }else{
-    thatData = applicationJson.find(application=>application.id === editId)
-    // console.log(applicationJson[editId-1])
+    const found = applicationJson.find(
+      (application: Application) => application.id === editId
+    );
+
+    if (!found) {
+      throw new Error("Application not found");
+    }
+
+    thatData = found;
   }
 
 
-  console.log(thatData)
+
+  const [newJob, setNewJob] = useState<Application | ApplicationInFrontend>(thatData)
 
 
-  const [newJob, setNewJob] = useState(thatData)
-
-
-  function handleChange(e){
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
     const {name, value} = e.currentTarget
 
     if(name.includes('company.')){
-      const key = name.split('.')[1]
-      setNewJob(prev=>({
+      const key = name.split('.')[1] as keyof ApplicationInFrontend['company'];
+      setNewJob((prev:Application | ApplicationInFrontend)=>({
         ...prev,
         company:{...prev.company, [key]:value}
       }))
     }else if(name.includes('salaryRange.')){
-      const key = name.split('.')[1]
-      setNewJob(prev=>({
+      const key = name.split('.')[1] as keyof ApplicationInFrontend['salaryRange'];
+      setNewJob((prev:Application | ApplicationInFrontend)=>({
         ...prev,
         salaryRange:{...prev.salaryRange, [key]: Number(value)}
       }))
     }else{
-      setNewJob((prev) => ({ ...prev, [name]: value }))
+      setNewJob((prev:Application | ApplicationInFrontend) => ({ ...prev, [name]: value }))
     }
     
   }
 
-  async function handleSubmit(e){
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>){
     e.preventDefault()
     
     if (newJob.salaryRange.max < newJob.salaryRange.min) {
       alert("Max salary must be greater than min salary");
       return
     }
-    console.log(newJob)
-
-    console.log("newJob in handleSubmit ", newJob)
     
     let cleanUrl = newJob.company.url
+    if(!cleanUrl){
+      return
+    }
     if (cleanUrl.includes("https://")) {
-      cleanUrl = newJob.company.url.split('/')[2]
+      const url = newJob.company.url;
+
+      const cleanUrl = url && url.includes('/')
+        ? url.split('/')[2] ?? ""
+        : "";
     }
 
-    // console.log("cleanURL is", cleanUrl)
-    // const reply = await updateApplication(newJob, userData.id)
-    // console.log(reply)
-
-    const updatedJob = {
+    const updatedJob: ApplicationInFrontend = {
       ...newJob, 
       company: {
         ...newJob.company, 
@@ -120,17 +150,17 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
     }
 
 
-    setNewJob(prev=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`}}))
 
-    console.log("applicationJson is", applicationJson)
-    console.log("newJob is", updatedJob)
+
+    setNewJob((prev:Application | ApplicationInFrontend)=>({...prev, company:{...prev.company, logoLink:`https://img.logo.dev/${cleanUrl}?token=${import.meta.env.VITE_LOGO_DEV_PUBLISHABLE_KEY}&format=png&retina=true`}}))
     
     setAddJobModal(false)
     if(!applicationJson?.length){ //this is for adding application for the first time
       
       const reply = await addApplication(updatedJob)
 
-      const row = reply.result.rows[0];
+      const row = reply.result.rows[0]
+      console.log("Row is ",row)
 
 
       setApplicationJson([{id: row.id, userId: row.user_id, ...updatedJob}])
@@ -140,31 +170,30 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
 
       const row = reply.result.rows[0];
 
-      setApplicationJson(prev=>([
+      setApplicationJson((prev:Application[])=>([
         ...prev,
         {id: row.id, userId: row.user_id, ...updatedJob}
       ]))
 
     }
     
-    else{
-      const index = applicationJson.findIndex(item => item.id === editId)
+    else if(editId>=0){
+      const index = applicationJson.findIndex((item: Application) => item.id === editId)
       console.log("else block ran and value of index is", index)
 
-      updateApplication(updatedJob)
+     const res = await updateApplication(updatedJob as Application)
+     console.log(res)
+     console.log(res.reply.rows[0])
+
+     const applicationFromServer:Application = refactorApplication(res)
       
-      setApplicationJson(prev=>([
+      setApplicationJson((prev:Application[])=>([
         ...prev.slice(0,index),
-        updatedJob,
+        applicationFromServer,
         ...prev.slice(index+1)
       ]))
       
-      const reply = await updateApplication(updatedJob)
-      
     }
-
-    
-
   }
 
   return (
@@ -284,12 +313,12 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
             <label>
               <select
                 name="resumeId" 
-                value={newJob.resumeId}
+                value={Number(newJob.resumeId)}
                 onChange={handleChange}
                 className="w-full border p-2 rounded mb-2"
               >
                 <option value=''>No resume</option>
-                {resumes.map(resume => (
+                {resumes.map((resume:ResumeDetails) => (
                   <option key={resume.id} value={resume.id}>{resume.name}</option>
                 ))}
               </select>
@@ -323,9 +352,14 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }){
                 setNewJob({
                 company: { logoLink: "", name: "", location: "" },
                 jobTitle: "",
-                salaryRange: { min: "", max: "" },
+                salaryRange: { min: 0, max: 0 },
                 date: "",
                 stage: "Pending",
+                interviews:[],
+                isDeleted: false,
+                notes: "",
+                resumeId: null,
+                source: ""
               })
             }}
               className="bg-gray-400 text-white px-4 py-2 ml-4 rounded hover:bg-gray-600"

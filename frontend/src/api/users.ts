@@ -1,4 +1,4 @@
-import type { Application, Interview, UserData, Error, InterviewInFrontend } from "../types.js"
+import type { Application, Interview, UserData, Error, InterviewInFrontend, ApplicationInFrontend } from "../types.js"
 
 /* export  async function getUserDetails(userId: number){
 
@@ -86,7 +86,7 @@ export async function getAllDataOfUser(userId: number){
 
 }
 
-export async function addApplication(application:Application){
+export async function addApplication(application:ApplicationInFrontend){
   console.log(application)
 
   const applicationRes = await fetch(`${import.meta.env.VITE_API_URL}/users/post/application`,

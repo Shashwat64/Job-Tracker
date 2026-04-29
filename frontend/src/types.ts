@@ -24,7 +24,7 @@ export type Application = {
     logoLink: string
     location: string
     name: string
-    url: string
+    url?: string
   }
   date: string
   id: number
@@ -42,8 +42,22 @@ export type Application = {
   userId: number
 }
 
-export type ApplicationInFrontend =  Omit<Application, "interviews" | "userId" | "id">
+export type ApplicationInFrontend =  Omit<Application,  "userId" | "id">
 
+export type ResumeDetails = {
+  createdAt: string
+  fileUrl: string
+  id:number
+  name:string
+  userId:number
+}
+export type ResumeDetailsFromServer = {
+  created_at: string
+  file_url: string
+  id:number
+  name:string
+  user_id:number
+}
 
 export type UserData = {
   id: number,
@@ -61,6 +75,15 @@ export type Error = {
 
 type ModalType = null | "edit" | "add"
 
+export type JobContextType = {
+  applicationJson: Application[];
+  setApplicationJson: React.Dispatch<React.SetStateAction<Application[]>>;
+  activeBtn: string | null;
+  userData: UserData;
+};
+
+
+
 export type InterviewModalProps = {
   modalType: ModalType
   setModalType: React.Dispatch<React.SetStateAction<ModalType>>
@@ -77,3 +100,10 @@ export type InterviewModalProps = {
   id: 
   setAddJobModal: React.Dispatch<React.SetStateAction<>>
 } */
+
+export type JobModalProps = {
+  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
+  openModalId: number | null
+  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
+}
+

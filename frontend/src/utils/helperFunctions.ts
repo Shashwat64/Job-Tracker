@@ -140,3 +140,29 @@ export function refactorInterview(res:any):Interview{
   }
   return updatedRound
 }
+
+export function refactorApplication(res:any):Application{
+  console.log(res)
+  const serverRes = res.reply.rows[0]
+
+  const updatedApplication:Application = {
+    id: serverRes.id,
+    userId: serverRes.user_id,
+    company: { 
+      logoLink: serverRes.company_logo_link, 
+      name: serverRes.company_name, 
+      location: serverRes.company_location,
+      url: serverRes.company_url
+    },
+    interviews:[],
+    jobTitle: serverRes.job_title,
+    salaryRange: { min: serverRes.salary_min, max: serverRes.salary_max },
+    date: new Date(serverRes.applied_date).toISOString().slice(0, 10),
+    stage: serverRes.stage,
+    resumeId: serverRes.resume_id, 
+    isDeleted: serverRes.is_deleted,
+    source: serverRes.source,
+    notes: serverRes.notes,
+  }
+  return updatedApplication
+}

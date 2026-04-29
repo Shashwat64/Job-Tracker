@@ -212,7 +212,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
           ]
         );
   
-    res.status(200).json({id: application.id, result})
+    res.status(200).json({id: application.id, reply:result})
   }catch(err){
     console.error(err);
     res.status(500).json({ message: 'Database error' });
@@ -276,7 +276,7 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
       ]
   );
   
-    res.status(200).json({id: application.id, result})
+    res.status(200).json({id: application.id, reply:result})
 
   }catch(err) {
   console.log("exact error:", err.message)  // 👈 this will tell you exactly what's wrong
@@ -367,7 +367,7 @@ usersRoutes.post('/post/interview', async(req,res)=>{
 
 
   
-    res.status(200).json({id: applicationId, result})
+    res.status(200).json({id: applicationId, reply:result})
   }catch(err){
     console.error(err);
     res.status(500).json({ message: 'Database error' });
