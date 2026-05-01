@@ -10,10 +10,10 @@ import MainNav from './MainNav'
 //context
 import { JobContext } from '../App'
 import { useEffect } from 'react'
-import type { JobContextType } from '../types'
+import type { JobContextType } from '../../types/types'
 
 //types
-import type { UserData } from '../types'
+import type { UserData } from '../../types/types'
 
 let called = false
 

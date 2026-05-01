@@ -2,6 +2,7 @@ import express from 'express'
 import pool from '../config/db.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../config/env.js'
 
 import authMiddleware from '../middleware/authMiddleware.js'
 
@@ -41,7 +42,7 @@ authRoutes.post('/signup', async (req, res) => {
     const user = result.rows[0]
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '7d' }
     )
 
@@ -57,7 +58,11 @@ authRoutes.post('/signup', async (req, res) => {
     // 201 means "created" — more specific than 200
 
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if(err instanceof Error){
+      res.status(500).json({ error: err.message })
+    }else{
+      res.status(500).json({ error: "Server Error" })
+    }
     // 500 means something went wrong on our end
   }
 })
@@ -93,7 +98,7 @@ authRoutes.post('/signin', async (req, res) => {
     // create jwt token
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '7d' }
     )
 
@@ -108,7 +113,11 @@ authRoutes.post('/signin', async (req, res) => {
     res.status(200).json({ success: true })
 
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if(err instanceof Error){
+      res.status(500).json({ error: err.message })
+    }else{
+      res.status(500).json({ error: "Server Error" })
+    }
   }
 }) 
 

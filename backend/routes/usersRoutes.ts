@@ -3,16 +3,12 @@ import jwt from 'jsonwebtoken'
 
 import pool from '../config/db.js'
 
+import { JWT_SECRET } from '../config/env.js'
+import type { Request, Response } from 'express'
+
 const usersRoutes = express.Router()
 
-// usersRoutes.get('/', async (req, res) => {
-//   const result = await pool.query("SELECT * FROM users")
-//   res.json(result.rows)
-// })
-
-usersRoutes.get('/get/user', async(req, res)=>{
-
-  
+usersRoutes.get('/get/user', async(req:Request, res:Response)=>{
   const token = req.cookies.token
   
   if (!token) {
@@ -20,11 +16,8 @@ usersRoutes.get('/get/user', async(req, res)=>{
   }
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-
-
-    const result = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
-    // console.log("userData in the usersRoutes", result.rows[0])
+    const user = req.user
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [req.userId])
     res.json(result.rows[0]) 
   } catch(err) {
     console.log("error is", err)
@@ -32,7 +25,7 @@ usersRoutes.get('/get/user', async(req, res)=>{
   }
 })
 
-usersRoutes.get('/debug', async (req, res) => {
+usersRoutes.get('/debug', async (req:Request, res:Response) => {
   try{
     const result = await pool.query("SELECT * FROM interviews")
     res.json(result.rows)
@@ -42,27 +35,18 @@ usersRoutes.get('/debug', async (req, res) => {
   }
 })
 
-usersRoutes.get('/get/applications', async(req, res)=>{
-
-  const token = req.cookies.token
-
-  
+usersRoutes.get('/get/applications', async(req:Request, res:Response)=>{
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = user.id
+
+    const user = req.user
+    const userId = req.userId
 
 
     const result = await pool.query('SELECT * FROM applications WHERE user_id = $1 AND NOT is_deleted', [userId]);
 
     if (result.rowCount === 0) {
-      // User not found
       return res.status(404).json({ message: "No application with that user exist" });
     }
-
-
-    // res.json({
-    //   data:result
-    // })
 
     const applicationJson = []
 
@@ -101,13 +85,10 @@ usersRoutes.get('/get/applications', async(req, res)=>{
   }
 })
 
-usersRoutes.get('/get/interviews', async(req, res)=>{
-
-  const token = req.cookies.token
-  
+usersRoutes.get('/get/interviews', async(req:Request, res:Response)=>{  
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = user.id
+    const user = req.user
+    const userId = req.userId
     const result = await pool.query('SELECT * FROM interviews WHERE user_id = $1 ORDER BY round', [userId])
 
     if (result.rowCount === 0) {
@@ -158,33 +139,17 @@ usersRoutes.get('/get/interviews', async(req, res)=>{
 
 
 
-usersRoutes.post('/post/application', async(req,res)=>{
-
-  const token = req.cookies.token
-
+usersRoutes.post('/post/application', async(req:Request, res:Response)=>{
   try{
 
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = user.id
-
-        
-  
+    const user = req.user
+    const userId = req.userId
   
     const application = req.body.application
-  
-    // console.log("application in post/application",application)
-  
+
     const appliedDate = new Date(application.date)
   
-    // return res.status(200).json({
-    //   message: "this is from post id/applications",
-    //   data: application,
-    //   userId
-    // })
-  
     const { company, jobTitle, salaryRange, date, stage, source, notes, resumeId, isDeleted} = application;
-  
-    console.log(company)
   
     const result = await pool.query(
           `INSERT INTO applications
@@ -210,7 +175,7 @@ usersRoutes.post('/post/application', async(req,res)=>{
             notes || null,             // notes
             isDeleted ?? false         // is_deleted
           ]
-        );
+        )
   
     res.status(200).json({id: application.id, reply:result})
   }catch(err){
@@ -222,12 +187,12 @@ usersRoutes.post('/post/application', async(req,res)=>{
 
 //add post interviews
 
-usersRoutes.patch('/patch/application', async(req,res)=>{
+usersRoutes.patch('/patch/application', async(req:Request, res:Response)=>{
   const token = req.cookies.token
 
   try{
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = user.id
+    const user = jwt.verify(token, JWT_SECRET)
+    const userId = req.userId
   
     const application = req.body
 
@@ -256,7 +221,7 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
           resume_id = $11,
           notes = $12,
           is_deleted = $13
-      WHERE id = $14
+      WHERE id = $14 AND user_id = $15
       RETURNING *`,
       [
         application.company.name,          
@@ -272,22 +237,25 @@ usersRoutes.patch('/patch/application', async(req,res)=>{
         resumeId,
         application.notes,
         application.isDeleted,
-        application.id
+        application.id,
+        userId
       ]
   );
   
     res.status(200).json({id: application.id, reply:result})
 
   }catch(err) {
-  console.log("exact error:", err.message)  // 👈 this will tell you exactly what's wrong
+    if(err instanceof Error){
+      return res.status(500).json({"exact error:": err.message}) 
+    }
 }
 
 })
 
-usersRoutes.delete('/delete/application', async(req,res)=>{
+usersRoutes.delete('/delete/application', async(req:Request, res:Response)=>{
   const token = req.cookies.token
-  const user = jwt.verify(token, process.env.JWT_SECRET)
-  const userId = user.id
+  const user = req.user
+  const userId = req.userId
 
   const applicationId = req.body.applicationId
 
@@ -309,7 +277,7 @@ usersRoutes.delete('/delete/application', async(req,res)=>{
   }
 )
 
-usersRoutes.post('/post/interview', async(req,res)=>{
+usersRoutes.post('/post/interview', async(req:Request, res:Response)=>{
 
   const token = req.cookies.token
 
@@ -319,22 +287,12 @@ usersRoutes.post('/post/interview', async(req,res)=>{
     console.log(interview)
     console.log(applicationId)
 
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    const userId = user.id
-
-    // return res.status(200).json({message: "this is from post/interview", interview})
+    const user = jwt.verify(token, JWT_SECRET)
+    const userId = req.userId  
   
-  
-  
-    console.log("application in post/interview",interview)
+    // console.log("application in post/interview",interview)
   
     const appliedDate = new Date(interview.date)
-  
-    // return res.status(200).json({
-    //   message: "this is from post id/applications",
-    //   data: application,
-    //   userId
-    // })
   
     const { round, type, time, details, interviewer, meetingLink, notes, status} = interview
 
@@ -375,7 +333,7 @@ usersRoutes.post('/post/interview', async(req,res)=>{
 
 })
 
-usersRoutes.patch('/patch/interview', async(req,res)=>{
+usersRoutes.patch('/patch/interview', async(req:Request, res:Response)=>{
 
   const userId = req.userId
   const round = req.body
@@ -425,17 +383,19 @@ usersRoutes.patch('/patch/interview', async(req,res)=>{
     res.status(200).json({reply:result})
   } catch(err){
     console.log(err)
+    if(err instanceof Error){
       return res.status(500).json({
-      success: false,
-      message: err.message // ✅ safe enough
-    })
+        success: false,
+        message: err.message
+      })
+    }
   }
   
 
 
 })
 
-usersRoutes.delete('/delete/user', async(req, res)=>{
+usersRoutes.delete('/delete/user', async(req:Request, res:Response)=>{
   // res.status(201).send("delete id is", req.params.id)
 
   const userId = req.params.id 

@@ -25,5 +25,6 @@ app.use("/auth", authRoutes)
 app.use("/resume", resumeRoutes)
 app.use("/users", authMiddleware, usersRoutes)
 
+console.log("SERVER FILE IS RUNNING")
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

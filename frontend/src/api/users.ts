@@ -1,4 +1,4 @@
-import type { Application, Interview, UserData, Error, InterviewInFrontend, ApplicationInFrontend } from "../types.js"
+import type { Application, Interview, UserData, Error, InterviewInFrontend, ApplicationInFrontend } from "../../types/types.js"
 
 /* export  async function getUserDetails(userId: number){
 

@@ -15,10 +15,10 @@ import { JobContext } from '../../App'
 import AddJob from './JobModal'
 import Interview from './Interview'
 import Dropdown from './Dropdown' 
-import type { Application } from '../../types';
+import type { Application } from '../../../types/types';
 
 //type
-import type { JobContextType } from '../../types';
+import type { JobContextType } from '../../../types/types';
 
 
 export default function Jobs(){

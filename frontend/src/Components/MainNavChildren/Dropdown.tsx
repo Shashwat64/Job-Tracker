@@ -1,12 +1,12 @@
 import { useRef, useEffect, useContext } from "react";
 
-import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../types";
+import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../../types/types";
 
 import { JobContext } from '../../App'
 
 import { deleteApplication } from "../../api/users"
 
-import type { DropdownProps, JobContextType } from "../../types";
+import type { DropdownProps, JobContextType } from "../../../types/types";
 import type { JSX } from "react";
 
 export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }:DropdownProps) {

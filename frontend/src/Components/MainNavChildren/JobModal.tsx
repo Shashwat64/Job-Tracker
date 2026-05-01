@@ -6,7 +6,7 @@ import { refactorApplication } from '../../utils/helperFunctions'
 
 import { updateApplication, addApplication } from '../../api/users'
 
-import type { Application, ApplicationInFrontend, Interview, JobModalProps, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../types'
+import type { Application, ApplicationInFrontend, Interview, JobModalProps, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../../types/types'
 
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:JobModalProps){
   

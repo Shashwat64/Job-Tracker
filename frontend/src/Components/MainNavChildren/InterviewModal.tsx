@@ -5,7 +5,7 @@ import { capitalise, refactorInterview } from "../../utils/helperFunctions"
 import { addInterview, updateInterview} from "../../api/users"
 
 //types
-import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../types"
+import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../../types/types"
 
 
 

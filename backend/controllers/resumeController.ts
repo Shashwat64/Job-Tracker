@@ -1,13 +1,21 @@
 import pool from '../config/db.js'
 import cloudinary from '../config/cloudinary.js'
+import type { Request, Response } from 'express'
+import type { UploadApiResponse } from 'cloudinary'
 
 // upload resume to cloudinary and save to resumes table
-export const uploadResume = async (req, res) => {
+export const uploadResume = async (req:Request, res:Response) => {
   const userId = req.userId
   const { name } = req.body  // user gives the resume a name like "SWE Resume v2"
 
   try {
-    const cloudinaryResult = await new Promise((resolve, reject) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' })
+    }
+
+    const file = req.file // ✅ now guaranteed
+
+    const cloudinaryResult = await new Promise<UploadApiResponse>((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         { 
           folder: 'resumes', 
@@ -15,9 +23,9 @@ export const uploadResume = async (req, res) => {
         },
         (error, result) => {
           if (error) reject(error)
-          else resolve(result)
+          else resolve(result as UploadApiResponse)
         }
-      ).end(req.file.buffer)
+      ).end(file.buffer)
     })
 
     const fileUrl = cloudinaryResult.secure_url
@@ -41,7 +49,7 @@ export const uploadResume = async (req, res) => {
 }
 
 // get all resumes for the logged in user
-export const getResumes = async (req, res) => {
+export const getResumes = async (req:Request, res:Response) => {
   const userId = req.userId
 
   try {
@@ -58,7 +66,7 @@ export const getResumes = async (req, res) => {
 }
 
 // delete a resume
-export const deleteResume = async (req, res) => {
+export const deleteResume = async (req:Request, res:Response) => {
   const userId = req.userId
   const { resumeId } = req.params
 

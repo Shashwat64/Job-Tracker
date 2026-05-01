@@ -1,7 +1,7 @@
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-import type { Application, Interview } from "../types"
+import type { Application, Interview } from "../../types/types"
 
 
 // export function mainSearch( setInterviewJson, value){

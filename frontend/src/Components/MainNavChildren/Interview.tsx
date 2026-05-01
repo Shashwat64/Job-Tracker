@@ -17,7 +17,7 @@ import InterviewModal from './InterviewModal'
 import { deleteApplication } from '../../api/users'
 
 //types
-import type { JobContextType, Application, ModalType } from '../../types'
+import type { JobContextType, Application, ModalType } from '../../../types/types'
 
 
 export default function Interview(){

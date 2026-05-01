@@ -1,20 +1,29 @@
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../config/env.js'
+import type { JwtPayload } from 'jsonwebtoken'
+import type { Request, Response, NextFunction } from 'express'
 
-const authMiddleware = (req, res, next) => {
+
+const authMiddleware = (req:Request, res:Response, next:NextFunction) => {
   const token = req.cookies.token
 
   // console.log("TOKEN:", req.cookies.token)
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload & { id: string }
 
-    req.user = user;      
-    req.userId = user.id; 
-    next(); 
+    req.user = decoded
+    req.userId = decoded.id
+    const user = jwt.verify(token, JWT_SECRET);
+
+    next()
 
   } catch (err) {
-  console.log("JWT ERROR:", err.message);
-  return res.status(401).json({ message: "Unauthorized from middleware" });
+    if(err instanceof Error){
+      return res.status(401).json({JWTERROR: err.message, message: "Unauthorized from middleware"});
+    }else{
+      return res.status(500).json({message: "Server Error"})
+    }
 }
 }
 

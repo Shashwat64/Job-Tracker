@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import type { Resume } from '../../types'
+import type { Resume } from '../../../types/types'
 
 export default function SavedResume() {
   const [resumes, setResumes] = useState<Resume[]>([])

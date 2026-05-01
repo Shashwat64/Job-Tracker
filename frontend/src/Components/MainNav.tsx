@@ -5,7 +5,7 @@ import { useContext, useState, useRef, useEffect } from 'react'
 import { JobContext } from '../App'
 
 //types
-import type { JobContextType } from '../types'
+import type { JobContextType } from '../../types/types'
 import type { LucideIcon } from "lucide-react";
 
 //logo and icon

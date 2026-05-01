@@ -5,7 +5,7 @@ import { router } from "./router"
 import { useEffect, useRef } from "react"
 import React from "react"
 
-import type { JobContextType, Application, UserData } from "./types"
+import type { JobContextType, Application, UserData } from "../types/types"
 
 
 import { getAllDataOfUser, updateInterview} from './api/users'
