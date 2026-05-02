@@ -7,9 +7,10 @@ import type { Request, Response, NextFunction } from 'express'
 const authMiddleware = (req:Request, res:Response, next:NextFunction) => {
   const token = req.cookies.token
 
-  // console.log("TOKEN:", req.cookies.token)
+  console.log("TOKEN in /authMiddelware:", req.cookies.token)
 
   try {
+    // console.log("/authMiddelware ran",token)
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload & { id: string }
 
     req.user = decoded

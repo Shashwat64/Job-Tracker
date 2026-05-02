@@ -235,9 +235,6 @@ export async function signUp(details: SignUpDetails){
 
 }
 
-
-
-
 export async function signOutUser(){
   const usersRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`, {
     method:"POST",
