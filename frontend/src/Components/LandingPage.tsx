@@ -16,9 +16,6 @@ export default function LandingPage(){
   const featuresRef = useRef(null)
   const howItWorksRef = useRef(null)
   const pricingRef = useRef(null)
-   
-
-  const {theme} = useContext(JobContext)
 
   const miniStats = [{name:"applied", value:20},{name:"pending", value:8},{name:"interiew", value:4},{name:"offers", value:2}]
 
@@ -45,11 +42,17 @@ export default function LandingPage(){
     {title:"Schedule Interviews", subTitle:"Add interview details and get reminders so you never miss a slot."},
     {title:"Land Your Offer", subTitle:"See your full journey at a glance and make the best decision for your career."}, 
   ]
+  /* Tailwind breakpoints (default)
+      sm → ≥ 640px
+      md → ≥ 768px
+      lg → ≥ 1024px
+      xl → ≥ 1280px
+      2xl → ≥ 1536px */
 
   return (
     <>
-      <main className=" bg-background-light">
-        <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-10 border-b bg-surface border-border z-10">
+      <main className=" bg-background-light w-full overflow-x-auto">
+        <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-2  border-b bg-surface border-border z-10 lg:px-10">
           <div className="h-full w-40 flex items-center justify-center" 
             onClick={() => {
               navigate('/');
@@ -59,7 +62,7 @@ export default function LandingPage(){
             <img src={logoOrange} alt="logo"  className="object-cover self-center mt-2 mr-px"/>
           </div>
 
-          <div className="flex gap-4 text-text-secondary ">
+          <div className="gap-4 text-text-secondary hidden md:flex">
             <a href="#features">Features</a>
             <a href="#how-it-works">How it works</a>
             <a href="#pricing">Pricing</a>
@@ -67,17 +70,17 @@ export default function LandingPage(){
 
           <div>
             
-            <Link to="signin" className=" inline-block bg-background-light text-text-primary font-medium px-4 py-2 rounded-xl border border-border-strong mr-2 hover:border-brand-hover hover:bg-brand-subtle active:scale-95">Sign in</Link>
+            <Link to="signin" className="inline-block bg-background-light text-text-primary mr-1 px-4 py-2 rounded-xl border border-border-strong lg:mr-2 hover:border-brand-hover hover:bg-brand-subtle active:scale-95 font-medium">Sign in</Link>
             <Link to="app" className=" inline-block bg-brand text-white font-medium px-4 py-2 rounded-xl hover:bg-brand-hover transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 ">Get Started</Link>
           </div>
         </nav>
 
-        <section className=" bg-surface flex px-5 justify-center items-center h-screen min-h-200 border-b border-border-strong">
-          <div className="w-120 max-w-md mr-20">
+        <section className=" bg-surface flex mt-16 px-5 py-5 justify-center items-center  min-h-200 border-b border-border-strong w-full flex-col lg:flex-row lg:h-screen md:px-20">
+          <div className="w-full px-5 max-w-100 mr-5">
             <div className="my-2 animate-slide-in" >
               <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Now in Public Alpha - free to use</span>
             </div>
-            <h1 className="font-bold w-90 text-7xl my-4 animate-slide-in" style={{ animationDelay: "0.1s" }}>
+            <h1 className="font-bold w-full text-3xl my-4 animate-slide-in lg:w-90 lg:text-7xl" style={{ animationDelay: "0.1s" }}>
               Track Every Step To Your  <span className="text-brand">Dream Offer</span>
             </h1>
             <h2 className="text-text-primary animate-slide-in" style={{ animationDelay: "0.1s" }}>
@@ -85,7 +88,7 @@ export default function LandingPage(){
             </h2>
             <Link to="/signin" className="bg-brand inline-block text-white my-4 px-5 py-3 rounded-xl animate-slide-in" style={{ animationDelay: "0.5s" }}>Start for Free</Link>
           </div>
-          <div className="w-150 bg-surface p-4 border border-border rounded-2xl min-h-0 animate-float animate-slide-in">
+          <div className="w-full max-w-150 bg-surface p-4 border border-border rounded-2xl min-h-0 animate-float animate-slide-in">
             <div className="flex justify-between items-center mb-2 "> {/* Floating window */}
               <div className="flex gap-1 mx-3">
                 <div className="w-2.25 h-2.25 bg-[#ff5f57] rounded-full"></div>
@@ -95,7 +98,7 @@ export default function LandingPage(){
               <p className="text-text-secondary text-sm">OfferPath Dashboard</p>
               <div className="w-8.75  mx-3"></div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex md:gap-2 w-full">
               {miniStats.map((info, i)=>(
                 <div key={i} className="bg-surface-raised border border-border w-1/4 m-2 py-1 px-2 rounded-lg">
                   <p className="text-text-secondary text-[10px] ">{info.name.toUpperCase()}</p>
@@ -112,6 +115,7 @@ export default function LandingPage(){
               </div>
               <div className="flex gap-2 px-2">
                 {last6Month.map((_,i)=>(
+                  last6Month[i] && 
                   <div key={i} className="grow text-sm text-text-muted text-center">{last6Month[i].slice(0,3)}</div>
                 ))}
               </div>
@@ -152,20 +156,20 @@ export default function LandingPage(){
           </div>
         </section>
 
-        <section className="flex items-center px-90 py-25 bg-background border-b border-border-strong " id="features">
-          <div className="flex flex-col">
-            <div className="my-2  max-w-250 animate-slide-in">
+        <section className="flex items-center justify-center w-full px-10 py-25 bg-background border-b border-border-strong" id="features">
+          <div className="flex flex-col w-full max-w-250">
+            <div className="my-2 max-w-250 animate-slide-in">
               <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Features</span>
-              <h2 className="font-bold w-130 text-5xl my-4">
+              <h2 className="font-bold w-full max-w-130 text-5xl my-4">
                 Everything you need to land your next offer
               </h2>
-              <p className="w-120 text-text-secondary">Stop losing track of applications in your inbox. OfferPath gives you a single, organized workspace for your entire job search.</p>
+              <p className="max-w-120 text-text-secondary w-full">Stop losing track of applications in your inbox. OfferPath gives you a single, organized workspace for your entire job search.</p>
             </div> 
-            <div className="grid grid-cols-3 gap-5 py-8 ">
+            <div className=" w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 py-8">
                 {featuresCard.map((info, i)=>(
-                  <div key={i} className="border border-border-strong px-5 py-10 rounded-2xl">
+                  <div key={i} className="max-w-full border border-border-strong px-5 py-10 rounded-2xl">
                     <h3 className="font-semibold mb-2">{info.title}</h3>
-                    <p className="text-sm">{info.subTitle}</p>
+                    <p className="text-sm wrap-break-word leading-relaxed">{info.subTitle}</p>
                   </div>
                 ))}
             </div>
@@ -174,41 +178,45 @@ export default function LandingPage(){
           
         </section>
 
-        <section className="flex bg-surface items-center px-70 py-25 border-b border-border-strong" id="how-it-works">
-          <div className="flex flex-col w-full">
-            <div className="my-2  max-w-250">
+        <section className="flex bg-surface justify-center items-center px-15 py-25 border-b border-border-strong w-full" id="how-it-works">
+          <div className="flex flex-col w-full max-w-250">
+            <div className="my-2 w-full">
               <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">How it works</span>
-              <h2 className="font-bold w-150 text-5xl my-4">
+              <h2 className="w-full font-bold max-w-150 text-5xl my-4">
                 From application to offer in four simple steps
               </h2>
-              <p className="w-120 text-text-secondary">OfferPath is designed to be frictionless. Log an application in seconds, not minutes</p>
+              <p className="max-w-120 w-full text-text-secondary ">OfferPath is designed to be frictionless. Log an application in seconds, not minutes</p>
             </div> 
-            <div className="w-full items-baseline flex gap-2 px-2 mt-20">
-                {howItWorkInfo.map((_,i)=>(
-                  <div key={i} className="flex grow items-center justify-center  ">
-                    <p className="flex items-center justify-center text-2xl font-semibold  border border-border-strong w-11 h-11 text-brand rounded-full">{i+1}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-2 px-2 w-full mt-5">
-                {howItWorkInfo.map((info,i)=>(
-                  <div key={i} className="grow text-center">
-                    <p className="mb-2">{info.title}</p>
-                    <p className="text-sm text-text-muted">{info.subTitle}</p>
-                  </div>
-                ))}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
+                {howItWorkInfo.map((info, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center text-center px-2"
+                >
+                  {/* Number */}
+                  <p className="flex items-center justify-center text-lg md:text-2xl font-semibold border border-border-strong w-9 h-9 md:w-11 md:h-11 text-brand rounded-full mb-2">
+                    {i + 1}
+                  </p>
+
+                  {/* Text */}
+                  <p className="mb-1 text-sm md:text-base">{info.title}</p>
+                  <p className="text-xs md:text-sm text-text-muted">
+                    {info.subTitle}
+                  </p>
+                </div>
+              ))}
               </div>
           </div>
         </section>
 
-        <section className="flex justify-center items-center px-90 py-25 bg-background border-b border-border-strong" id="pricing">
-          <div className="flex flex-col items-center">
-            <div className="my-2  max-w-250">
-              <span className=" p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Pricing</span>
-              <h2 className="font-bold w-130 text-5xl my-4">
+        <section className="w-full flex justify-center items-center px-10 py-25 bg-background border-b border-border-strong" id="pricing">
+          <div className="flex w-full flex-col items-center">
+            <div className="my-2 w-full max-w-250">
+              <span className="w-full p-1 px-4 border bg-brand-subtle text-brand rounded-2xl">Pricing</span>
+              <h2 className="font-bold w-full max-w-130 text-5xl my-4">
                 Simple, honest pricing
               </h2>
-              <p className="w-120 text-text-secondary">Start free. Upgrade when you're ready. No hidden fees.</p>
+              <p className="w-full max-w-120 text-text-secondary">Start free. Upgrade when you're ready. No hidden fees.</p>
             </div> 
 
             <div className="flex items-center justify-center mt-8"> 
@@ -250,13 +258,13 @@ export default function LandingPage(){
         </section>
       </main>
 
-      <footer className="px-16 pt-10 bg-surface">
-        <div className="flex justify-between border-b border-border pb-6">
-          <div className="w-60">
+      <footer className="pt-10 px-2 bg-surface">
+        <div className="flex justify-around gap-10 border-b border-border pb-6 ">
+          <div className="w-1/3">
             <img src={logoOrange} alt="logo" className="h-12"/>
-            <p className="text-sm text-text-secondary">Your organized path from first application to final offer.</p>
+            <p className="text-sm text-text-secondary hidden sm:block">Your organized path from first application to final offer.</p>
           </div>
-          <div className="flex w-200">
+          <div className="flex w-2/3 max-w-120 text-xs leading-[0.7] md:text-base md:leading-normal">
             <div className="flex flex-col gap-4 text-text-secondary w-1/3 ">
               <h3 className="text-text-primary font-semibold">Products</h3>
               <a href="#features">Features</a>
@@ -276,9 +284,9 @@ export default function LandingPage(){
             </div>
           </div>
         </div>
-        <div className="flex justify-between py-4">
-          <p className="text-text-muted text-sm">© {new Date().getFullYear()}  All rights reserved.</p>
-          <p className="text-text-muted text-sm">Built with ♥ for job seekers everywhere</p>
+        <div className="flex justify-between py-4 px-2 gap-1">
+          <p className="text-text-muted text-xs">© {new Date().getFullYear()}  All rights reserved.</p>
+          <p className="text-text-muted text-xs">Built with ♥ for job seekers everywhere</p>
         </div>          
       </footer>
     </>

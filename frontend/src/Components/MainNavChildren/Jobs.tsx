@@ -28,7 +28,7 @@ export default function Jobs(){
   const [searchParam, setSearchParam] = useState('')
 
 
-  const {applicationJson, setApplicationJson, activeBtn, setActiveBtn, userData}:JobContextType = useContext(JobContext)!
+  const {applicationJson ,setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
 
   // console.log( "In Jobs.jsx", interviewJson[20])
   // console.log("userData in Jobs", userData)
@@ -162,7 +162,7 @@ export default function Jobs(){
 
   return (
     <>
-      <main className='bg-gray-100 grow p-8 ml-60 h-full flex flex-col min-h-0'>
+      <main className='bg-gray-100 grow p-8 ml-24 lg:ml-60 h-full flex flex-col min-h-0'>
         {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
        
         <div className="w-full space-y-6">

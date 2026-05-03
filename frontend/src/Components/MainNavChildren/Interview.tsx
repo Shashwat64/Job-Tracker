@@ -151,7 +151,7 @@ export default function Interview(){
     
     <>
       {modalType && <InterviewModal modalType={modalType} setModalType={setModalType} applicationJson={applicationJson} setApplicationJson={setApplicationJson} selectedId={selectedId} setSelectedId={setSelectedId} selectedApplication={selectedApplication}/>}
-      <main className='bg-gray-100 grow p-8 ml-60 flex flex-col min-h-0'>
+      <main className='bg-gray-100 grow p-8 ml-24 lg:ml-60 flex flex-col min-h-0'>
         {/* {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>} */}
        
         <div className="w-full space-y-6 ">

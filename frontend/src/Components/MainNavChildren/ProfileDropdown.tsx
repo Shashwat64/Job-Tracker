@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { signOutUser } from "../../api/users";
 
-export default function ProfileDropdown(){
+export default function ProfileDropdown({isCollapsed}:{isCollapsed:boolean}){
 
   const navigate = useNavigate()
 

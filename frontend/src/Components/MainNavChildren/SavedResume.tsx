@@ -66,7 +66,7 @@ export default function SavedResume() {
   }
 
   return (
-    <main className='ml-60 p-8'>
+    <main className='ml-24 lg:ml-60 p-8'>
       <h2 className='text-2xl font-bold mb-6'>Saved Resumes</h2>
       
       {/* upload section */}

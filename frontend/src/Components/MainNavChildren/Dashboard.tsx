@@ -7,6 +7,8 @@ import { getLast6Month, interviewInLast6Months } from '../../utils/helperFunctio
 
 import { urlToLogoLink } from '../../utils/helperFunctions'
 
+import type { JobContextType } from '../../../types/types'
+
 
 
 //Its the lower most upcomign interview
@@ -42,7 +44,7 @@ export default function Dashboard() {
 
   const [hovered, setHovered] = useState(null) //have to remove this
 
-  const { applicationJson, activeBtn, setActiveBtn } = useContext(JobContext)
+  const {applicationJson ,setApplicationJson, activeBtn, userData, setActiveBtn, setUserData}:JobContextType = useContext(JobContext)!
 
   const navigate = useNavigate()
 
@@ -121,7 +123,7 @@ export default function Dashboard() {
 
 
   return (
-    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow select-none ml-60 h-screen">
+    <div className=" bg-gray-100 p-8 font-sans text-gray-800 grow select-none ml-24 lg:ml-60 h-screen">
       <div className="w-full h-full space-y-6">
 
         {/* Header */}
