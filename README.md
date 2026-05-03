@@ -2,7 +2,7 @@
 
 A full-stack web application to track and manage your job applications in one place.
 
-🔗 [Live Demo]((https://job-tracker-ten-plum.vercel.app/))
+🔗 [Live Demo](https://job-tracker-ten-plum.vercel.app/)
 
 ---
 
