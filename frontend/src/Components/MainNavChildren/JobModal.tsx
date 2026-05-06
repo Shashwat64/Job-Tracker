@@ -167,8 +167,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
     }
     else if(editId===null){ //this is for adding new applications
       const reply = await addApplication(updatedJob)
-
-      const row = reply.result.rows[0];
+      const row = reply.reply.rows[0]
 
       setApplicationJson((prev:Application[])=>([
         ...prev,

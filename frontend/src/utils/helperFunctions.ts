@@ -55,11 +55,12 @@ const allMonths = [
 ]
 export function getLast6Month(month: number){
 
-  const months = []
+  const months:string[] = []
   
   for(let i = month-5; i<=month;i+=1){
     const index = (i + 12) % 12
-    months.push(allMonths[index])
+    if(allMonths[index])
+      months.push(allMonths[index])
   }
   // console.log(months)
   return months

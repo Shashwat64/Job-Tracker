@@ -24,7 +24,7 @@ export type Application = {
     logoLink: string
     location: string
     name: string
-    url?: string
+    url: string
   }
   date: string
   id: number

@@ -12,12 +12,24 @@ import type { JobContextType } from '../../../types/types'
 
 
 //Its the lower most upcomign interview
-const ApplicationItem = ({ companyName, type, jobTitle, date, time, id, logoLink }) => (
+type InterviewItemProps = {
+  companyName: string
+  type: string
+  jobTitle: string
+  date: string
+  time: {
+    start:string
+    duration:number
+  }
+  companyUrl: string
+}
+
+const InterviewItem = ({ companyName, type, jobTitle, date, time, companyUrl }:InterviewItemProps) => (
   <div className="px-6 py-4 flex justify-between items-center  hover:bg-gray-100 hover:cursor-pointer
  transition">
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 rounded bg-white flex items-center justify-center font-bold text-gray-700">
-        <img src={urlToLogoLink(logoLink)} alt="" />
+        <img src={urlToLogoLink(companyUrl)} alt="" />
       </div>
       <div>
         <p className="text-sm font-medium text-gray-900">{companyName}</p>
@@ -42,7 +54,7 @@ const ApplicationItem = ({ companyName, type, jobTitle, date, time, id, logoLink
 
 export default function Dashboard() {
 
-  const [hovered, setHovered] = useState(null) //have to remove this
+  const [hovered, setHovered] = useState<number | null>(null) //have to remove this
 
   const {applicationJson ,setApplicationJson, activeBtn, userData, setActiveBtn, setUserData}:JobContextType = useContext(JobContext)!
 
@@ -66,13 +78,16 @@ export default function Dashboard() {
 
   interviewInLast6Months(applicationJson)
 
-
+  type StatusCounts = {
+    total: number;
+    [stage: string]: number;
+  }
   const statusCounts = applicationJson.filter(info=>!info.isDeleted)
-  .reduce((acc, job) => {
+  .reduce<StatusCounts>((acc, job) => {
     acc.total = (acc.total || 0) + 1 
     acc[job.stage] = (acc[job.stage] || 0) + 1 
     return acc 
-  }, {})
+  }, {total: 0})
 
 
   const cards = [
@@ -86,8 +101,17 @@ export default function Dashboard() {
 
   // console.log(cards)
 
+  type KPICardProps = {
+    title: string
+    value: number
+    badge?: {
+      label:string
+      style:string
+    }
+  }
+
   //Top 6 cards
-  const KPICard = ({ title, value, badge }) => (
+  const KPICard = ({ title, value, badge }:KPICardProps) => (
     <div 
       className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:bg-gray-100 hover:cursor-pointer
       : transition duration-75 active:scale-95"
@@ -114,10 +138,28 @@ export default function Dashboard() {
   // console.log(applicationJson)
 
   //Upcoming Interview
-  const upcomingInterviews = applicationJson.filter(info=>info.interviews?.length && info.stage.toLowerCase() === "interview")
+/*   const upcomingInterviews = applicationJson.filter(info=>info.interviews?.length>0 && info.stage.toLowerCase() === "interview")
     .filter(info=>info.interviews[0].status.toLowerCase()==="upcoming")
     .map(info=>({id:info.id, jobTitle:info.jobTitle, companyName: info.company.name, logoLink:info.company.url ,...info.interviews[0]}))
-    .sort((a,b)=>a.date.localeCompare(b.date))
+    .sort((a,b)=>a.date.localeCompare(b.date)) */
+
+  const upcomingInterviews = applicationJson
+  .filter(info => info.stage.toLowerCase() === "interview")
+  .map(info => {
+    const first = info.interviews?.[0];
+    if (!first) return null; // guard
+
+    if (first.status.toLowerCase() !== "upcoming") return null;
+
+    return {
+      jobTitle: info.jobTitle,
+      companyName: info.company.name,
+      companyUrl: info.company.url,
+      ...first,
+    };
+  })
+  .filter((x): x is NonNullable<typeof x> => x !== null) // remove nulls safely
+  .sort((a, b) => a.date.localeCompare(b.date));
 
   console.log(upcomingInterviews)
 
@@ -196,7 +238,17 @@ export default function Dashboard() {
             <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">View Calendar →</button>
           </div>
           <div className="divide-y divide-gray-100">
-            {upcomingInterviews.map((interview, i) => <ApplicationItem key={i} {...interview} />)}
+            {upcomingInterviews.map((interview, i) => (
+              <InterviewItem
+                key={i}
+                companyName={interview.companyName}
+                type={interview.type}
+                jobTitle={interview.jobTitle}
+                date={interview.date}
+                companyUrl={interview.companyUrl}
+                time={interview.time}
+              />
+            ))}
           </div>
         </div>
 
@@ -204,5 +256,3 @@ export default function Dashboard() {
     </div>
   ) 
 }
-
-/* { company, round, position, date, time } */
