@@ -223,7 +223,7 @@ export default function Interview(){
                     onClick={()=>(setModalType('add'))}
                     >Add</button>
 
-                  {(selectedIdSortedInterview?.length ?? 0) &&
+                  {(selectedIdSortedInterview?.length ?? 0) > 0 &&
                     <>
                       <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                         onClick={()=>(setModalType('edit'))}

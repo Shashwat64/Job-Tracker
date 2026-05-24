@@ -8,29 +8,39 @@ import { updateApplication, addApplication } from '../../api/users'
 
 import type { Application, ApplicationInFrontend, Interview, JobModalProps, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../../types/types'
 
+const emptyJob = {
+  company: { logoLink: "", name: "", location: "", url:"" },
+  jobTitle: "",
+  salaryRange: { min:0, max:0 },
+  date: "",
+  stage: "Pending",
+  isDeleted:false,
+  resumeId:null,
+  interviews:[],
+  notes: "",
+  source:''
+}
+
 export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:JobModalProps){
   
-  const context = useContext(JobContext);
-  if (!context) throw new Error("Missing provider");
+  const context = useContext(JobContext)
+  if (!context) 
+      throw new Error("Missing provider")
   const {applicationJson, setApplicationJson, activeBtn, userData} = context
 
   
-  console.log(applicationJson)
   // console.log(applicationJson[0].id)
   
-  console.log("openModalId", openModalId)
   
   const [editId, setEditID] = useState(openModalId)
   const [resumes, setResumes] = useState<ResumeDetails[]>([]);
   
   console.log("editId is ", editId)
 
-  console.log(editId)
-
   useEffect(()=>{
     setEditID(openModalId)
     setOpenModalId(null)
-  },[])
+  },[openModalId])
 
   console.log("editId " + editId)
   console.log("openModalId " + openModalId)
@@ -71,18 +81,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
   let thatData: Application | ApplicationInFrontend
 
   if(editId===null){
-    thatData = {
-      company: { logoLink: "", name: "", location: "", url:"" },
-      jobTitle: "",
-      salaryRange: { min:0, max:0 },
-      date: "",
-      stage: "Pending",
-      isDeleted:false,
-      resumeId:null,
-      interviews:[],
-      notes: "",
-      source:''
-    }
+    thatData = emptyJob
   }else{
     const found = applicationJson.find(
       (application: Application) => application.id === editId
@@ -98,6 +97,13 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
 
 
   const [newJob, setNewJob] = useState<Application | ApplicationInFrontend>(thatData)
+
+  useEffect(()=>{
+    setNewJob(thatData)
+  },[editId])
+
+  console.log("thatData is", thatData)
+  console.log("newJob is", newJob)
 
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
@@ -134,11 +140,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
       return
     }
     if (cleanUrl.includes("https://")) {
-      const url = newJob.company.url;
-
-      const cleanUrl = url && url.includes('/')
-        ? url.split('/')[2] ?? ""
-        : "";
+      cleanUrl = cleanUrl.split('/')[2] ?? ""
     }
 
     const updatedJob: ApplicationInFrontend = {
@@ -349,7 +351,7 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
             <button
               onClick={()=>{
                 setNewJob({
-                company: { logoLink: "", name: "", location: "" },
+                company: { logoLink: "", name: "", location: "", url:'' },
                 jobTitle: "",
                 salaryRange: { min: 0, max: 0 },
                 date: "",
@@ -374,17 +376,3 @@ export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:J
     </div>
   )
 }
-
-/* Data that I need
-  id: 0,  //arr.length or last element id + 1
-    company: { 
-      logoLink: googleLogo, //I will need the name or most likely the url
-      name: "Google", //Simple
-      location: "Bengaluru, India" },  //Simple
-    jobTitle: "Frontend Developer", //Simple
-    salaryRange: { min: 1800000, max: 2800000 }, //Simple and add the condition that max should be more than min
-    date: "2026-03-12", //add input type data
-    stage: "Pending", //options
-    isDeleted:false //default
-
-*/

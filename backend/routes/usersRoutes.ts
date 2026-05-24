@@ -271,7 +271,6 @@ usersRoutes.delete('/delete/application', async(req:Request, res:Response)=>{
         userId
       ]
     )
-
     res.status(200).json({id: applicationId, result})
 
   }
