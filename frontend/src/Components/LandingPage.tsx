@@ -42,17 +42,13 @@ export default function LandingPage(){
     {title:"Schedule Interviews", subTitle:"Add interview details and get reminders so you never miss a slot."},
     {title:"Land Your Offer", subTitle:"See your full journey at a glance and make the best decision for your career."}, 
   ]
-  /* Tailwind breakpoints (default)
-      sm → ≥ 640px
-      md → ≥ 768px
-      lg → ≥ 1024px
-      xl → ≥ 1280px
-      2xl → ≥ 1536px */
-
   return (
     <>
       <main className=" bg-background-light w-full overflow-x-auto">
         <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 px-2  border-b bg-surface border-border z-10 lg:px-10">
+          <div className="absolute -bottom-6 left-0 right-0 bg-orange-100 text-orange-900 border border-orange-200 text-center text-sm py-1">
+            First load may take up to 1 minute while the server wakes up.
+          </div>
           <div className="h-full w-40 flex items-center justify-center" 
             onClick={() => {
               navigate('/');
