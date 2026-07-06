@@ -6,13 +6,18 @@ import { JobContext } from '../../App'
 
 import { deleteApplication } from "../../api/users"
 
-import type { DropdownProps, JobContextType } from "../../../types/types";
-import type { JSX } from "react";
+import type { JobContextType } from "../../../types/types";
 
-export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal }:DropdownProps) {
+type DropdownProps = {
+  openModalId: number | null
+  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
+  id: number
+  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
+  setEditId: React.Dispatch<React.SetStateAction<null | number>>
+}
+
+export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobModal, setEditId }:DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null)
-
-  console.log("id in the dropdown",id)
 
   const { applicationJson, setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
 
@@ -32,6 +37,9 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
 
   if (openModalId !== id) return null
 
+  console.log("openModalId in dropdown is ", openModalId)
+  console.log("id in dropdown is ", id)
+
 
   return (
     <div
@@ -42,6 +50,8 @@ export default function Dropdown({ openModalId, setOpenModalId, id, setAddJobMod
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
         onClick={()=>{
           setAddJobModal(true)
+          setEditId(id)
+          setOpenModalId(null)
         }}
       >
         Edit

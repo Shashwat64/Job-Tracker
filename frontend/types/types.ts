@@ -109,16 +109,7 @@ export type InterviewModalProps = {
   setAddJobModal: React.Dispatch<React.SetStateAction<>>
 } */
 
-export type JobModalProps = {
-  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
-  openModalId: number | null
-  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
-}
 
-export type DropdownProps = {
-  openModalId: number | null
-  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
-  id: number
-  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
-}
+
+
 

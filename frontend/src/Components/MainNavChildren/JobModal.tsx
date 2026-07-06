@@ -6,7 +6,7 @@ import { refactorApplication } from '../../utils/helperFunctions'
 
 import { updateApplication, addApplication } from '../../api/users'
 
-import type { Application, ApplicationInFrontend, Interview, JobModalProps, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../../types/types'
+import type { Application, ApplicationInFrontend, Interview, ResumeDetails, ResumeDetailsFromServer, JobContextType } from '../../../types/types'
 
 const emptyJob = {
   company: { logoLink: "", name: "", location: "", url:"" },
@@ -21,29 +21,23 @@ const emptyJob = {
   source:''
 }
 
-export default function AddJob({ setAddJobModal, openModalId, setOpenModalId }:JobModalProps){
+type JobModalProps = {
+  setAddJobModal: React.Dispatch<React.SetStateAction<boolean>>
+  openModalId: number | null
+  setOpenModalId: React.Dispatch<React.SetStateAction<number | null>>
+  editId: number | null
+  setEditId: React.Dispatch<React.SetStateAction<null|number>>
+}
+
+export default function AddJob({ setAddJobModal, openModalId, setOpenModalId, editId, setEditId }:JobModalProps){
   
   const context = useContext(JobContext)
   if (!context) 
       throw new Error("Missing provider")
   const {applicationJson, setApplicationJson, activeBtn, userData} = context
-
   
-  // console.log(applicationJson[0].id)
-  
-  
-  const [editId, setEditID] = useState(openModalId)
   const [resumes, setResumes] = useState<ResumeDetails[]>([]);
-  
-  console.log("editId is ", editId)
 
-  useEffect(()=>{
-    setEditID(openModalId)
-    setOpenModalId(null)
-  },[openModalId])
-
-  console.log("editId " + editId)
-  console.log("openModalId " + openModalId)
 
   //getting resume
   useEffect(() => {

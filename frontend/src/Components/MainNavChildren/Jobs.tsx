@@ -12,12 +12,12 @@ import { urlToLogoLink } from '../../utils/helperFunctions';
 import { JobContext } from '../../App'
 
 //component
-import AddJob from './JobModal'
+import JobModal from './JobModal'
 import Interview from './Interview'
 import Dropdown from './Dropdown' 
-import type { Application } from '../../../types/types';
 
 //type
+import type { Application } from '../../../types/types';
 import type { JobContextType } from '../../../types/types';
 
 
@@ -30,19 +30,9 @@ export default function Jobs(){
 
   const {applicationJson ,setApplicationJson, activeBtn, userData, setActiveBtn, setUserData }:JobContextType = useContext(JobContext)!
 
-  // console.log( "In Jobs.jsx", interviewJson[20])
-  // console.log("userData in Jobs", userData)
-  console.log("applicationJson in Jobs", applicationJson)
-
   const [addJobModal, setAddJobModal] = useState(false)
   const [openModalId, setOpenModalId] = useState<null|number>(null)
-
-
-
-  // useEffect(()=>{
-  //   setInterviewJson([])
-  // },[])
-
+  const [editId, setEditId] = useState<null|number>(null)
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>){
     setActivePage(1)
@@ -90,12 +80,6 @@ export default function Jobs(){
     const startIndex = (activePage - 1) * itemsPerPage;
     const lastIndex = activePage * itemsPerPage;
     
-    //Debugging
-    // console.log("filteredListLen", filteredListLen)
-    // console.log("startIndex", startIndex)
-    // console.log("lastIndex", lastIndex)
-    // console.log("activePage", activePage)
-
     let interviewHtml: JSX.Element[] = []
     
   
@@ -154,7 +138,7 @@ export default function Jobs(){
             )
           } */}
 
-          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId} id={application.id} setAddJobModal={setAddJobModal}/>
+          <Dropdown openModalId={openModalId} setOpenModalId={setOpenModalId}  id={application.id} setAddJobModal={setAddJobModal} setEditId={setEditId}/>
         </div>)
     )
     }
@@ -163,7 +147,7 @@ export default function Jobs(){
   return (
     <>
       <main className='bg-gray-100 grow p-8 ml-24 lg:ml-60 h-full flex flex-col min-h-0'>
-        {addJobModal && <AddJob setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId}/>}
+        {addJobModal && <JobModal setAddJobModal={setAddJobModal} openModalId = {openModalId} setOpenModalId={setOpenModalId} editId={editId} setEditId={setEditId}/>}
        
         <div className="w-full space-y-6">
 
@@ -242,7 +226,6 @@ export default function Jobs(){
             <p className='text-sm text-gray-500'>Job Title</p>
             <p className='text-sm text-gray-500'>Salary Range</p>
             <p className='text-sm text-gray-500'>Last Updated On</p>
-            {/* <p className='text-sm text-gray-500'>Interview Type</p> */}
             <p className='text-sm text-gray-500'>Stage</p>
           </div>
             
