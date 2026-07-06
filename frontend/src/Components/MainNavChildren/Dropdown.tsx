@@ -1,6 +1,6 @@
 import { useRef, useEffect, useContext } from "react";
 
-import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../../types/types";
+import type { Application, Interview, InterviewInFrontend } from "../../../types/types";
 
 import { JobContext } from '../../App'
 

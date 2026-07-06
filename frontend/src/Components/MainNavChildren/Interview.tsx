@@ -22,6 +22,7 @@ import type { JobContextType, Application, ModalType } from '../../../types/type
 
 export default function Interview(){
 
+
   
   const { applicationJson, setApplicationJson, userData, /* activeBtn, setActiveBtn, */ setUserData }:JobContextType = useContext(JobContext)!
   console.log(applicationJson)
@@ -51,6 +52,7 @@ export default function Interview(){
         return application?.interviews?.[0]?.status?.toLowerCase() === activeBtn?.toLowerCase()
     }) || []
 
+    console.log("applicationOnPage", applicationOnPage)
 
 
   const [selectedId, setSelectedId] = useState(applicationOnPage?.[0]?.id ?? null)
@@ -58,12 +60,13 @@ export default function Interview(){
   console.log(selectedId)
 
   let selectedApplication: Application | undefined
+
   if(typeof selectedId === "number"){
     const found = applicationOnPage.find(
       (application) => application.id === selectedId
     )
 
-    if (!found) return
+    /* if (!found) return */
 
     selectedApplication = found
   }
@@ -145,8 +148,6 @@ export default function Interview(){
     </div>)
   })
 
-  if (!selectedApplication) return null;
-
   return (
     
     <>
@@ -217,7 +218,7 @@ export default function Interview(){
                         : null
                     }`} value="failed" onClick={(e)=>setActiveBtn(e.currentTarget.value)}>Failed</button>
                 </div>
-                  {selectedId!==null && 
+                  {selectedId!==null && applicationOnPage && 
                 <div className='flex w-full justify-end gap-2'>
                   <button className='bg-white border border-gray-300 px-4 py-1 rounded-sm hover:bg-gray-200 active:scale-95'
                     onClick={()=>(setModalType('add'))}
@@ -247,7 +248,7 @@ export default function Interview(){
               </div>
 
               {/* {selectedId && } */}
-              {latestSelectedIdInterview && !selectedApplication.isDeleted &&
+              {latestSelectedIdInterview && selectedApplication && !selectedApplication.isDeleted &&
               <>
                 <div className='bg-white p-3 border-b border-gray-200 rounded-t-lg mt-4' >
                   Interview {'> ' + selectedApplication.company.name}  Interview

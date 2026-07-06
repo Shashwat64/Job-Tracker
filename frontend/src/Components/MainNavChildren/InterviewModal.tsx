@@ -5,11 +5,21 @@ import { capitalise, refactorInterview } from "../../utils/helperFunctions"
 import { addInterview, updateInterview} from "../../api/users"
 
 //types
-import type { Application, Interview, InterviewInFrontend, InterviewModalProps } from "../../../types/types"
+import type { Application, Interview, InterviewInFrontend, ModalType } from "../../../types/types"
 
+type InterviewModalProps = {
+  modalType: ModalType
+  setModalType: React.Dispatch<React.SetStateAction<ModalType>>
+  applicationJson: Application[]
+  setApplicationJson: React.Dispatch<React.SetStateAction<Application[]>>
+  selectedId: number | null
+  setSelectedId: React.Dispatch<React.SetStateAction<number | null>>
+  selectedApplication: Application | null | undefined
+}
 
+export default function InterviewModal({ modalType, setModalType, applicationJson,  setApplicationJson, selectedId, setSelectedId, selectedApplication }: InterviewModalProps){
 
-export default function InterviewModal({ modalType, setModalType, applicationJson,  setApplicationJson, selectedId,setSelectedId, selectedApplication }: InterviewModalProps){
+  if(!selectedApplication) return null;
   
   const jobWithInterviews = applicationJson.filter((application: Application)=>application?.interviews?.length || application.stage.toLowerCase() === 'interview')
 
@@ -63,7 +73,6 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
     e.preventDefault()
 
     console.log("data of new round is sent")
-    // console.log(await updateInterviews(newRound))
     
     if (modalType === 'add') {
       let res
@@ -112,9 +121,6 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
     setModalType(null)
   }
 
-
-  console.log(selectedRound)
-
   const [newRound, setNewRound] = useState <InterviewInFrontend>({
     round: nextRound,
     type: "",
@@ -142,14 +148,15 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
       }
 
       const {id, userId, applicationId, ...curentRound} = tempRound
-    setNewRound(curentRound)
+      setNewRound(curentRound)
     }
   },[selectedId, selectedRound])
+
   const selectedRoundObj = selectedApplication.interviews.find(
     (round: Interview) => round.round === Number(selectedRound)
   )
 
-  if (!selectedRoundObj) {
+  if (!selectedRoundObj && modalType === "edit") {
     throw new Error("Interview round not found");
   }
   
@@ -198,7 +205,7 @@ export default function InterviewModal({ modalType, setModalType, applicationJso
               {modalType==='edit'
                 ? 
                   <select name="" id="" 
-                    value={selectedRoundObj.round}
+                    value={selectedRoundObj?.round}
                     onChange={(e) => setSelectedRound(Number(e.target.value))}
                   >
                     {selectedApplication.interviews.map((round:Interview,i:number)=>(

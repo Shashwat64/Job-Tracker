@@ -92,15 +92,7 @@ export type JobContextType = {
 
 
 
-export type InterviewModalProps = {
-  modalType: ModalType
-  setModalType: React.Dispatch<React.SetStateAction<ModalType>>
-  applicationJson: Application[]
-  setApplicationJson: React.Dispatch<React.SetStateAction<Application[]>>
-  selectedId: number | null
-  setSelectedId: React.Dispatch<React.SetStateAction<number | null>>
-  selectedApplication: Application
-}
+
 
 /* export type DropdownProps = {
   openModalId: string | null
